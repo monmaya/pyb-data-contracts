@@ -146,7 +146,7 @@ Dans l'article suivant, nous explorerons les patterns d'architecture qui facilit
 
 Le code d'implémentation du versioning est disponible dans :
 
-- [SQL Bronze](../../sql/bronze/customer_events.sql) - Structure de stockage multi-version
-- [SQL Silver](../../sql/silver/customer_views.sql) - Vues de compatibilité
-- [Version Migration](../../validation/version_migration.py) - Gestion des migrations
-- [Monitoring](../../sql/monitoring/version_monitoring.sql) - Suivi des versions 
+- [SQL Bronze](../../../sql/bronze/customer_events.sql) - Structure de stockage multi-version
+- [SQL Silver](../../../sql/silver/customer_views.sql) - Vues de compatibilité
+- [Version Migration](../../../validation/version_migration.py) - Gestion des migrations
+- [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Suivi des versions 

@@ -146,7 +146,7 @@ In the next article, we'll explore architecture patterns that facilitate this mu
 
 The versioning implementation code is available in:
 
-- [SQL Bronze](../../sql/bronze/customer_events.sql) - Multi-version storage structure
-- [SQL Silver](../../sql/silver/customer_views.sql) - Compatibility views
-- [Version Migration](../../validation/version_migration.py) - Migration management
-- [Monitoring](../../sql/monitoring/version_monitoring.sql) - Version tracking 
+- [SQL Bronze](../../../sql/bronze/customer_events.sql) - Multi-version storage structure
+- [SQL Silver](../../../sql/silver/customer_views.sql) - Compatibility views
+- [Version Migration](../../../validation/version_migration.py) - Migration management
+- [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Version tracking 

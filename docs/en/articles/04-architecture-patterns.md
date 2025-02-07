@@ -168,11 +168,11 @@ WHERE end_of_support_date IS NOT NULL;
 
 The architectural patterns are implemented in:
 
-- [SQL](../../sql/)
-  - [Bronze Layer](../../sql/bronze/customer_events.sql)
-  - [Silver Layer](../../sql/silver/customer_views.sql)
-  - [Monitoring](../../sql/monitoring/version_monitoring.sql)
-- [Validation](../../validation/version_migration.py)
+- [SQL](../../../sql/)
+  - [Bronze Layer](../../../sql/bronze/customer_events.sql)
+  - [Silver Layer](../../../sql/silver/customer_views.sql)
+  - [Monitoring](../../../sql/monitoring/version_monitoring.sql)
+- [Validation](../../../validation/version_migration.py)
 
 ## Conclusion
 

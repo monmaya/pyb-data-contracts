@@ -210,10 +210,10 @@ class AdoptionMetrics:
 
 The governance infrastructure is implemented in:
 
-- [Governance](../../governance/)
-  - [Workflow](../../governance/workflow.py) - Workflow management
-  - [CoE Config](../../governance/coe_config.yaml) - Center of Excellence configuration
-- [Templates](../../contracts/templates/) - Contract templates
+- [Governance](../../../governance/)
+  - [Workflow](../../../governance/workflow.py) - Workflow management
+  - [CoE Config](../../../governance/coe_config.yaml) - Center of Excellence configuration
+- [Templates](../../../contracts/templates/) - Contract templates
 
 ## Conclusion
 

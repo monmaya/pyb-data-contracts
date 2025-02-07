@@ -280,7 +280,7 @@ Cette série d'articles sur les data contracts se termine ici, mais votre voyage
 
 L'infrastructure de gouvernance est implémentée dans :
 
-- [Governance](../../governance/)
-  - [Workflow](../../governance/workflow.py) - Gestion des workflows
-  - [CoE Config](../../governance/coe_config.yaml) - Configuration du Centre d'Excellence
-- [Templates](../../contracts/templates/) - Templates de contracts 
+- [Governance](../../../governance/)
+  - [Workflow](../../../governance/workflow.py) - Gestion des workflows
+  - [CoE Config](../../../governance/coe_config.yaml) - Configuration du Centre d'Excellence
+- [Templates](../../../contracts/templates/) - Templates de contracts 

@@ -240,7 +240,7 @@ Dans le prochain article, nous explorerons les aspects de gouvernance et d'adopt
 
 Le code de mise en œuvre est disponible dans :
 
-- [Scripts](../../scripts/generate_sample_data.py) - Génération de données
-- [Validation](../../validation/contract_tests.py) - Framework de test
-- [Contracts API](../../contracts/api/customer_api.yaml) - Exemple d'API REST
-- [Monitoring](../../sql/monitoring/version_monitoring.sql) - Observabilité 
+- [Scripts](../../../scripts/generate_sample_data.py) - Génération de données
+- [Validation](../../../validation/contract_tests.py) - Framework de test
+- [Contracts API](../../../contracts/api/customer_api.yaml) - Exemple d'API REST
+- [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Observabilité 

@@ -194,8 +194,8 @@ Dans le prochain article, nous explorerons les aspects organisationnels et humai
 
 Les patterns architecturaux sont implémentés dans :
 
-- [SQL](../../sql/)
-  - [Bronze Layer](../../sql/bronze/customer_events.sql)
-  - [Silver Layer](../../sql/silver/customer_views.sql)
-  - [Monitoring](../../sql/monitoring/version_monitoring.sql)
-- [Validation](../../validation/version_migration.py) 
+- [SQL](../../../sql/)
+  - [Bronze Layer](../../../sql/bronze/customer_events.sql)
+  - [Silver Layer](../../../sql/silver/customer_views.sql)
+  - [Monitoring](../../../sql/monitoring/version_monitoring.sql)
+- [Validation](../../../validation/version_migration.py) 

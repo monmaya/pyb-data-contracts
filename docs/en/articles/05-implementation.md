@@ -136,10 +136,10 @@ class ContractMonitoring:
 
 The implementation code is available in:
 
-- [Scripts](../../scripts/generate_sample_data.py) - Data generation
-- [Validation](../../validation/contract_tests.py) - Test framework
-- [Contracts API](../../contracts/api/customer_api.yaml) - REST API example
-- [Monitoring](../../sql/monitoring/version_monitoring.sql) - Observability
+- [Scripts](../../../scripts/generate_sample_data.py) - Data generation
+- [Validation](../../../validation/contract_tests.py) - Test framework
+- [Contracts API](../../../contracts/api/customer_api.yaml) - REST API example
+- [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Observability
 
 ## Conclusion
 
