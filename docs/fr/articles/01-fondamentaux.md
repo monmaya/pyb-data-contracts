@@ -110,8 +110,8 @@ Dans le prochain article, nous explorerons en détail comment structurer ces con
 
 Les concepts présentés dans cet article sont implémentés dans les fichiers suivants :
 
-- [Data Contract de base](../../contracts/customer-domain/order_events.yaml) - Exemple de contract simple
-- [Data Contract avancé](../../contracts/customer-domain/customer_profile_events.yaml) - Contract avec règles de qualité
-- [Tests de validation](../../validation/contract_tests.py) - Implémentation des validations
+- [Data Contract de base](../../../contracts/customer-domain/order_events.yaml) - Exemple de contract simple
+- [Data Contract avancé](../../../contracts/customer-domain/customer_profile_events.yaml) - Contract avec règles de qualité
+- [Tests de validation](../../../validation/contract_tests.py) - Implémentation des validations
 
-Pour démarrer avec ces exemples, consultez le [guide de démarrage rapide](../../README.md#-démarrage-rapide). 
+Pour démarrer avec ces exemples, consultez le [guide de démarrage rapide](../../../README.md#-démarrage-rapide). 

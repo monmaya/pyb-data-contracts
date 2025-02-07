@@ -110,8 +110,8 @@ In the next article, we'll explore in detail how to structure these contracts to
 
 The concepts presented in this article are implemented in the following files:
 
-- [Basic Data Contract](../../contracts/customer-domain/order_events.yaml) - Simple contract example
-- [Advanced Data Contract](../../contracts/customer-domain/customer_profile_events.yaml) - Contract with quality rules
-- [Validation Tests](../../validation/contract_tests.py) - Validation implementation
+- [Basic Data Contract](../../../contracts/customer-domain/order_events.yaml) - Simple contract example
+- [Advanced Data Contract](../../../contracts/customer-domain/customer_profile_events.yaml) - Contract with quality rules
+- [Validation Tests](../../../validation/contract_tests.py) - Validation implementation
 
-To get started with these examples, check out the [quick start guide](../../README.md#-quick-start). 
+To get started with these examples, check out the [quick start guide](../../../README.md#-quick-start). 

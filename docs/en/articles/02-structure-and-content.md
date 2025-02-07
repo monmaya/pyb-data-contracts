@@ -128,13 +128,13 @@ class ContractRegistry:
 
 The structures and patterns presented are implemented in:
 
-- [Contracts](../../contracts/) - Structured contract examples
-  - [Customer Profile](../../contracts/customer-domain/customer_profile_events.yaml) - Contract with progressive levels
-  - [Order Events](../../contracts/customer-domain/order_events.yaml) - Contract with business rules
+- [Contracts](../../../contracts/) - Structured contract examples
+  - [Customer Profile](../../../contracts/customer-domain/customer_profile_events.yaml) - Contract with progressive levels
+  - [Order Events](../../../contracts/customer-domain/order_events.yaml) - Contract with business rules
 
-- [Validation](../../validation/)
-  - [Contract Tests](../../validation/contract_tests.py) - Validation tests
-  - [Migration Manager](../../validation/version_migration.py) - Version management
+- [Validation](../../../validation/)
+  - [Contract Tests](../../../validation/contract_tests.py) - Validation tests
+  - [Migration Manager](../../../validation/version_migration.py) - Version management
 
 ## Conclusion and Perspectives
 
