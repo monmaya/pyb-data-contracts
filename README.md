@@ -1,17 +1,26 @@
 # Data Contracts Framework
 
-Un framework complet pour implémenter des data contracts dans une architecture moderne de données.
+A comprehensive framework for implementing data contracts in a modern data architecture.
 
 ## 📚 Documentation
 
-Une série complète d'articles détaillant l'approche :
+Documentation is available in both English and French:
 
-1. [Fondamentaux des Data Contracts](docs/articles/01-fondamentaux.md)
-2. [Structure et Contenu](docs/articles/02-structure-et-contenu.md)
-3. [Workflow et Versioning](docs/articles/03-workflow-et-versioning.md)
-4. [Patterns d'Architecture](docs/articles/04-patterns-architecture.md)
-5. [Mise en Œuvre Pratique](docs/articles/05-mise-en-oeuvre.md)
-6. [Gouvernance et Adoption](docs/articles/06-gouvernance-et-adoption.md)
+### English
+1. [Fundamentals of Data Contracts](docs/en/articles/01-fundamentals.md)
+2. [Structure and Content](docs/en/articles/02-structure-and-content.md)
+3. [Workflow and Versioning](docs/en/articles/03-workflow-and-versioning.md)
+4. [Architecture Patterns](docs/en/articles/04-architecture-patterns.md)
+5. [Implementation](docs/en/articles/05-implementation.md)
+6. [Governance and Adoption](docs/en/articles/06-governance-and-adoption.md)
+
+### Français
+1. [Fondamentaux des Data Contracts](docs/fr/articles/01-fondamentaux.md)
+2. [Structure et Contenu](docs/fr/articles/02-structure-et-contenu.md)
+3. [Workflow et Versioning](docs/fr/articles/03-workflow-et-versioning.md)
+4. [Patterns d'Architecture](docs/fr/articles/04-patterns-architecture.md)
+5. [Mise en Œuvre Pratique](docs/fr/articles/05-mise-en-oeuvre.md)
+6. [Gouvernance et Adoption](docs/fr/articles/06-gouvernance-et-adoption.md)
 
 ## 🏗️ Structure du Projet
 

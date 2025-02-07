@@ -22,6 +22,48 @@ skills_required:
 reporting_to: Chief Data Officer
 ```
 
+### Data Architect
+
+```yaml
+role: Data Architect
+responsibilities:
+  - Conception de l'architecture technique
+  - Définition des patterns de contracts
+  - Établissement des standards techniques
+  - Pilotage de l'évolution architecturale
+skills_required:
+  - Expertise technique approfondie
+  - Expérience en conception de systèmes
+  - Connaissance transverse des domaines
+  - Maîtrise des patterns d'architecture
+reporting_to: Directeur Technique
+key_collaborations:
+  - Data Contract Owner
+  - Product Manager
+  - Data Engineers
+```
+
+### Product Manager
+
+```yaml
+role: Product Manager
+responsibilities:
+  - Stratégie des produits de données
+  - Analyse des besoins utilisateurs
+  - Priorisation des fonctionnalités
+  - Gestion des parties prenantes
+skills_required:
+  - Expertise en gestion de produit
+  - Connaissance du domaine data
+  - Focus expérience utilisateur
+  - Pensée stratégique
+reporting_to: Responsable des Produits Data
+key_collaborations:
+  - Data Architect
+  - Data Contract Owner
+  - Utilisateurs Métier
+```
+
 ### Data Steward
 
 ```yaml
