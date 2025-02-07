@@ -145,8 +145,4 @@ Le framework inclut des vues SQL pour le monitoring :
 
 ## 👤 Author / Auteur
 
-Pierre-Yves Bonnefoy
-
-## 📝 License
-
-MIT License - see [LICENSE](LICENSE) file for details / voir le fichier [LICENSE](LICENSE) pour plus de détails. 
+Pierre-Yves Bonnefoy - Olexya
