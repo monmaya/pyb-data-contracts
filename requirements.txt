@@ -1,8 +1,8 @@
 # Core dependencies
 pydantic==2.5.2
 PyYAML==6.0.1
-faker==19.3.0
-pandas==2.1.0
+faker==24.1.0
+pandas==2.2.1
 pyarrow==14.0.1  # Pour le support parquet 
 
 # Testing
@@ -19,4 +19,8 @@ mkdocs-material==9.4.14
 # Development
 black==23.11.0
 isort==5.12.0
-mypy==1.7.1 
+mypy==1.7.1
+
+# New dependencies
+duckdb==0.9.2
+streamlit==1.31.1 

@@ -49,7 +49,32 @@ data-contracts-framework/
 
 ## 🚀 Quick Start / Démarrage Rapide
 
-### English
+### Docker Demo / Démo Docker
+
+The easiest way to try out the framework is to use the Docker demo / La façon la plus simple d'essayer le framework est d'utiliser la démo Docker :
+
+```bash
+# Build the image / Construction de l'image
+docker build -t data-contracts-demo .
+
+# Run the container / Lancement du conteneur
+docker run -p 8501:8501 data-contracts-demo
+```
+
+Then open / Puis ouvrez : http://localhost:8501
+
+The demo includes / La démo inclut :
+- 100,000 generated customer events / 100 000 événements clients générés
+- Medallion architecture implementation / Implémentation de l'architecture médaillon
+  - Bronze layer: raw events / Couche bronze : événements bruts
+  - Silver layer: normalized views (V1 & V2) / Couche silver : vues normalisées (V1 & V2)
+  - Gold layer: business views / Couche gold : vues métier
+- Interactive Streamlit dashboard / Tableau de bord Streamlit interactif
+  - Data exploration / Exploration des données
+  - Version comparison / Comparaison des versions
+  - Metrics & visualizations / Métriques & visualisations
+
+### Manual Installation / Installation Manuelle
 
 1. Installation:
 ```bash
@@ -71,29 +96,6 @@ python scripts/generate_sample_data.py
    - Start with [Fundamentals](docs/en/articles/01-fundamentals.md)
    - Check implementation examples in `contracts/` and `sql/`
    - Follow the tutorials in the documentation
-
-### Français
-
-1. Installation :
-```bash
-git clone https://github.com/pybonnefoy/data-contracts-framework.git
-cd data-contracts-framework
-python -m venv venv
-source venv/bin/activate  # ou venv\Scripts\activate sous Windows
-pip install -r requirements.txt
-```
-
-2. Générez des données de test :
-```bash
-python scripts/generate_sample_data.py
-```
-
-3. Explorez les exemples de contracts dans `contracts/`
-
-4. Lisez la documentation :
-   - Commencez par les [Fondamentaux](docs/fr/articles/01-fondamentaux.md)
-   - Consultez les exemples d'implémentation dans `contracts/` et `sql/`
-   - Suivez les tutoriels dans la documentation
 
 ## 👥 Governance / Gouvernance
 
