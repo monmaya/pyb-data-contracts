@@ -47,7 +47,32 @@ data-contracts-framework/
     └── articles/              # Articles détaillés
 ```
 
-## 🚀 Démarrage Rapide
+## 🚀 Quick Start / Démarrage Rapide
+
+### English
+
+1. Installation:
+```bash
+git clone https://github.com/pybonnefoy/data-contracts-framework.git
+cd data-contracts-framework
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+```
+
+2. Generate test data:
+```bash
+python scripts/generate_sample_data.py
+```
+
+3. Explore contract examples in `contracts/`
+
+4. Read the documentation:
+   - Start with [Fundamentals](docs/en/articles/01-fundamentals.md)
+   - Check implementation examples in `contracts/` and `sql/`
+   - Follow the tutorials in the documentation
+
+### Français
 
 1. Installation :
 ```bash
@@ -65,8 +90,24 @@ python scripts/generate_sample_data.py
 
 3. Explorez les exemples de contracts dans `contracts/`
 
-## 👥 Gouvernance
+4. Lisez la documentation :
+   - Commencez par les [Fondamentaux](docs/fr/articles/01-fondamentaux.md)
+   - Consultez les exemples d'implémentation dans `contracts/` et `sql/`
+   - Suivez les tutoriels dans la documentation
 
+## 👥 Governance / Gouvernance
+
+### English
+The framework includes a complete governance structure:
+
+- Defined roles and responsibilities
+- Validation workflows
+- Tracking metrics
+- Training program
+
+See [Governance and Adoption](docs/en/articles/06-governance-and-adoption.md) for details.
+
+### Français
 Le framework inclut une structure de gouvernance complète :
 
 - Rôles et responsabilités définis
@@ -74,30 +115,38 @@ Le framework inclut une structure de gouvernance complète :
 - Métriques de suivi
 - Programme de formation
 
-Consultez [Gouvernance et Adoption](docs/articles/06-gouvernance-et-adoption.md) pour plus de détails.
+Consultez [Gouvernance et Adoption](docs/fr/articles/06-gouvernance-et-adoption.md) pour plus de détails.
 
-## 🛠️ Tests et Validation
+## 🛠️ Testing / Tests
 
 ```bash
-# Exécuter les tests
+# Run tests / Exécuter les tests
 python -m pytest validation/
 
-# Vérifier la compatibilité des contracts
+# Check contract compatibility / Vérifier la compatibilité des contracts
 python validation/version_migration.py check
 ```
 
 ## 📊 Monitoring
 
+### English
+The framework includes SQL views for monitoring:
+- Contract usage
+- Data quality
+- Performance metrics
+- Versioning alerts
+
+### Français
 Le framework inclut des vues SQL pour le monitoring :
 - Utilisation des contracts
 - Qualité des données
 - Métriques de performance
 - Alertes de versioning
 
-## 👤 Auteur
+## 👤 Author / Auteur
 
 Pierre-Yves Bonnefoy
 
 ## 📝 License
 
-MIT License - voir le fichier [LICENSE](LICENSE) pour plus de détails. 
+MIT License - see [LICENSE](LICENSE) file for details / voir le fichier [LICENSE](LICENSE) pour plus de détails. 
