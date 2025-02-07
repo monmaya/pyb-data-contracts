@@ -1,0 +1,54 @@
+name: customer_events
+domain: customer_domain
+owner: customer-domain-team
+version: 2.0.0
+description: "Stream of customer events and interactions"
+
+schema:
+  fields:
+    event_id:
+      type: uuid
+      required: true
+      description: "Unique identifier for the event"
+      
+    customer_id:
+      type: uuid
+      required: true
+      description: "Reference to customer profile"
+      
+    event_type:
+      type: enum
+      values: ["login", "logout", "profile_update", "consent_update"]
+      required: true
+      
+    event_timestamp:
+      type: timestamp
+      required: true
+      description: "When the event occurred"
+      
+    event_data:
+      type: object
+      description: "Event specific payload"
+      
+    source_system:
+      type: string
+      required: true
+      description: "System that generated the event"
+
+quality:
+  critical_rules:
+    - name: "event_sequence"
+      description: "Events must be processed in chronological order"
+      severity: "critical"
+      
+    - name: "valid_customer_reference"
+      description: "Customer ID must exist in profile database"
+      severity: "critical"
+
+sla:
+  latency:
+    max_delay: "1 minute"
+    measurement: "event_timestamp to processing_timestamp"
+  availability:
+    target: 99.99%
+    measurement_window: "24 hours rolling" 

@@ -1,0 +1,96 @@
+name: customer_profile
+domain: customer_domain
+owner: customer-domain-team
+version: 3.0.0
+description: "Customer profile data powering personalization and analytics"
+classification: "sensitive-personal-data"
+
+schema:
+  fields:
+    profile_id:
+      type: uuid
+      required: true
+      description: "Unique identifier for customer profile"
+      compliance: "pseudonymized"
+      
+    email:
+      type: string
+      format: email
+      required: true
+      description: "Customer email address"
+      compliance: "personal-data"
+      
+    email_status:
+      type: enum
+      values: ["verified", "pending", "invalid"]
+      required: true
+      description: "Status of email verification"
+      
+    address:
+      type: object
+      properties:
+        street:
+          type: string
+          required: true
+        city:
+          type: string
+          required: true
+        country:
+          type: string
+          required: true
+        geo:
+          type: object
+          properties:
+            lat:
+              type: number
+              format: double
+            lon:
+              type: number
+              format: double
+      compliance: "personal-data"
+      
+    preferences:
+      type: object
+      properties:
+        communication:
+          type: array
+          items:
+            type: string
+            enum: ["email", "sms", "postal"]
+      description: "Customer communication preferences"
+      compliance: "gdpr-consent"
+
+quality:
+  critical_rules:
+    - name: "email_verification_flow"
+      description: "Email status transitions must follow verification workflow"
+      validation: |
+        status_transitions = {
+          'pending': ['verified', 'invalid'],
+          'verified': ['invalid'],
+          'invalid': ['pending']
+        }
+    
+    - name: "valid_email"
+      description: "Email must be in valid format"
+      severity: "critical"
+      
+  data_quality:
+    - name: "preference_consistency"
+      description: "Communication preferences must align with consent records"
+      severity: "warning"
+    
+    - name: "address_completeness"
+      description: "All address fields should be filled"
+      severity: "warning"
+
+sla:
+  freshness:
+    max_delay: "5 minutes"
+    measurement: "event_timestamp to processing_timestamp"
+  availability: 
+    target: 99.95%
+    measurement_window: "30 days rolling"
+  volume:
+    daily_average: "100K events"
+    peak_rate: "1K events/minute" 

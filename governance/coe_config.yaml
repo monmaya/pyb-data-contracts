@@ -1,0 +1,49 @@
+roles:
+  data_contract_owner:
+    title: Data Contract Owner
+    responsibilities:
+      - Définition de la stratégie des data contracts
+      - Arbitrage des conflits
+      - Validation des changements majeurs
+      - Supervision de la qualité globale
+    skills_required:
+      - Vision stratégique data
+      - Compréhension des enjeux métier
+      - Capacité de décision
+    reporting_to: Chief Data Officer
+
+  data_steward:
+    title: Data Steward
+    responsibilities:
+      - Maintenance des contracts
+      - Documentation et standards
+      - Formation des équipes
+      - Suivi de la qualité
+    skills_required:
+      - Expertise technique data
+      - Compétences pédagogiques
+      - Rigueur méthodologique
+    reporting_to: Data Contract Owner
+
+training_program:
+  modules:
+    - name: "Fondamentaux des Data Contracts"
+      duration: "1 jour"
+      target_audience: "Tous"
+      
+    - name: "Implémentation Technique"
+      duration: "2 jours"
+      target_audience: "Data Engineers"
+      
+    - name: "Gouvernance et Qualité"
+      duration: "1 jour"
+      target_audience: "Data Stewards"
+      
+    - name: "Utilisation et Conformité"
+      duration: "0.5 jour"
+      target_audience: "Data Consumers"
+
+templates:
+  basic_contract: contracts/templates/basic.yaml
+  event_contract: contracts/templates/event.yaml
+  api_contract: contracts/templates/api.yaml 

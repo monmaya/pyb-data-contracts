@@ -1,0 +1,22 @@
+# Core dependencies
+pydantic==2.5.2
+PyYAML==6.0.1
+faker==19.3.0
+pandas==2.1.0
+pyarrow==14.0.1  # Pour le support parquet 
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Monitoring
+datadog==0.45.0
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.4.14
+
+# Development
+black==23.11.0
+isort==5.12.0
+mypy==1.7.1 

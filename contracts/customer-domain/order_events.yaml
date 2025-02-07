@@ -1,0 +1,23 @@
+name: order_events
+version: 2.0.0
+owner: e-commerce-team
+description: "Stream of order events from the e-commerce platform"
+
+schema:
+  order_id: uuid
+  customer_id: string
+  items: array
+  total_amount: decimal(10,2)
+  status: enum(pending, confirmed, shipped, delivered)
+
+quality:
+  - rule: "total_amount must equal sum of item prices"
+  - rule: "status transitions must follow defined workflow"
+
+sla:
+  latency: "< 5 minutes"
+  availability: 99.9%
+   
+changes:
+  process: "RFC required for breaking changes"
+  notification: "2 weeks notice for schema updates" 
