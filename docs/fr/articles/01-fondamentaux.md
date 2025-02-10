@@ -100,6 +100,20 @@ Dans un contexte Data Mesh, l'adoption des data contracts doit s'aligner avec la
 
 L'objectif n'est pas la perfection immédiate, mais d'établir un nouveau standard de collaboration autour des données.
 
+## Au-delà du YAML
+
+Un data contract n'est pas qu'un simple fichier de configuration - c'est un composant architectural complet avec :
+
+```yaml
+metadata:
+  contract_version: 2.1.0  # Version du contrat
+  schema_version: 1.0.0    # Version du modèle de données
+  owner: "customer-domain-team"
+  lifecycle_stage: "active"
+```
+
+Le contrat lui-même ne fait que décrire le "quoi" (structure, règles, attentes), tandis que le "comment" (validation, monitoring, qualité) est géré par un écosystème de services associés.
+
 ## Conclusion
 
 Les data contracts ne sont pas qu'un outil technique - ils représentent une nouvelle façon de penser la collaboration autour des données. Ils transforment des accords implicites en engagements explicites et automatisables.

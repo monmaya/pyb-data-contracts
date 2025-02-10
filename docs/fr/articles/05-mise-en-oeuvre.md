@@ -244,3 +244,22 @@ Le code de mise en œuvre est disponible dans :
 - [Validation](../../../validation/contract_tests.py) - Framework de test
 - [Contracts API](../../../contracts/api/customer_api.yaml) - Exemple d'API REST
 - [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Observabilité 
+
+## Services Associés
+
+L'implémentation d'un data contract nécessite plusieurs services :
+
+```python
+class ContractEcosystem:
+    def __init__(self):
+        self.quality_service = QualityService()
+        self.schema_registry = SchemaRegistry()
+        self.monitoring = MonitoringService()
+        
+    def deploy_contract(self, contract_def):
+        """Déploiement complet avec services associés"""
+        contract = self.validate_and_register(contract_def)
+        self.setup_quality_monitoring(contract)
+        self.configure_schema_validation(contract)
+        return contract
+``` 

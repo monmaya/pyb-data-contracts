@@ -21,6 +21,29 @@ versioning:
 
 Cette définition établit un cadre clair pour la gestion des changements, mais sa véritable valeur émerge dans son application à travers l'architecture de données.
 
+## Types de Changements
+
+Il est crucial de distinguer deux types d'évolutions :
+
+1. **Evolution du Contrat**
+   ```sql
+   -- Mise à jour des règles de qualité sans impact données
+   UPDATE contract_registry
+   SET contract_version = '2.1.0',
+       quality_rules = quality_rules || new_rules
+   WHERE contract_id = 'customer_profile';
+   ```
+
+2. **Evolution du Schéma**
+   ```sql
+   -- Migration de données avec nouveau schéma
+   CREATE TABLE customer_profile_v2 AS
+   SELECT 
+     id,
+     -- transformations pour nouveau schéma
+   FROM customer_profile_v1;
+   ```
+
 ## Impact sur l'Architecture Medallion
 
 Dans une architecture medallion moderne, chaque couche joue un rôle spécifique dans la gestion des versions. Considérons l'évolution d'un schéma client à travers les différentes couches.

@@ -136,6 +136,33 @@ Les structures et patterns présentés sont implémentés dans :
   - [Contract Tests](../../../validation/contract_tests.py) - Tests de validation
   - [Migration Manager](../../../validation/version_migration.py) - Gestion des versions
 
+## Versioning et Cycle de Vie
+
+La structure d'un data contract doit refléter son double rôle :
+
+1. **Contract Version** : Evolution du contrat lui-même
+   - Documentation
+   - Règles de qualité
+   - SLAs
+   - Sans impact sur les données
+
+2. **Schema Version** : Evolution du modèle de données
+   - Structure physique
+   - Types et contraintes
+   - Avec impact potentiel sur les données
+
+```yaml
+versioning:
+  contract:
+    version: 2.1.0
+    changes:
+      - type: "quality_rules"
+        description: "Ajout validation email"
+  schema:
+    version: 1.0.0
+    compatibility: "backward"
+```
+
 ## Conclusion et Perspectives
 
 La structure d'un data contract n'est pas qu'une question de format - c'est un exercice d'architecture qui doit équilibrer rigueur et flexibilité, immédiateté et évolutivité. L'approche en couches progressives offre un cadre robuste pour gérer cette complexité.

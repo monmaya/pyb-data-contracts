@@ -1,10 +1,10 @@
 # Gouvernance et Adoption des Data Contracts : L'Aspect Humain
 
-La réussite d'une initiative de data contracts ne repose pas uniquement sur des aspects techniques. L'organisation humaine, la gouvernance et l'adoption par les équipes sont des facteurs critiques de succès. Dans cet article, je partage mon expérience sur la mise en place d'une gouvernance efficace et les stratégies d'adoption qui fonctionnent.
+La réussite d'une initiative de data contracts ne repose pas uniquement sur des aspects techniques. L'organisation humaine, la gouvernance et l'adoption par les équipes sont des facteurs critiques de succès. Mon expérience montre que même les implémentations techniquement parfaites échouent sans une gouvernance adaptée et une stratégie d'adoption bien pensée.
 
 ## Organisation et Rôles
 
-La clarté des rôles est essentielle pour une gouvernance efficace des data contracts. Voici les rôles clés que nous avons identifiés :
+La clarté des rôles est essentielle pour une gouvernance efficace des data contracts. Au-delà des responsabilités formelles, c'est tout un écosystème de collaboration qui doit se mettre en place. Voici les rôles clés et leur articulation :
 
 ### Data Contract Owner
 
@@ -22,7 +22,14 @@ skills_required:
 reporting_to: Chief Data Officer
 ```
 
+Le Data Contract Owner n'est pas qu'un titre - c'est le garant de la vision et de la cohérence globale. Son rôle est particulièrement crucial dans les moments de tension, par exemple lors de désaccords entre producteurs et consommateurs sur les évolutions de schéma. Il doit savoir équilibrer les besoins court terme des équipes avec la vision long terme de l'architecture data.
+
 ### Data Architect
+
+Le Data Architect joue un rôle pivot entre vision technique et besoins métier. Son expertise est essentielle pour :
+- Assurer la cohérence technique des contracts à travers les domaines
+- Anticiper les impacts des évolutions sur l'architecture globale
+- Guider les équipes dans l'adoption des patterns appropriés
 
 ```yaml
 role: Data Architect
@@ -44,6 +51,11 @@ key_collaborations:
 ```
 
 ### Product Manager
+
+Le Product Manager apporte une dimension essentielle souvent négligée : la vision produit. Les data contracts ne sont pas que des artefacts techniques, ce sont des produits qui doivent créer de la valeur pour leurs utilisateurs. Le Product Manager :
+- Analyse les besoins des consommateurs de données
+- Priorise les évolutions en fonction de la valeur business
+- Assure l'alignement avec la stratégie produit globale
 
 ```yaml
 role: Product Manager
@@ -210,7 +222,10 @@ class DataContractCoE:
 
 ### Programme de Formation
 
-Un programme de formation structuré est essentiel :
+La formation n'est pas une étape optionnelle mais un pilier de la réussite. Notre expérience montre qu'un programme de formation structuré doit :
+- S'adapter aux différents profils et niveaux de maturité
+- Combiner théorie et pratique avec des cas concrets
+- Évoluer avec la maturité de l'organisation
 
 ```yaml
 training_program:
@@ -218,15 +233,16 @@ training_program:
     - name: "Fondamentaux des Data Contracts"
       duration: "1 jour"
       target_audience: "Tous"
-      
+      objectives:
+        - Comprendre la valeur business des contracts
+        - Maîtriser les concepts fondamentaux
+        - Identifier les cas d'usage pertinents
     - name: "Implémentation Technique"
       duration: "2 jours"
       target_audience: "Data Engineers"
-      
     - name: "Gouvernance et Qualité"
       duration: "1 jour"
       target_audience: "Data Stewards"
-      
     - name: "Utilisation et Conformité"
       duration: "0.5 jour"
       target_audience: "Data Consumers"
@@ -234,7 +250,7 @@ training_program:
 
 ### Métriques de Succès
 
-Le suivi du succès de l'adoption s'appuie sur des KPIs précis :
+Le suivi du succès ne doit pas se limiter à des métriques techniques. Il est crucial de mesurer aussi l'impact business et organisationnel :
 
 ```python
 class AdoptionMetrics:
@@ -247,6 +263,8 @@ class AdoptionMetrics:
             'team_satisfaction': self.measure_satisfaction()
         }
 ```
+
+Ces métriques doivent être analysées dans leur contexte et servir de base à l'amélioration continue du programme.
 
 ## Leçons Apprises
 

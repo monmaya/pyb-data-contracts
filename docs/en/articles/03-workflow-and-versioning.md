@@ -1,8 +1,8 @@
 # Data Contract Versioning: An Architectural Vision
 
-Versioning of data contracts represents a major architectural challenge, where technical change management must harmonize with evolving business needs. My experience in designing data platforms has shown that the key lies in a layered approach that separates concerns while maintaining overall coherence.
+Data contract versioning represents a major architectural challenge, where technical change management must harmonize with evolving business needs. My experience in designing data platforms has shown that the key lies in a layered approach that separates concerns while maintaining overall coherence.
 
-## Versioning Fundamentals
+## Versioning Fundamentals 
 
 Managing data contract versions goes far beyond simple semantic versioning. It requires a deep understanding of the impact of changes across the entire data chain. Let's look at a concrete example of versioning definition:
 
@@ -15,19 +15,44 @@ versioning:
   change_log:
     - version: 2.1.0
       type: "field_addition"
-      field: "customer_segment"
+      field: "customer_segment" 
       impact: "non-breaking"
 ```
 
 This definition establishes a clear framework for change management, but its true value emerges in its application across the data architecture.
 
+## Types of Changes
+
+It is crucial to distinguish two types of evolution:
+
+### Contract Evolution
+
+```sql
+-- Quality rules update without data impact
+UPDATE contract_registry 
+SET contract_version = '2.1.0',
+    quality_rules = quality_rules || new_rules
+WHERE contract_id = 'customer_profile';
+```
+
+### Schema Evolution 
+
+```sql
+-- Data migration with new schema
+CREATE TABLE customer_profile_v2 AS
+SELECT 
+  id,
+  -- schema transformations
+FROM customer_profile_v1;
+```
+
 ## Impact on Medallion Architecture
 
 In a modern medallion architecture, each layer plays a specific role in version management. Let's consider the evolution of a customer schema across different layers.
 
-### Bronze: Capturing History
+### Bronze: History Capture
 
-The bronze layer preserves data in its original format, with explicit versioning partitioning. This simple but powerful approach ensures the ability to trace the complete history of data:
+The bronze layer preserves data in its original format, with explicit partitioning by version. This simple yet powerful approach ensures the ability to trace the complete history of data:
 
 ```sql
 CREATE TABLE bronze.customer_profile (
@@ -100,10 +125,10 @@ FROM validate_profile_completeness();
 
 A robust versioning architecture requires clear governance and continuous monitoring. We particularly monitor:
 
-- Usage of different contract versions
-- Data quality metrics by version
-- Transformation times between versions
-- Impact on consumer systems
+* Usage of different contract versions
+* Data quality metrics by version
+* Transformation times between versions
+* Impact on consumer systems
 
 ## Active Multiversioning Management
 
@@ -146,7 +171,7 @@ In the next article, we'll explore architecture patterns that facilitate this mu
 
 The versioning implementation code is available in:
 
-- [SQL Bronze](../../../sql/bronze/customer_events.sql) - Multi-version storage structure
-- [SQL Silver](../../../sql/silver/customer_views.sql) - Compatibility views
-- [Version Migration](../../../validation/version_migration.py) - Migration management
-- [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Version tracking 
+* [SQL Bronze](../../../sql/bronze/customer_events.sql) - Multi-version storage structure
+* [SQL Silver](../../../sql/silver/customer_views.sql) - Compatibility views  
+* [Version Migration](../../../validation/version_migration.py) - Migration management
+* [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Version tracking
