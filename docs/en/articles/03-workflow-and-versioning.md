@@ -1,5 +1,7 @@
 # Data Contract Versioning: An Architectural Vision
 
+In our previous article, we explored how to structure data contracts effectively, from basic metadata to sophisticated quality rules. Now that we have a solid foundation for our contracts, let's tackle one of the most challenging aspects: managing their evolution over time.
+
 Data contract versioning represents a major architectural challenge, where technical change management must harmonize with evolving business needs. My experience in designing data platforms has shown that the key lies in a layered approach that separates concerns while maintaining overall coherence.
 
 ## Versioning Fundamentals 
@@ -167,6 +169,10 @@ In practice, multiversioning management is a constant balancing act. Here are so
 
 In the next article, we'll explore architecture patterns that facilitate this multiversioning management, particularly efficient storage strategies and progressive migration approaches.
 
+## Conclusion
+
+We've seen how proper versioning management is crucial for maintaining the integrity and usefulness of data contracts. In our next article, we'll explore the architectural patterns that make this version management possible, focusing on practical implementation strategies and proven design patterns that have emerged from real-world deployments.
+
 ## Reference Implementation
 
 The versioning implementation code is available in:
@@ -175,3 +181,4 @@ The versioning implementation code is available in:
 * [SQL Silver](../../../sql/silver/customer_views.sql) - Compatibility views  
 * [Version Migration](../../../validation/version_migration.py) - Migration management
 * [Monitoring](../../../sql/monitoring/version_monitoring.sql) - Version tracking
+

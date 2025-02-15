@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramme Isométrique D3.js</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        svg { border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <script>
+        const width = 800, height = 600;
+        const svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+
+        const phases = [
+            { name: "Phase 1: Préparation", color: "#B0C4DE", x: 100, y: 50 },
+            { name: "Phase 2: Double Écriture", color: "#98FB98", x: 150, y: 150 },
+            { name: "Phase 3: Migration Progressive", color: "#FFD700", x: 200, y: 250 },
+            { name: "Phase 4: Nettoyage", color: "#DDA0DD", x: 250, y: 350 }
+        ];
+
+        // Dessiner les blocs des phases en isométrique
+        phases.forEach(phase => {
+            svg.append("rect")
+                .attr("x", phase.x)
+                .attr("y", phase.y)
+                .attr("width", 250)
+                .attr("height", 60)
+                .attr("transform", "skewX(-20)")
+                .attr("fill", phase.color)
+                .attr("stroke", "black");
+
+            svg.append("text")
+                .attr("x", phase.x + 10)
+                .attr("y", phase.y + 35)
+                .attr("font-size", "14px")
+                .attr("fill", "black")
+                .text(phase.name);
+        });
+
+        const transitions = [
+            { from: phases[0], to: phases[1] },
+            { from: phases[1], to: phases[2] },
+            { from: phases[2], to: phases[3] }
+        ];
+
+        // Dessiner les flèches entre les phases
+        transitions.forEach(({ from, to }) => {
+            svg.append("line")
+                .attr("x1", from.x + 125)
+                .attr("y1", from.y + 60)
+                .attr("x2", to.x + 125)
+                .attr("y2", to.y)
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .attr("marker-end", "url(#arrow)");
+        });
+
+        // Ajouter une définition de flèche
+        svg.append("defs").append("marker")
+            .attr("id", "arrow")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 5)
+            .attr("refY", 5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto-start-reverse")
+            .append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z")
+            .attr("fill", "black");
+    </script>
+</body>
+</html>
