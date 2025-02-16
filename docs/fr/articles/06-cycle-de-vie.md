@@ -1,8 +1,8 @@
-# Cycle de Vie : Au-delà du Simple YAML
+# Cycle de vie : au-delà du simple yaml
 
 Il est minuit, et une alerte retentit : un data contract critique vient d'être modifié sans suivre le processus établi. Cette situation, malheureusement courante, illustre l'importance cruciale de comprendre et de gérer correctement le cycle de vie des data contracts. Un data contract n'est pas un document statique - c'est un organisme vivant qui évolue avec votre organisation et qui nécessite une gestion rigoureuse tout au long de son existence.
 
-## Les Phases du Cycle de Vie
+## Les phases du cycle de vie
 
 Le cycle de vie d'un data contract suit un parcours bien défini, de sa conception jusqu'à sa fin de vie. Cette progression naturelle commence par une phase de conception où les besoins sont identifiés et le contrat est élaboré. Cette étape initiale est cruciale car elle pose les fondations de tout ce qui suivra. Le contrat passe ensuite par une phase de validation rigoureuse avant d'entrer en production.
 
@@ -36,7 +36,7 @@ stateDiagram-v2
 
 Une fois en production, le contrat entre dans une phase d'évolution continue, où il s'adapte aux besoins changeants de l'organisation. Cette évolution doit être soigneusement orchestrée pour maintenir la cohérence et la qualité des données. Enfin, lorsque le contrat n'est plus pertinent, il entre dans une phase de dépréciation qui mène à sa fin de vie.
 
-## La Structure d'un Contrat Évolutif
+## La structure d'un contrat évolutif
 
 Pour supporter ce cycle de vie, le contrat lui-même doit être structuré de manière à capturer son évolution. Voici comment un tel contrat pourrait être structuré :
 
@@ -87,7 +87,7 @@ lifecycle:
       location: "s3://archive/"
 ```
 
-## Gestion des Transitions
+## Gestion des transitions
 
 La phase de transition entre les versions d'un contrat est particulièrement délicate. Elle nécessite une orchestration minutieuse pour éviter toute perturbation des systèmes en production. Cette orchestration commence par une période de double écriture, où les données sont écrites simultanément dans l'ancienne et la nouvelle version du contrat. Cette approche permet de valider la nouvelle version tout en maintenant la stabilité des systèmes existants.
 
@@ -118,7 +118,7 @@ sequenceDiagram
     Owner->>Registry: Decommission Contract
 ```
 
-## La Fin de Vie d'un Contrat
+## La fin de vie d'un contrat
 
 La fin de vie d'un contrat doit être gérée avec autant de soin que sa création. Cette phase commence par une période de dépréciation où les consommateurs sont progressivement migrés vers des alternatives. Une fois tous les consommateurs migrés, le contrat peut être archivé, mais ses métadonnées et son historique doivent être préservés pour maintenir la traçabilité et la conformité réglementaire.
 

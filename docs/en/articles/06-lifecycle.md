@@ -1,8 +1,8 @@
-# Lifecycle: Beyond Simple YAML
+# Lifecycle: beyond simple yaml
 
 It's midnight, and an alert sounds: a critical data contract has just been modified without following the established process. This situation, unfortunately common, illustrates the crucial importance of understanding and properly managing the lifecycle of data contracts. A data contract is not a static document - it is a living organism that evolves with your organization and requires rigorous management throughout its existence.
 
-## The Phases of the Lifecycle
+## The phases of the lifecycle
 
 The lifecycle of a data contract follows a well-defined path, from its conception to its end of life. This natural progression begins with a design phase where needs are identified and the contract is developed. This initial step is crucial as it lays the foundation for everything that follows. The contract then goes through a rigorous validation phase before entering production.
 
@@ -36,7 +36,7 @@ stateDiagram-v2
 
 Once in production, the contract enters a phase of continuous evolution, where it adapts to the changing needs of the organization. This evolution must be carefully orchestrated to maintain data consistency and quality. Finally, when the contract is no longer relevant, it enters a deprecation phase leading to its end of life.
 
-## The Structure of an Evolving Contract
+## The structure of an evolving contract
 
 To support this lifecycle, the contract itself must be structured to capture its evolution. Here is how such a contract could be structured:
 
@@ -87,7 +87,7 @@ lifecycle:
       location: "s3://archive/"
 ```
 
-## Managing Transitions
+## Managing transitions
 
 The transition phase between contract versions is particularly delicate. It requires meticulous orchestration to avoid any disruption to production systems. This orchestration begins with a dual writing period, where data is written simultaneously in both the old and new contract versions. This approach allows validating the new version while maintaining the stability of existing systems.
 
@@ -118,7 +118,7 @@ sequenceDiagram
     Owner->>Registry: Decommission Contract
 ```
 
-## The End of a Contract's Life
+## The end of a contract's life
 
 The end of a contract's life must be managed with as much care as its creation. This phase begins with a deprecation period where consumers are gradually migrated to alternatives. Once all consumers are migrated, the contract can be archived, but its metadata and history must be preserved to maintain traceability and regulatory compliance.
 

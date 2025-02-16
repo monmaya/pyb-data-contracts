@@ -1,14 +1,14 @@
-# Versioning : Gérer l'Évolution sans la Révolution
+# Versioning : gérer l'évolution sans la révolution
 
 "Comment modifier ce champ sans casser les applications existantes ?" Cette question, posée lors d'un comité d'architecture, illustre parfaitement le défi du versioning des data contracts. L'évolution est inévitable, mais elle ne doit pas se transformer en révolution. Le versioning des data contracts représente un défi crucial dans la gestion des données modernes, où le changement est constant mais doit être maîtrisé pour éviter les perturbations.
 
-## La Nécessité du Changement Contrôlé
+## La nécessité du changement contrôlé
 
 Le changement dans les structures de données est une constante dans nos systèmes. Les besoins évoluent, les modèles s'affinent, les exigences se transforment. Cependant, chaque modification d'un data contract peut avoir des répercussions en cascade sur l'ensemble du système d'information. La gestion du versioning devient donc un exercice d'équilibriste entre la nécessité d'évolution et le maintien de la stabilité.
 
 L'approche du versioning des data contracts s'articule autour de trois principes fondamentaux. Le premier est la prévisibilité : tout changement doit être anticipé et communiqué. Le second est la compatibilité : les modifications doivent, dans la mesure du possible, préserver le fonctionnement des systèmes existants. Le troisième est la traçabilité : chaque évolution doit être documentée et justifiée.
 
-## Les Dimensions du Changement
+## Les dimensions du changement
 
 La typologie des changements dans un data contract peut être analysée selon plusieurs dimensions. La dimension technique concerne la nature même des modifications : ajouts, suppressions ou modifications de champs. La dimension fonctionnelle s'intéresse à l'impact business des changements. La dimension temporelle, enfin, définit le rythme et la progressivité des évolutions.
 
@@ -48,7 +48,7 @@ sequenceDiagram
     end
 ```
 
-## Stratégies de Versioning
+## Stratégies de versioning
 
 La stratégie de versioning d'un data contract doit être pensée dès sa conception. Elle s'appuie sur un système de versioning sémantique adapté aux spécificités des contrats de données. Les changements mineurs, comme l'ajout de champs optionnels, n'incrémentent que le numéro de révision. Les modifications majeures, qui peuvent impacter les consommateurs, nécessitent une nouvelle version majeure et un plan de migration.
 
@@ -103,7 +103,7 @@ interface:
               type: "string"
 ```
 
-## La Migration comme Processus
+## La migration comme processus
 
 La migration vers une nouvelle version de contrat n'est pas un événement ponctuel mais un processus qui s'étend dans le temps. Ce processus commence par une phase de préparation où la nouvelle version est conçue et validée. Suit une période de coexistence où les anciennes et nouvelles versions fonctionnent en parallèle. Cette phase permet aux consommateurs de migrer à leur rythme tout en garantissant la continuité du service.
 

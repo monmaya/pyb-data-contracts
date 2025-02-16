@@ -1,8 +1,8 @@
-# Revolutionizing Data Management with Data Contracts
+# Revolutionizing data management with data contracts
 
 It's 3 AM. The support team receives a critical alert: the data pipeline feeding the real-time sales dashboard is down. Preliminary analysis reveals that the e-commerce team changed the order data format without notice. A required field was renamed, and now the entire processing chain is paralyzed. This situation, unfortunately too common, illustrates a frequently overlooked reality: data is not just an asset; it's a product that requires rigorous lifecycle management.
 
-## The Daily Life Without Data Contracts
+## The daily life without data contracts
 
 Imagine a growing e-commerce company. Several teams work in parallel on different parts of the system:
 
@@ -19,7 +19,7 @@ On the surface, everything works. But beneath, it's chaos:
 
 Meetings are filled with questions like: "Who changed this field?", "Why is the data different today?", "How are we supposed to use this column?"
 
-## The Hidden Cost of No Contracts
+## The hidden cost of no contracts
 
 This situation has a real, often underestimated cost:
 
@@ -33,7 +33,7 @@ This situation becomes even more critical in a Data Mesh context, where data res
 
 On average, teams spend 40% of their time managing these coordination and quality issues. It's like building a house where each craftsman uses their own units of measure, but on the scale of an entire city.
 
-## The Emergence of Data Contracts
+## The emergence of data contracts
 
 The Data Mesh transformation represents a fundamental shift in how organizations manage their data. In this model, each business domain becomes responsible for its own data, whether it's credit, savings, or insurance data for a bank, or sales, logistics, or marketing data for a retailer. This decentralization promises better agility and greater alignment with business needs.
 
@@ -65,7 +65,7 @@ graph TD
 
 This architecture illustrates the essential components of a Data Contracts system. The contract registry centralizes definitions, while the validation service ensures compliance. Integration with CI/CD processes allows automation, while monitoring ensures continuous quality. Governance, finally, provides the necessary framework for controlled evolution.
 
-## Open Data Contract Standard (ODCS)
+## Open data contract standard (ODCS)
 
 Faced with these challenges, a standard has emerged: the Open Data Contract Standard (ODCS). It's not just another technical specification; it's a common language that allows teams to clearly communicate their expectations and commitments regarding data. Let's take a concrete example of an ODCS contract for a customer data stream:
 
@@ -118,7 +118,7 @@ Let's analyze each section of this contract in detail:
 
 4. Operational SLAs are not just goals - they represent a concrete service contract between the producer and its consumers. A freshness of 24h and an availability of 99.9% are measurable commitments that will guide architectural and operational choices.
 
-## Implementation: From Concepts to Reality
+## Implementation: from concepts to reality
 
 Implementing data contracts in a datalake context is particularly relevant, especially in a medallion architecture (bronze, silver, gold). Let's take the example of the sales domain, where raw transaction data is progressively refined to feed critical analyses and dashboards.
 
@@ -249,7 +249,7 @@ This contract introduces several fundamental concepts adapted to a medallion dat
 
 3. **Data Engineering-Oriented Monitoring**: Monitoring integrates metrics specific to data processing, such as quality rate and volume variations, essential for detecting anomalies in the processing chain.
 
-## Where to Start?
+## Where to start?
 
 In a Data Mesh context, adopting data contracts must align with the maturity of domains as data producers. I've observed that organizations succeed better when they:
 
@@ -267,7 +267,7 @@ Data contracts in a datalake are not just documentation - they become the safegu
 
 In the next article, we will explore how these contracts integrate into a comprehensive data governance strategy, focusing on the evolution and maintenance of contracts over time.
 
-## Reference Implementation
+## Reference implementation
 
 The concepts presented in this article are implemented in the following files:
 

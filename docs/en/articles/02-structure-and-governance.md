@@ -1,8 +1,8 @@
-# Structure and Governance: The Architecture That Makes the Difference
+# Structure and governance: the architecture that makes the difference
 
 The question of data contract governance is central in any data-driven organization. A data contract cannot be reduced to a simple technical documentation; it is a social contract that establishes the rules of collaboration around data. The difference between a static document and a living data contract lies precisely in its governance.
 
-## The Architecture of a Data Contract
+## The architecture of a data contract
 
 A well-structured data contract resembles a constitution: it establishes fundamental rules while providing mechanisms for its evolution. The structure must reflect not only the technical aspects but also the organizational dimension of the contract. This duality is essential to ensure that the contract remains relevant and applied over time.
 
@@ -70,7 +70,7 @@ operational:
 
 The contract structure reflects the different dimensions of governance. At the responsibility level, each aspect of the contract is associated with a clearly identified owner. The data steward ensures quality supervision, while the business expert guarantees the business relevance of the defined rules. This distribution of roles creates a system of checks and balances that maintains the integrity of the contract.
 
-## The Ecosystem of Data Contracts
+## The ecosystem of data contracts
 
 The overall architecture of a data contract system is built around several interconnected components:
 
@@ -88,7 +88,7 @@ graph TD
 
 The contract registry acts as the central point of the architecture, orchestrating interactions between the different components. The validation service ensures contract compliance, while the monitoring system oversees the overall health of the ecosystem. This distributed architecture allows for a clear separation of responsibilities while maintaining overall coherence.
 
-## Organization and Processes
+## Organization and processes
 
 The organizational dimension of data contracts materializes through well-defined roles and processes. The Data Product Owner carries the strategic vision of the data product, while the Data Steward ensures its quality and compliance. The Domain Expert, in turn, guarantees alignment with business needs. This tripartite distribution of responsibilities ensures a balance between the different perspectives necessary for good data management.
 
@@ -103,13 +103,13 @@ graph TD
     E -->|Deployment| F[Monitoring]
 ```
 
-## Governance in Action
+## Governance in action
 
 The governance of data contracts rests on four fundamental pillars. The first concerns the clarity of responsibilities: each contract must have a unique owner, with clearly documented roles and decision-making processes. The second pillar deals with change management, with a precise classification of modification types and approval processes adapted to their impact.
 
 The third pillar concerns quality and compliance, with automatic contract validation mechanisms and continuous verification of business rules. Finally, the fourth pillar focuses on monitoring, with real-time metric monitoring and proactive anomaly detection.
 
-## Towards Effective Governance
+## Towards effective governance
 
 Implementing effective governance of data contracts requires a progressive and methodical approach. It is preferable to start with a limited scope but an extensible architecture that can evolve with the organization's needs. Automation should be introduced gradually, starting with the most repetitive tasks, to allow teams to adopt new processes.
 
