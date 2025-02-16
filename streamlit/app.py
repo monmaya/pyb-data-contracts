@@ -2,6 +2,10 @@ import streamlit as st
 import duckdb
 import pandas as pd
 import os
+import requests
+import pybreaker
+import time
+import random
 
 st.set_page_config(
     page_title="Data Contracts Demo",
@@ -128,6 +132,66 @@ def main():
                     END
             """).df()
             st.bar_chart(events_dist.set_index('range'))
+
+    st.title("Contract Registry Interface")
+
+    # Function to fetch contract details
+    def fetch_contract(contract_id):
+        try:
+            response = requests.get(f"http://localhost:5000/contracts/{contract_id}")
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error fetching contract: {e}")
+            return None
+
+    # Input for contract ID
+    contract_id = st.text_input("Enter Contract ID", "customer_profile")
+
+    if st.button("Fetch Contract"):
+        contract = fetch_contract(contract_id)
+        if contract:
+            st.json(contract)
+
+    # Create a circuit breaker
+    breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=60)
+
+    st.title("Circuit Breaker Demo")
+
+    # Function to simulate data fetching
+    @breaker
+    def fetch_data(url):
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    url = st.text_input("Enter URL to Fetch Data", "https://api.example.com/data")
+
+    if st.button("Fetch Data"):
+        try:
+            data = fetch_data(url)
+            st.write(data)
+        except pybreaker.CircuitBreakerError:
+            st.error("Service is currently unavailable. Please try again later.")
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error fetching data: {e}")
+
+    st.title("Proactive Monitoring")
+
+    # Function to simulate collecting metrics
+    def collect_metrics():
+        return {
+            "latency": random.uniform(0.1, 0.5),
+            "error_rate": random.uniform(0.0, 0.1),
+            "throughput": random.randint(100, 500)
+        }
+
+    # Display metrics
+    if st.button("Start Monitoring"):
+        for _ in range(10):  # Simulate 10 cycles of monitoring
+            metrics = collect_metrics()
+            st.write(metrics)
+            time.sleep(1)
 
 if __name__ == "__main__":
     main() 
