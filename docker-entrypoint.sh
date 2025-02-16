@@ -10,7 +10,7 @@ python scripts/generate_fake_data.py
 
 # Démarrage du serveur Flask pour le Contract Registry
 echo "Starting Flask server..."
-python examples/contract_registry.py &
+python examples/contract_registry.py --port 8000 &
 
 # Démarrage de Streamlit
 echo "Starting Streamlit..."

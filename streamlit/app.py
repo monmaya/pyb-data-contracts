@@ -138,7 +138,8 @@ def main():
     # Function to fetch contract details
     def fetch_contract(contract_id):
         try:
-            response = requests.get(f"http://localhost:5000/contracts/{contract_id}")
+            # Assurez-vous que le port est 8000
+            response = requests.get(f"http://localhost:8000/contracts/{contract_id}")
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:

@@ -33,4 +33,4 @@ def add_contract():
     return jsonify(new_contract), 201
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True, port=8000) 
