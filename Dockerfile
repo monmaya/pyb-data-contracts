@@ -10,22 +10,22 @@ RUN apt-get update && apt-get install -y \
 # Création du répertoire data
 RUN mkdir -p /app/data
 
-# Copie des fichiers du projet
+# Installation des dépendances Python
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copie des fichiers du projet
 COPY scripts/ scripts/
 COPY sql/ sql/
 COPY contracts/ contracts/
 COPY validation/ validation/
-
-# Installation des dépendances Python
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Exposition du port Streamlit
-EXPOSE 8501
+COPY examples/ examples/
 
 # Script de démarrage
 COPY streamlit/ streamlit/
 COPY docker-entrypoint.sh .
 RUN chmod +x docker-entrypoint.sh
 
+# Exposition du port Streamlit
+EXPOSE 8501
 ENTRYPOINT ["./docker-entrypoint.sh"] 

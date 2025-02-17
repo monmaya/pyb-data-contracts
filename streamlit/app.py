@@ -159,23 +159,30 @@ def main():
 
     st.title("Circuit Breaker Demo")
 
+    # Function to simulate a mock service with random failures
+    def mock_service():
+        # Simulate random service behavior
+        if random.random() < 0.4:  # 40% chance of failure
+            raise requests.exceptions.RequestException("Service temporairement indisponible")
+        return {"status": "success", "data": "Données simulées", "timestamp": time.time()}
+
     # Function to simulate data fetching
     @breaker
-    def fetch_data(url):
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.json()
+    def fetch_data():
+        return mock_service()
 
-    url = st.text_input("Enter URL to Fetch Data", "https://api.example.com/data")
-
-    if st.button("Fetch Data"):
+    if st.button("Tester le Circuit Breaker"):
         try:
-            data = fetch_data(url)
+            data = fetch_data()
+            st.success("Requête réussie!")
             st.write(data)
         except pybreaker.CircuitBreakerError:
-            st.error("Service is currently unavailable. Please try again later.")
+            st.error("Circuit Breaker ouvert - Le service est temporairement indisponible. Veuillez réessayer plus tard.")
         except requests.exceptions.RequestException as e:
-            st.error(f"Error fetching data: {e}")
+            st.error(f"Erreur lors de la requête: {str(e)}")
+
+    # Afficher l'état actuel du Circuit Breaker
+    st.write("État du Circuit Breaker:", "Fermé" if breaker.current_state == "closed" else "Ouvert")
 
     st.title("Proactive Monitoring")
 
