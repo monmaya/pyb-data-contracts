@@ -15,13 +15,11 @@ Un data contract bien structuré ressemble plus à une constitution qu'à une si
 Voici un exemple concret tiré d'une entreprise e-commerce :
 
 ```yaml
-odcs_version: "1.0.0"
-id: "retail_transactions"
-version: "2.1.0"
-domain: "retail"
-
-# Gouvernance et Responsabilités
-governance:
+openDataContract: "1.0.0"
+info:
+  title: "retail_transactions"
+  version: "2.1.0"
+  domain: "retail"
   owner:
     team: "retail-data"
     contact: "retail-data@company.com"
@@ -43,19 +41,19 @@ governance:
         sla: "5 business days"
         requires_review_meeting: true
 
-# Interface technique
-interface:
-  type: "batch"
-  format: "parquet"
-  schema:
-    fields:
-      - name: "transaction_id"
-        type: "string"
-        description: "Identifiant unique de la transaction"
-        business_rules:
-          - rule: "format"
-            pattern: "TX-[0-9]{10}"
-            severity: "error"
+contracts:
+  RetailTransaction:
+    type: "batch"
+    format: "parquet"
+    schema:
+      fields:
+        - name: "transaction_id"
+          type: "string"
+          description: "Identifiant unique de la transaction"
+          business_rules:
+            - rule: "format"
+              pattern: "TX-[0-9]{10}"
+              severity: "error"
 ```
 
 Ce contrat ne se contente pas de définir un schéma - il établit clairement qui est responsable de quoi et comment les décisions sont prises.

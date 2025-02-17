@@ -58,16 +58,17 @@ The versioning strategy of a data contract must be considered from its inception
 Here's an example contract that illustrates this approach:
 
 ```yaml
-# Version 1.0.0
-odcs_version: "1.0.0"
-id: "order_events"
-version: "1.0.0"
-changelog:
-  - version: "1.0.0"
-    date: "2023-01-01"
-    changes:
-      - type: "initial"
-        description: "Initial contract version"
+openDataContract: "1.0.0"
+info:
+  title: "order_events"
+  version: "1.0.0"
+  description: "Initial contract version"
+  changelog:
+    - version: "1.0.0"
+      date: "2023-01-01"
+      changes:
+        - type: "initial"
+          description: "Initial contract version"
 lifecycle:
   deprecation:
     successor_version: "2.0.0"
@@ -86,9 +87,9 @@ lifecycle:
       usage_metric: "active_consumers_v1"
       alert_threshold: 5
 
-interface:
-  type: "stream"
-  spec:
+contracts:
+  OrderEvent:
+    type: "stream"
     schema:
       fields:
         - name: "order_id"
@@ -96,20 +97,22 @@ interface:
         - name: "amount"
           type: "decimal"
 
-# Version 2.0.0 (Major Change)
 ---
-version: "2.0.0"
-changelog:
-  - version: "2.0.0"
-    date: "2023-06-01"
-    changes:
-      - type: "breaking"
-        description: "Amount restructured with currency"
-        migration_guide: "docs/migrations/v2.0.0.md"
+openDataContract: "1.0.0"
+info:
+  title: "order_events"
+  version: "2.0.0"
+  changelog:
+    - version: "2.0.0"
+      date: "2023-06-01"
+      changes:
+        - type: "breaking"
+          description: "Amount restructured with currency"
+          migration_guide: "docs/migrations/v2.0.0.md"
 
-interface:
-  type: "stream"
-  spec:
+contracts:
+  OrderEvent:
+    type: "stream"
     schema:
       fields:
         - name: "order_id"

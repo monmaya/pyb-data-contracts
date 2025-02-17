@@ -70,33 +70,41 @@ Next comes a gradual deployment phase, where traffic is progressively redirected
 Observability isn't an additional feature but a fundamental component of the system. Without it, it's impossible to know if data contracts are fulfilling their role. In our retail context, let's take the example of a contract for sales data:
 
 ```yaml
-monitoring:
-  technical:
-    # System health metrics
-    - metric: "contract_validation_latency"
-      threshold: "< 500ms"
-      alert: "high"
-    - metric: "registry_availability"
-      threshold: "> 99.9%"
-      alert: "critical"
+openDataContract: "1.0.0"
+info:
+  title: "sales_data_monitoring"
+  version: "1.0.0"
+  description: "Monitoring configuration for sales data"
 
-  business:
-    # Data quality metrics
-    - metric: "missing_product_codes"
-      threshold: "< 0.1%"
-      alert: "high"
-    - metric: "invalid_sale_amounts"
-      threshold: "< 0.01%"
-      alert: "critical"
+contracts:
+  MonitoringConfig:
+    type: "monitoring"
+    technical:
+      # System health metrics
+      - metric: "contract_validation_latency"
+        threshold: "< 500ms"
+        alert: "high"
+      - metric: "registry_availability"
+        threshold: "> 99.9%"
+        alert: "critical"
 
-  usage:
-    # Usage metrics
-    - metric: "active_consumers"
-      threshold: "> 0"
-      alert: "info"
-    - metric: "schema_violations"
-      threshold: "< 10 per hour"
-      alert: "warning"
+    business:
+      # Data quality metrics
+      - metric: "missing_product_codes"
+        threshold: "< 0.1%"
+        alert: "high"
+      - metric: "invalid_sale_amounts"
+        threshold: "< 0.01%"
+        alert: "critical"
+
+    usage:
+      # Usage metrics
+      - metric: "active_consumers"
+        threshold: "> 0"
+        alert: "info"
+      - metric: "schema_violations"
+        threshold: "< 10 per hour"
+        alert: "warning"
 ```
 
 These metrics allow answering concrete questions:

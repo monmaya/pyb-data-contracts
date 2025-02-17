@@ -70,17 +70,18 @@ This architecture illustrates the essential components of a Data Contracts syste
 Facing these challenges, a standard has emerged: the Open Data Contract Standard (ODCS). This isn't just another technical specification - it's a common language that allows teams to clearly communicate their expectations and commitments regarding data. Here's a concrete example of an ODCS contract for a customer data stream:
 
 ```yaml
-odcs_version: "1.0.0"
-id: "customer_profile"
-version: "1.0.0"
-domain: "customer"
-owner: 
-  team: "customer-data"
-  contact: "customer-data@company.com"
+openDataContract: "1.0.0"
+info:
+  title: "customer_profile"
+  version: "1.0.0"
+  domain: "customer"
+  owner: 
+    team: "customer-data"
+    contact: "customer-data@company.com"
 
-interface:
-  type: "batch"
-  spec:
+contracts:
+  CustomerProfile:
+    type: "batch"
     format: "parquet"
     schema:
       type: "struct"
@@ -102,10 +103,9 @@ quality:
     - name: "recent_data"
       severity: "warning"
 
-operational:
-  sla:
-    freshness: "24h"
-    availability: "99.9%"
+sla:
+  freshness: "24h"
+  availability: "99.9%"
 ```
 
 Let's analyze each section of this contract in detail:
@@ -125,17 +125,18 @@ Implementing data contracts in a datalake context is particularly relevant, espe
 The first contract established concerns the silver table of sales transactions. This table is a critical point: it cleans and standardizes raw data from the bronze layer and serves as a source of truth for creating gold layer aggregates.
 
 ```yaml
-odcs_version: "1.0.0"
-id: "sales_transactions_silver"
-version: "1.0.0"
-domain: "sales_analytics"
-owner: 
-  team: "data-engineering"
-  contact: "data-engineering@retail.com"
+openDataContract: "1.0.0"
+info:
+  title: "sales_transactions_silver"
+  version: "1.0.0"
+  domain: "sales_analytics"
+  owner: 
+    team: "data-engineering"
+    contact: "data-engineering@retail.com"
 
-interface:
-  type: "batch"
-  spec:
+contracts:
+  SalesTransaction:
+    type: "batch"
     format: "delta"
     schema:
       fields:
@@ -223,10 +224,9 @@ processing:
       max_rows: 1000000
     latency: "30m"
 
-operational:
-  sla:
-    freshness: "1h"
-    availability: "99.9%"
+sla:
+  freshness: "1h"
+  availability: "99.9%"
   monitoring:
     metrics:
       - name: "quality_score"

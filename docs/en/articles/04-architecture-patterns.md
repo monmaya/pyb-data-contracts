@@ -73,17 +73,26 @@ The Fallback Mode is a crucial component of this pattern. When a failure is dete
 Let's take a concrete retail example: the product recommendation system normally uses real-time customer navigation data. If this data becomes unavailable, the Circuit Breaker activates the Fallback Mode which uses a simpler recommendation model based only on sales history. Performance is reduced, but the service continues to function.
 
 ```yaml
-fallback_modes:
-  recommendation_service:
-    - level: "primary"
-      source: "real_time_navigation"
-      schema: "full_customer_behavior"
-    - level: "fallback"
-      source: "sales_history"
-      schema: "minimal_product_data"
-      activation_conditions:
-        - "real_time_data_latency > 30s"
-        - "schema_validation_errors > 5%"
+openDataContract: "1.0.0"
+info:
+  title: "recommendation_service_config"
+  version: "1.0.0"
+  description: "Configuration of fallback modes for the recommendation service"
+
+contracts:
+  FallbackConfig:
+    type: "config"
+    modes:
+      recommendation_service:
+        - level: "primary"
+          source: "real_time_navigation"
+          schema: "full_customer_behavior"
+        - level: "fallback"
+          source: "sales_history"
+          schema: "minimal_product_data"
+          activation_conditions:
+            - "real_time_data_latency > 30s"
+            - "schema_validation_errors > 5%"
 ```
 
 ## The Proactive Monitoring Pattern

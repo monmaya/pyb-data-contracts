@@ -70,33 +70,41 @@ Vient ensuite une phase de déploiement graduel, où le trafic est progressiveme
 L'observabilité n'est pas une fonctionnalité additionnelle mais une composante fondamentale du système. Sans elle, il est impossible de savoir si les data contracts remplissent leur rôle. Dans notre contexte retail, prenons l'exemple d'un contrat pour les données de ventes :
 
 ```yaml
-monitoring:
-  technical:
-    # Métriques de santé du système
-    - metric: "contract_validation_latency"
-      threshold: "< 500ms"
-      alert: "high"
-    - metric: "registry_availability"
-      threshold: "> 99.9%"
-      alert: "critical"
+openDataContract: "1.0.0"
+info:
+  title: "sales_data_monitoring"
+  version: "1.0.0"
+  description: "Configuration du monitoring pour les données de ventes"
 
-  business:
-    # Métriques de qualité des données
-    - metric: "missing_product_codes"
-      threshold: "< 0.1%"
-      alert: "high"
-    - metric: "invalid_sale_amounts"
-      threshold: "< 0.01%"
-      alert: "critical"
+contracts:
+  MonitoringConfig:
+    type: "monitoring"
+    technical:
+      # Métriques de santé du système
+      - metric: "contract_validation_latency"
+        threshold: "< 500ms"
+        alert: "high"
+      - metric: "registry_availability"
+        threshold: "> 99.9%"
+        alert: "critical"
 
-  usage:
-    # Métriques d'utilisation
-    - metric: "active_consumers"
-      threshold: "> 0"
-      alert: "info"
-    - metric: "schema_violations"
-      threshold: "< 10 per hour"
-      alert: "warning"
+    business:
+      # Métriques de qualité des données
+      - metric: "missing_product_codes"
+        threshold: "< 0.1%"
+        alert: "high"
+      - metric: "invalid_sale_amounts"
+        threshold: "< 0.01%"
+        alert: "critical"
+
+    usage:
+      # Métriques d'utilisation
+      - metric: "active_consumers"
+        threshold: "> 0"
+        alert: "info"
+      - metric: "schema_violations"
+        threshold: "< 10 per hour"
+        alert: "warning"
 ```
 
 Ces métriques permettent de répondre à des questions concrètes :

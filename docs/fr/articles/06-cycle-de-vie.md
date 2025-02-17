@@ -41,50 +41,54 @@ Une fois en production, le contrat entre dans une phase d'évolution continue, o
 Pour supporter ce cycle de vie, le contrat lui-même doit être structuré de manière à capturer son évolution. Voici comment un tel contrat pourrait être structuré :
 
 ```yaml
-odcs_version: "1.0.0"
-id: "customer_profile"
-version: "2.0.0"
-status: "active"
-
-lifecycle:
+openDataContract: "1.0.0"
+info:
+  title: "customer_profile"
+  version: "2.0.0"
+  status: "active"
   created_at: "2023-01-15"
   last_updated: "2023-06-01"
   review_cycle: "quarterly"
-  phases:
-    - phase: "draft"
-      start_date: "2023-01-15"
-      end_date: "2023-02-01"
-    - phase: "review"
-      start_date: "2023-02-01"
-      end_date: "2023-02-15"
-    - phase: "active"
-      start_date: "2023-02-15"
-      
-  versions:
-    - version: "1.0.0"
-      status: "deprecated"
-      start_date: "2023-02-15"
-      end_of_life: "2023-08-15"
-      breaking_changes: false
-      
-    - version: "2.0.0"
-      status: "active"
-      start_date: "2023-06-01"
-      breaking_changes: true
-      migration_guide: "docs/migrations/v2.0.0.md"
 
-  dependencies:
-    - contract: "user_preferences"
-      version: "^1.0.0"
-    - contract: "payment_history"
-      version: "^2.1.0"
+contracts:
+  CustomerProfile:
+    type: "data"
+    lifecycle:
+      phases:
+        - phase: "draft"
+          start_date: "2023-01-15"
+          end_date: "2023-02-01"
+        - phase: "review"
+          start_date: "2023-02-01"
+          end_date: "2023-02-15"
+        - phase: "active"
+          start_date: "2023-02-15"
+      
+      versions:
+        - version: "1.0.0"
+          status: "deprecated"
+          start_date: "2023-02-15"
+          end_of_life: "2023-08-15"
+          breaking_changes: false
+          
+        - version: "2.0.0"
+          status: "active"
+          start_date: "2023-06-01"
+          breaking_changes: true
+          migration_guide: "docs/migrations/v2.0.0.md"
 
-  retention:
-    duration: "7 years"
-    compliance: ["GDPR", "CCPA"]
-    archive_policy:
-      type: "cold_storage"
-      location: "s3://archive/"
+      dependencies:
+        - contract: "user_preferences"
+          version: "^1.0.0"
+        - contract: "payment_history"
+          version: "^2.1.0"
+
+      retention:
+        duration: "7 years"
+        compliance: ["GDPR", "CCPA"]
+        archive_policy:
+          type: "cold_storage"
+          location: "s3://archive/"
 ```
 
 ## Gestion des transitions

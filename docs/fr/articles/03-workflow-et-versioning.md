@@ -58,16 +58,17 @@ La stratégie de versioning d'un data contract doit être pensée dès sa concep
 Voici un exemple de contrat qui illustre cette approche :
 
 ```yaml
-# Version 1.0.0
-odcs_version: "1.0.0"
-id: "order_events"
-version: "1.0.0"
-changelog:
-  - version: "1.0.0"
-    date: "2023-01-01"
-    changes:
-      - type: "initial"
-        description: "Version initiale du contrat"
+openDataContract: "1.0.0"
+info:
+  title: "order_events"
+  version: "1.0.0"
+  description: "Version initiale du contrat"
+  changelog:
+    - version: "1.0.0"
+      date: "2023-01-01"
+      changes:
+        - type: "initial"
+          description: "Version initiale du contrat"
 lifecycle:
   deprecation:
     successor_version: "2.0.0"
@@ -86,9 +87,9 @@ lifecycle:
       usage_metric: "active_consumers_v1"
       alert_threshold: 5
 
-interface:
-  type: "stream"
-  spec:
+contracts:
+  OrderEvent:
+    type: "stream"
     schema:
       fields:
         - name: "order_id"
@@ -96,20 +97,22 @@ interface:
         - name: "amount"
           type: "decimal"
 
-# Version 2.0.0 (Changement Majeur)
 ---
-version: "2.0.0"
-changelog:
-  - version: "2.0.0"
-    date: "2023-06-01"
-    changes:
-      - type: "breaking"
-        description: "Restructuration du montant en devise"
-        migration_guide: "docs/migrations/v2.0.0.md"
+openDataContract: "1.0.0"
+info:
+  title: "order_events"
+  version: "2.0.0"
+  changelog:
+    - version: "2.0.0"
+      date: "2023-06-01"
+      changes:
+        - type: "breaking"
+          description: "Restructuration du montant en devise"
+          migration_guide: "docs/migrations/v2.0.0.md"
 
-interface:
-  type: "stream"
-  spec:
+contracts:
+  OrderEvent:
+    type: "stream"
     schema:
       fields:
         - name: "order_id"
