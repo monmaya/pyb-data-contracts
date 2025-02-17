@@ -87,21 +87,64 @@ La façon la plus simple d'essayer le framework est d'utiliser la démo Docker :
 docker build -t data-contracts-demo .
 
 # Run the container
-docker run -p 8501:8501 data-contracts-demo
+docker run -p 8501:8501 -p 8000:8000 data-contracts-demo
 ```
 
 Puis ouvrez : http://localhost:8501
 
-La démo inclut :
-- 100,000 événements clients générés
-- Implémentation de l'architecture médaillon
-  - Couche bronze : événements bruts
-  - Couche silver : vues normalisées (V1 & V2)
-  - Couche gold : vues métier
-- Tableau de bord Streamlit interactif
-  - Exploration des données
-  - Comparaison des versions
-  - Métriques & visualisations
+La démo illustre plusieurs concepts clés du framework :
+
+1. **Architecture Médaillon**
+   - Couche Bronze : ingestion des événements clients bruts (100 000 événements)
+   - Couche Silver : 
+     * Version 1 : normalisation basique des événements
+     * Version 2 : enrichissement avec géolocalisation et segmentation
+   - Couche Gold : vue métier consolidée avec profils clients et métriques d'engagement
+
+2. **Contract Registry Pattern**
+   - API REST (port 8000) exposant les endpoints :
+     * GET /contracts/{contract_id} : récupération d'un contrat
+     * GET /contracts/{contract_id}/versions : historique des versions
+     * GET /contracts/{contract_id}/dependencies : dépendances du contrat
+   - Interface Streamlit permettant de :
+     * Visualiser la structure des contrats
+     * Comparer les versions (diff visuel)
+     * Explorer les dépendances entre contrats
+
+3. **Circuit Breaker Pattern**
+   - Démonstration interactive avec :
+     * Taux d'échec configurable (40% par défaut)
+     * Seuil de déclenchement : 3 échecs consécutifs
+     * Période de reset : 60 secondes
+   - États observables :
+     * Fermé : fonctionnement normal
+     * Ouvert : arrêt temporaire après échecs
+     * Semi-ouvert : phase de test de reprise
+   - Métriques en temps réel :
+     * Nombre d'échecs
+     * Temps depuis le dernier échec
+     * État actuel du circuit
+
+4. **Monitoring Proactif**
+   - Métriques opérationnelles :
+     * Latence (ms) des requêtes
+     * Taux d'erreur (%)
+     * Débit (requêtes/sec)
+   - Visualisations temps réel :
+     * Graphiques d'évolution
+     * Seuils d'alerte
+     * Tendances
+   - Simulation de scénarios :
+     * Dégradation progressive
+     * Pics de charge
+     * Récupération après incident
+
+Fonctionnalités de la Démo :
+- Exploration des données à travers les couches (Bronze → Silver → Gold)
+- Comparaison des versions de schémas
+- Métriques et visualisations interactives
+- Tests de résilience avec le Circuit Breaker
+- Monitoring des performances en temps réel
 
 ### Installation Manuelle
 
