@@ -10,7 +10,10 @@ L'approche du versioning des data contracts s'articule autour de trois principes
 
 ## Les dimensions du changement
 
-La typologie des changements dans un data contract peut être analysée selon plusieurs dimensions. La dimension technique concerne la nature même des modifications : ajouts, suppressions ou modifications de champs. La dimension fonctionnelle s'intéresse à l'impact business des changements. La dimension temporelle, enfin, définit le rythme et la progressivité des évolutions.
+La typologie des changements dans un data contract peut être analysée selon plusieurs dimensions. 
+- La dimension technique concerne la nature même des modifications : ajouts, suppressions ou modifications de champs. 
+- La dimension fonctionnelle s'intéresse à l'impact business des changements. 
+- La dimension temporelle, enfin, définit le rythme et la progressivité des évolutions.
 
 ```mermaid
 sequenceDiagram
@@ -65,6 +68,23 @@ changelog:
     changes:
       - type: "initial"
         description: "Version initiale du contrat"
+lifecycle:
+  deprecation:
+    successor_version: "2.0.0"
+    schedule:
+      announcement_date: "2023-06-01"
+      transition_period:
+        start: "2023-06-01"
+        end: "2023-09-01"
+      support_end: "2023-10-01"
+    migration:
+      guide: "docs/migrations/v1_to_v2.md"
+      tools:
+        - name: "data-converter"
+          path: "tools/convert_v1_to_v2.py"
+    monitoring:
+      usage_metric: "active_consumers_v1"
+      alert_threshold: 5
 
 interface:
   type: "stream"
@@ -109,8 +129,45 @@ La migration vers une nouvelle version de contrat n'est pas un événement ponct
 
 La gestion du timing est cruciale dans ce processus. Un changement trop rapide peut déstabiliser l'écosystème, tandis qu'une transition trop lente peut complexifier la maintenance. Le rythme idéal dépend de multiples facteurs : la nature du changement, le nombre de consommateurs, la criticité du système.
 
+## Gérer la fin de vie
+
+La fin de vie d'une version de contrat est aussi importante que son introduction. Une version ne peut pas être simplement "éteinte" - elle doit être progressivement mise hors service selon un processus structuré :
+
+1. **Annonce de dépréciation** : Communication claire aux consommateurs avec un calendrier précis
+2. **Période de transition** : Typiquement 3 à 6 mois où la version est marquée comme dépréciée mais toujours fonctionnelle
+3. **Monitoring d'usage** : Suivi actif des consommateurs encore sur l'ancienne version
+4. **Support à la migration** : Aide aux équipes retardataires pour migrer vers la nouvelle version
+5. **Désactivation progressive** : Réduction graduelle du support jusqu'à l'arrêt complet
+
+Voici un exemple de timeline de fin de vie :
+
+```mermaid
+gantt
+    title Timeline de Fin de Vie v1.0
+    dateFormat  YYYY-MM-DD
+    section Phase 1
+    Annonce Dépréciation    :2024-01-01, 1d
+    section Phase 2
+    Période de Transition   :2024-01-01, 90d
+    section Phase 3
+    Support Migration       :2024-01-15, 60d
+    section Phase 4
+    Désactivation Progressive :2024-03-01, 30d
+    section Phase 5
+    Fin de Support         :2024-04-01, 1d
+```
+
+Cette approche structurée de la fin de vie permet de :
+- Éviter les surprises et les interruptions de service
+- Donner suffisamment de temps aux équipes pour s'adapter
+- Maintenir la confiance des consommateurs dans le système
+- Réduire les risques opérationnels
+- Optimiser les coûts de maintenance
+
 ## Conclusion
 
 Le versioning des data contracts est un art qui demande rigueur et pragmatisme. Il ne s'agit pas simplement de gérer des numéros de version, mais de orchestrer l'évolution d'un écosystème complexe. La réussite repose sur une approche méthodique qui combine clarté des processus, communication proactive et outils adaptés.
+
+Un aspect crucial que nous n'avons pas encore abordé est la gestion des abonnements aux contrats. Comment s'assurer que tous les consommateurs sont correctement notifiés des changements de version et des fins de vie ? Nous explorerons ce mécanisme d'abonnement dans notre article sur les patterns d'architecture, où nous verrons comment le pattern "Contract Registry" permet de gérer efficacement cette communication.
 
 Dans le prochain article, nous explorerons les patterns d'architecture qui permettent de mettre en œuvre ces principes de versioning de manière efficace et scalable.

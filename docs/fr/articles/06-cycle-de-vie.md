@@ -95,28 +95,71 @@ La phase de transition entre les versions d'un contrat est particulièrement dé
 sequenceDiagram
     participant Owner as Contract Owner
     participant Registry as Contract Registry
+    participant Prod as Production
     participant Consumers as Consumers
-    participant Archive as Archive Service
 
-    Note over Owner,Consumers: Phase 1: Préparation
-    Owner->>Registry: Mark as Deprecated
-    Registry->>Consumers: Notify Deprecation
-    
-    Note over Owner,Consumers: Phase 2: Transition
-    loop 90 Days
-        Consumers->>Registry: Check Alternative Contracts
-        Registry->>Consumers: Suggest Migrations
+    rect rgb(200, 220, 250)
+        Note over Owner,Consumers: Phase 1: Préparation
+        Owner->>Registry: Publication v2
+        Registry->>Consumers: Notification changement
     end
-    
-    Note over Owner,Archive: Phase 3: Archivage
-    Owner->>Registry: Initiate Archival
-    Registry->>Archive: Archive Contract & Data
-    Archive-->>Owner: Archive Confirmation
-    
-    Note over Owner,Consumers: Phase 4: Cleanup
-    Registry->>Consumers: Final Notification
-    Owner->>Registry: Decommission Contract
+
+    rect rgb(200, 250, 220)
+        Note over Owner,Consumers: Phase 2: Double Écriture
+        Owner->>Registry: Activation v1 + v2
+        Registry->>Prod: Double écriture
+        Note over Prod: Validation 14 jours
+    end
+
+    rect rgb(250, 220, 200)
+        Note over Owner,Consumers: Phase 3: Migration Progressive
+        Registry->>Consumers: 10% trafic v2
+        Note over Consumers: Validation 24h
+        Registry->>Consumers: 50% trafic v2
+        Note over Consumers: Validation 48h
+        Registry->>Consumers: 100% trafic v2
+    end
+
+    rect rgb(220, 220, 250)
+        Note over Owner,Consumers: Phase 4: Nettoyage
+        Owner->>Registry: Désactivation v1
+        Registry->>Consumers: Notification fin v1
+    end
 ```
+
+### Phase 1 : Préparation
+Cette phase est cruciale car elle pose les bases d'une transition réussie :
+- Le Contract Owner publie la nouvelle version (v2) dans le Registry
+- Les consommateurs sont notifiés automatiquement via le système d'abonnement
+- Les équipes peuvent commencer à étudier les changements et planifier leur migration
+- La documentation de migration est validée et publiée
+
+### Phase 2 : Double Écriture
+Cette phase de sécurisation permet de valider la nouvelle version en conditions réelles :
+- Les données sont écrites simultanément dans les versions v1 et v2
+- Les équipes peuvent comparer les résultats entre les deux versions
+- Une période de 14 jours permet de couvrir tous les cas métier (fin de mois, week-end, etc.)
+- Les anomalies peuvent être détectées sans impact sur la production
+
+### Phase 3 : Migration Progressive
+Le basculement se fait par paliers pour minimiser les risques :
+- 10% du trafic est dirigé vers v2, permettant de détecter rapidement les problèmes
+- Une validation de 24h confirme le bon fonctionnement sur ce premier palier
+- Le trafic est augmenté à 50% si aucun problème n'est détecté
+- Après 48h supplémentaires de validation, le basculement complet est effectué
+
+### Phase 4 : Nettoyage
+Cette phase finale est souvent négligée mais essentielle :
+- La v1 est officiellement dépréciée dans le Registry
+- Une dernière notification est envoyée aux consommateurs
+- Les ressources de la v1 sont nettoyées (stockage, monitoring, etc.)
+- La documentation est mise à jour pour refléter la fin de vie de v1
+
+Cette approche méthodique de la transition permet de :
+- Minimiser les risques opérationnels
+- Donner de la visibilité à toutes les parties prenantes
+- Garantir une migration contrôlée et réversible
+- Maintenir la qualité de service pendant la transition
 
 ## La fin de vie d'un contrat
 

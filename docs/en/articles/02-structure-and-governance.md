@@ -1,12 +1,18 @@
-# Structure and governance: the architecture that makes the difference
+# Structure and Governance: The Architecture That Makes the Difference
 
-The question of data contract governance is central in any data-driven organization. A data contract cannot be reduced to a simple technical documentation; it is a social contract that establishes the rules of collaboration around data. The difference between a static document and a living data contract lies precisely in its governance.
+The data science team just finished a tense presentation to the executive committee. Their Black Friday sales forecasts were largely overestimated, causing costly overstocking. Analysis reveals that changes to average basket calculation rules, although documented in a Jira ticket, were never communicated to the analysis teams. This situation, unfortunately common in retail, illustrates why data contract governance cannot be reduced to purely technical aspects.
 
-## The architecture of a data contract
+## Why Start with Governance?
 
-A well-structured data contract resembles a constitution: it establishes fundamental rules while providing mechanisms for its evolution. The structure must reflect not only the technical aspects but also the organizational dimension of the contract. This duality is essential to ensure that the contract remains relevant and applied over time.
+Before diving into the technical details of data contracts, it's crucial to understand how they integrate into the organization. Experience shows that failures in data contract adoption are rarely due to technical problems, but rather to gaps in governance and organization.
 
-Here is an example of an ODCS contract that illustrates this structured approach:
+Take the example of a major retail chain that had invested heavily in a sophisticated technical solution for data contracts. Six months after launch, less than 20% of teams were effectively using the contracts. The post-mortem analysis revealed that the project had neglected organizational aspects: who is responsible for what? How are decisions made? How are changes communicated?
+
+## The Architecture of a Data Contract
+
+A well-structured data contract resembles a constitution more than a simple technical specification. It establishes not only technical rules but also responsibilities and decision-making processes.
+
+Here's a concrete example from an e-commerce company:
 
 ```yaml
 odcs_version: "1.0.0"
@@ -29,92 +35,60 @@ governance:
   
   approval_process:
     changes:
-      minor: ["data_steward"]
-      major: ["data_steward", "domain_expert", "arch_board"]
-    sla: "5 business days"
+      minor:
+        approvers: ["data_steward"]
+        sla: "2 business days"
+      major:
+        approvers: ["data_steward", "domain_expert", "owner"]
+        sla: "5 business days"
+        requires_review_meeting: true
 
 # Technical Interface
 interface:
-  type: "stream"
-  spec:
-    format: "avro"
-    schema: # Schema definition
-      # ... schema details ...
-
-# Business Rules and Quality
-business_rules:
-  - name: "transaction_amount_check"
-    description: "Total amount must match the sum of items"
-    owner: "retail_ops"
-    validation:
-      sql: >
-        SELECT transaction_id 
-        FROM transactions 
-        WHERE total_amount != (
-          SELECT SUM(item_price * quantity) 
-          FROM transaction_items 
-          WHERE transaction_id = transactions.transaction_id
-        )
-
-# Operational Aspects
-operational:
-  sla:
-    freshness: "5m"
-    availability: "99.99%"
-  monitoring:
-    alerts:
-      - condition: "freshness > 10m"
-        severity: "critical"
-        notify: ["retail-data-oncall"]
+  type: "batch"
+  format: "parquet"
+  schema:
+    fields:
+      - name: "transaction_id"
+        type: "string"
+        description: "Unique transaction identifier"
+        business_rules:
+          - rule: "format"
+            pattern: "TX-[0-9]{10}"
+            severity: "error"
 ```
 
-The contract structure reflects the different dimensions of governance. At the responsibility level, each aspect of the contract is associated with a clearly identified owner. The data steward ensures quality supervision, while the business expert guarantees the business relevance of the defined rules. This distribution of roles creates a system of checks and balances that maintains the integrity of the contract.
+This contract doesn't just define a schema - it clearly establishes who is responsible for what and how decisions are made.
 
-## The ecosystem of data contracts
+## Organization and Processes
 
-The overall architecture of a data contract system is built around several interconnected components:
+The organizational dimension of data contracts materializes through well-defined roles and processes. Let's look at an example of a company that succeeded in its data contract adoption:
 
-```mermaid
-graph TD
-    A[Producers] -->|Publish| B[Contract Registry]
-    B -->|Validate| C[Validation Service]
-    B -->|Store| D[Contract Store]
-    E[Consumers] -->|Discover| B
-    F[Monitoring] -->|Monitor| B
-    G[CI/CD] -->|Deploy| B
-    H[Circuit Breaker] -->|Protect| A
-    H -->|Protect| E
-```
+- The **Data Product Owner** carries the strategic vision. They understand business needs and ensure the contract meets them.
+- The **Data Steward** is the quality guardian. They verify that quality rules are relevant and applied.
+- The **Domain Expert** brings business expertise. They validate that definitions and rules correspond to field reality.
 
-The contract registry acts as the central point of the architecture, orchestrating interactions between the different components. The validation service ensures contract compliance, while the monitoring system oversees the overall health of the ecosystem. This distributed architecture allows for a clear separation of responsibilities while maintaining overall coherence.
-
-## Organization and processes
-
-The organizational dimension of data contracts materializes through well-defined roles and processes. The Data Product Owner carries the strategic vision of the data product, while the Data Steward ensures its quality and compliance. The Domain Expert, in turn, guarantees alignment with business needs. This tripartite distribution of responsibilities ensures a balance between the different perspectives necessary for good data management.
-
-The change management process perfectly illustrates this collaboration:
+The modification process perfectly illustrates this collaboration:
 
 ```mermaid
 graph TD
     A[Change Proposal] -->|Submission| B[Impact Analysis]
-    B -->|Impact Evaluated| C[Review by Data Steward]
-    C -->|Quality OK| D[Review by Domain Expert]
-    D -->|Business Validation| E[Implementation]
-    E -->|Deployment| F[Monitoring]
+    B -->|Impact Assessed| C[Data Steward Review]
+    C -->|Quality OK| D[Domain Expert Review]
+    D -->|Business Validation| E[Owner Approval]
+    E -->|Deployment| F[Communication]
 ```
 
-## Governance in action
+## Towards Effective Governance
 
-The governance of data contracts rests on four fundamental pillars. The first concerns the clarity of responsibilities: each contract must have a unique owner, with clearly documented roles and decision-making processes. The second pillar deals with change management, with a precise classification of modification types and approval processes adapted to their impact.
+Implementing effective governance requires a delicate balance. Too much control stifles innovation, too little leads to chaos. Here are some principles that have proven successful:
 
-The third pillar concerns quality and compliance, with automatic contract validation mechanisms and continuous verification of business rules. Finally, the fourth pillar focuses on monitoring, with real-time metric monitoring and proactive anomaly detection.
-
-## Towards effective governance
-
-Implementing effective governance of data contracts requires a progressive and methodical approach. It is preferable to start with a limited scope but an extensible architecture that can evolve with the organization's needs. Automation should be introduced gradually, starting with the most repetitive tasks, to allow teams to adopt new processes.
-
-Governance must remain at the service of operational efficiency, without creating excessive bureaucracy. Processes must be flexible enough to adapt to different contexts while maintaining a coherent framework that ensures data quality and reliability.
+1. **Start Small but Think Big**: Begin with a pilot domain but design a structure that can expand.
+2. **Automate Progressively**: Start with manual processes to understand them, then automate.
+3. **Measure and Adapt**: Track key metrics (approval time, team satisfaction) and adjust accordingly.
 
 ## Conclusion
 
-The governance of data contracts represents a delicate balance between structure and flexibility. It must provide a sufficiently rigorous framework to ensure data quality and consistency while remaining flexible enough to allow innovation and adaptation to the organization's changing needs. In the next article, we will explore how to manage the evolution of these contracts over time, maintaining their relevance without creating unnecessary friction. 
+Data contract governance isn't just about processes - it's a cultural change that must be carefully orchestrated. In upcoming articles, we'll explore the technical aspects (versioning, architecture patterns) that build upon this solid organizational foundation.
+
+But remember: the best technical architecture cannot compensate for failing governance. That's why we started here.
