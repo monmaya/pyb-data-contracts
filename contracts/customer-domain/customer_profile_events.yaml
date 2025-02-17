@@ -1,39 +1,55 @@
-name: customer_profile_events
-domain: customer_data
-owner: customer-domain-team
-version: 2.1.0
-description: "Customer profile events stream"
-classification: "sensitive-personal-data"
-   
-schema:
-  fields:
-    profile_id:
-      type: uuid
-      required: true
-      description: "Unique identifier for customer profile"
-      compliance: "pseudonymized"
-       
-    email_status:
-      type: enum
-      values: ["verified", "pending", "invalid"]
-      required: true
-      description: "Status of email verification"
-      compliance: "business-critical"
-       
-    preferences:
-      type: object
-      properties:
-        communication:
-          type: array
-          items:
-            type: string
-            enum: ["email", "sms", "postal"]
-      description: "Customer communication preferences"
-      compliance: "gdpr-consent"
+openDataContract: 1.0.0
+info:
+  title: customer_profile_events
+  version: 2.1.0
+  domain: customer_data
+  owner: customer-domain-team
+  description: "Customer profile events stream"
+  classification: "sensitive-personal-data"
+  sla:
+    freshness:
+      max_delay: "5 minutes"
+      measurement: "event_timestamp to processing_timestamp"
+    availability:
+      target: 99.95%
+      measurement_window: "30 days rolling"
+    volume:
+      daily_average: "100K events"
+      peak_rate: "1K events/minute"
+
+contracts:
+  CustomerProfileEvent:
+    type: object
+    required:
+      - profile_id
+      - email_status
+    properties:
+      profile_id:
+        type: string
+        format: uuid
+        description: "Unique identifier for customer profile"
+        x-compliance: "pseudonymized"
+      
+      email_status:
+        type: string
+        enum: ["verified", "pending", "invalid"]
+        description: "Status of email verification"
+        x-compliance: "business-critical"
+      
+      preferences:
+        type: object
+        properties:
+          communication:
+            type: array
+            items:
+              type: string
+              enum: ["email", "sms", "postal"]
+        description: "Customer communication preferences"
+        x-compliance: "gdpr-consent"
 
 quality:
-  critical_rules:
-    - name: "email_verification_flow"
+  rules:
+    email_verification_flow:
       description: "Email status transitions must follow verification workflow"
       validation: | 
         status_transitions = {
@@ -41,19 +57,8 @@ quality:
           'verified': ['invalid'],
           'invalid': ['pending']
         }
-     
-  data_quality:
-    - name: "preference_consistency"
+      severity: "critical"
+    
+    preference_consistency:
       description: "Communication preferences must align with consent records"
-      severity: "warning"
-
-operational:
-  freshness:
-    max_delay: "5 minutes"
-    measurement: "event_timestamp to processing_timestamp"
-  volume:
-    daily_average: "100K events"
-    peak_rate: "1K events/minute"
-  availability:  
-    target: 99.95%
-    measurement_window: "30 days rolling" 
+      severity: "warning" 

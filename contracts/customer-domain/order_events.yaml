@@ -1,23 +1,54 @@
-name: order_events
-version: 2.0.0
-owner: e-commerce-team
-description: "Stream of order events from the e-commerce platform"
+openDataContract: 1.0.0
+info:
+  title: order_events
+  version: 2.0.0
+  owner: e-commerce-team
+  description: "Stream of order events from the e-commerce platform"
+  changes:
+    process: "RFC required for breaking changes"
+    notification: "2 weeks notice for schema updates"
+  sla:
+    latency: 
+      max_delay: "5 minutes"
+    availability:
+      target: 99.9%
 
-schema:
-  order_id: uuid
-  customer_id: string
-  items: array
-  total_amount: decimal(10,2)
-  status: enum(pending, confirmed, shipped, delivered)
+contracts:
+  OrderEvent:
+    type: object
+    required:
+      - order_id
+      - customer_id
+      - items
+      - total_amount
+      - status
+    properties:
+      order_id:
+        type: string
+        format: uuid
+      
+      customer_id:
+        type: string
+      
+      items:
+        type: array
+      
+      total_amount:
+        type: number
+        format: decimal
+        x-precision: 10
+        x-scale: 2
+      
+      status:
+        type: string
+        enum: ["pending", "confirmed", "shipped", "delivered"]
 
 quality:
-  - rule: "total_amount must equal sum of item prices"
-  - rule: "status transitions must follow defined workflow"
-
-sla:
-  latency: "< 5 minutes"
-  availability: 99.9%
-   
-changes:
-  process: "RFC required for breaking changes"
-  notification: "2 weeks notice for schema updates" 
+  rules:
+    total_amount_validation:
+      description: "total_amount must equal sum of item prices"
+      severity: "critical"
+    
+    status_workflow:
+      description: "status transitions must follow defined workflow"
+      severity: "critical" 
