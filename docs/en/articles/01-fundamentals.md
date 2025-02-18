@@ -70,95 +70,111 @@ This architecture illustrates the essential components of a Data Contracts syste
 Facing these challenges, a standard has emerged: the Open Data Contract Standard (ODCS). This isn't just another technical specification - it's a common language that allows teams to clearly communicate their expectations and commitments regarding data. Here's a concrete example of an ODCS contract for a customer data stream:
 
 ```yaml
-dataContractSpecification: 1.1.0
+apiVersion: v3.0.0
+kind: DataContract
 id: urn:datacontract:customer:profile
-info:
-  title: "Customer Profile"
-  version: "1.0.0"
-  description: "Customer profile data contract"
-  owner: "customer-data-team"
-  contact:
-    name: "Customer Data Team"
-    email: "customer-data@company.com"
+domain: customer-domain
+tenant: CustomerDataInc
+name: Customer Profile
+version: 1.0.0
+status: active
+
+description:
+  purpose: "Provide standardized access to customer profile data"
+  usage: "Internal use for customer analytics and personalization"
+  limitations: "Contains PII data - special handling required"
+  dataGranularityDescription: "One record per customer"
+
+schema:
+  - name: CustomerProfile
+    physicalName: customer_profiles
+    physicalType: table
+    description: "Core customer profile information"
+    tags: ["customer", "profile", "PII"]
+    properties:
+      - name: customer_id
+        logicalType: string
+        physicalType: text
+        description: "Unique customer identifier"
+        isNullable: false
+        isUnique: true
+        criticalDataElement: true
+        examples: ["CUST-001", "CUST-002"]
+        classification: "INTERNAL"
+      - name: email
+        logicalType: string
+        physicalType: text
+        description: "Customer email address"
+        isNullable: false
+        pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+        classification: "PII"
+        examples: ["john.doe@email.com"]
+      - name: first_name
+        logicalType: string
+        physicalType: text
+        description: "Customer first name"
+        isNullable: false
+        classification: "PII"
+        examples: ["John"]
+
+quality:
+  - rule: emailValidation
+    description: "Email addresses must be properly formatted"
+    dimension: validity
+    severity: error
+    businessImpact: critical
+  - rule: uniqueCustomerId
+    description: "Customer IDs must be unique"
+    dimension: uniqueness
+    severity: error
+    businessImpact: critical
+
+team:
+  - username: jsmith
+    role: Data Product Owner
+    dateIn: "2023-01-01"
+  - username: mwilson
+    role: Data Steward
+    dateIn: "2023-01-01"
+
+support:
+  - channel: "#customer-data-help"
+    tool: slack
+    url: https://company.slack.com/customer-data-help
+  - channel: customer-data@company.com
+    tool: email
+    url: mailto:customer-data@company.com
 
 servers:
-  local:
-    type: "local"
-    path: "./data/customer_profiles.parquet"
-    format: "parquet"
-    description: "Local customer profiles data"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/customer/profiles/"
-    format: "parquet"
-    description: "Production customer profiles data"
+  - server: prod
+    type: postgresql
+    format: sql
+    url: postgresql://customer-db.prod.company.com:5432/customers
+    description: "Production customer database"
 
-models:
-  CustomerProfile:
-    type: "table"
-    description: "Customer profile information"
-    fields:
-      customer_id:
-        type: "text"
-        description: "Unique customer identifier"
-        required: true
-        unique: true
-      email:
-        type: "text"
-        description: "Customer email address"
-        required: true
-        pii: true
-      first_name:
-        type: "text"
-        description: "Customer first name"
-        required: true
-        pii: true
-      last_name:
-        type: "text"
-        description: "Customer last name"
-        required: true
-        pii: true
-      birth_date:
-        type: "date"
-        description: "Customer birth date"
-        required: true
-        pii: true
-      address:
-        type: "object"
-        description: "Customer address"
-        fields:
-          street:
-            type: "text"
-            description: "Street address"
-            required: true
-          city:
-            type: "text"
-            description: "City"
-            required: true
-          country:
-            type: "text"
-            description: "Country"
-            required: true
+slaProperties:
+  - property: latency
+    value: 1
+    unit: h
+  - property: retention
+    value: 7
+    unit: y
+  - property: frequency
+    value: 15
+    unit: m
 
-terms:
-  usage: "Customer data management and analytics"
-  limitations: "PII data subject to GDPR and CCPA compliance"
-  retention:
-    duration: "P5Y"
-    basis: "Legal requirement"
+tags:
+  - customer
+  - profile
+  - PII
 
-servicelevels:
-  availability:
-    description: "Profile data availability"
-    percentage: "99.9%"
-    measurement: "daily"
-  
-  privacy:
-    description: "Privacy compliance"
-    requirements:
-      - "GDPR Article 17 - Right to erasure"
-      - "CCPA Section 1798.105 - Right to deletion"
-    responseTime: "P30D"
+customProperties:
+  - property: dataDomain
+    value: customer
+  - property: retentionPolicy
+    value: standard
+  - property: piiData
+    value: true
 ```
 
 Let's analyze each section of this contract in detail:

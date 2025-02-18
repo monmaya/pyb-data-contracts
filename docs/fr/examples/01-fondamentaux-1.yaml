@@ -75,7 +75,6 @@ servicelevels:
     description: "Profile data availability"
     percentage: "99.9%"
     measurement: "daily"
-  
   privacy:
     description: "Privacy compliance"
     requirements:

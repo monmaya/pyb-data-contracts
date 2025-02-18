@@ -15,55 +15,125 @@ Un data contract bien structuré ressemble plus à une constitution qu'à une si
 Voici un exemple concret tiré d'une entreprise e-commerce :
 
 ```yaml
-dataContractSpecification: 1.1.0
+apiVersion: v3.0.0
+kind: DataContract
 id: urn:datacontract:retail:transactions
-info:
-  title: "Retail Transactions"
-  version: "2.1.0"
-  description: "Retail transactions data contract"
-  owner: "retail-data"
-  contact:
-    name: "Retail Data Team"
-    email: "retail-data@company.com"
+domain: retail-domain
+tenant: RetailCorp
+name: Retail Transactions
+version: 2.1.0
+status: active
+
+description:
+  purpose: "Fournir l'accès aux données de transactions retail pour l'analyse et le reporting"
+  usage: "Usage interne pour l'analyse retail et le reporting"
+  limitations: "Approbation du data steward requise pour les modifications"
+  authoritativeDefinitions:
+    - type: business-glossary
+      url: https://company.com/glossary/retail-transactions
+
+schema:
+  - name: RetailTransaction
+    physicalName: retail_transactions
+    physicalType: table
+    description: "Enregistrements des transactions retail"
+    dataGranularityDescription: "Une ligne par transaction"
+    tags: ["retail", "transactions", "ventes"]
+    properties:
+      - name: transaction_id
+        logicalType: string
+        physicalType: text
+        description: "Identifiant unique de transaction"
+        isNullable: false
+        isUnique: true
+        criticalDataElement: true
+        pattern: "TX-[0-9]{10}"
+        examples:
+          - "TX-0123456789"
+          - "TX-9876543210"
+
+quality:
+  - rule: uniqueCheck
+    description: "Les IDs de transaction doivent être uniques"
+    dimension: uniqueness
+    severity: error
+    businessImpact: critical
+  - rule: patternCheck
+    description: "Les IDs de transaction doivent suivre le pattern TX-XXXXXXXXXX"
+    dimension: validity
+    severity: error
+    businessImpact: operational
+
+team:
+  - username: rjohnson
+    role: Data Product Owner
+    dateIn: "2023-01-01"
+  - username: asmith
+    role: Data Steward
+    dateIn: "2023-01-01"
+
+roles:
+  - role: retail_data_reader
+    access: read
+    firstLevelApprovers: Data Steward
+  - role: retail_data_admin
+    access: write
+    firstLevelApprovers: Data Product Owner
+    secondLevelApprovers: Data Governance Officer
+
+support:
+  - channel: "#retail-data-help"
+    tool: slack
+    url: https://company.slack.com/retail-data-help
+  - channel: retail-data-support
+    tool: email
+    url: mailto:retail-data@company.com
 
 servers:
-  local:
-    type: "local"
-    path: "./data/retail_transactions.parquet"
-    format: "parquet"
-    description: "Local retail transactions data"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/retail/transactions/"
-    format: "parquet"
-    description: "Production retail transactions data"
+  - server: local
+    type: local
+    format: parquet
+    path: ./data/retail_transactions.parquet
+  - server: prod
+    type: s3
+    format: parquet
+    path: s3://data-lake-prod/retail/transactions/
+    description: "Données de transactions retail en production"
 
-models:
-  RetailTransaction:
-    type: "table"
-    description: "Retail transaction records"
-    fields:
-      transaction_id:
-        type: "text"
-        description: "Unique transaction identifier"
-        required: true
-        pattern: "TX-[0-9]{10}"
-
-terms:
-  usage: "Internal use for retail analytics and reporting"
-  limitations: "Data steward approval required for changes"
-  noticePeriod: "P2D"
+slaProperties:
+  - property: latency
+    value: 2
+    unit: d
+  - property: retention
+    value: 7
+    unit: y
+  - property: frequency
+    value: 1
+    unit: d
 
 servicelevels:
   approval:
-    description: "Change approval process"
+    description: "Processus d'approbation des changements"
     minor:
-      responseTime: "P2D"
+      responseTime: "2d"
       approvers: ["data_steward"]
     major:
-      responseTime: "P5D"
+      responseTime: "5d"
       approvers: ["data_steward", "domain_expert", "owner"]
       requiresMeeting: true
+
+tags:
+  - retail
+  - transactions
+  - ventes
+
+customProperties:
+  - property: dataDomain
+    value: retail
+  - property: criticality
+    value: high
+  - property: changeApprovalRequired
+    value: true
 ```
 
 Ce contrat ne se contente pas de définir un schéma - il établit clairement qui est responsable de quoi et comment les décisions sont prises.

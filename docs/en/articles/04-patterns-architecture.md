@@ -126,4 +126,4 @@ This orchestration enables dynamic management of data contracts, where each patt
 
 Architectural patterns for data contracts aren't just theoretical models, but practical guides for building robust and scalable systems. Their successful implementation relies on a deep understanding of their interactions and complementarity.
 
-However, experience shows that production deployment of data contracts is often the stumbling block for many projects. How to manage performance at scale? How to ensure high availability of the Registry? How to orchestrate the deployment of different components? These crucial questions, often neglected in the design phase, will be the subject of our next article on industrializing data contracts. 
+However, experience shows that production deployment of data contracts is often the stumbling block for many projects. How to manage performance at scale? How to ensure high availability of the Registry? How to orchestrate the deployment of different components? These crucial questions, often neglected in the design phase, will be the subject of our next article on industrializing data contracts.

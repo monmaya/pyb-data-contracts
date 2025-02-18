@@ -41,50 +41,143 @@ Once in production, the contract enters a phase of continuous evolution, where i
 To support this lifecycle, the contract itself must be structured to capture its evolution. Here's how such a contract might be structured:
 
 ```yaml
-odcs_version: "1.0.0"
-id: "customer_profile"
-version: "2.0.0"
-status: "active"
+apiVersion: v3.0.0
+kind: DataContract
+id: urn:datacontract:user:preferences
+domain: user-domain
+tenant: UserExperience
+name: User Preferences
+version: 3.0.0
+status: active
 
-lifecycle:
-  created_at: "2023-01-15"
-  last_updated: "2023-06-01"
-  review_cycle: "quarterly"
-  phases:
-    - phase: "draft"
-      start_date: "2023-01-15"
-      end_date: "2023-02-01"
-    - phase: "review"
-      start_date: "2023-02-01"
-      end_date: "2023-02-15"
-    - phase: "active"
-      start_date: "2023-02-15"
-      
-  versions:
-    - version: "1.0.0"
-      status: "deprecated"
-      start_date: "2023-02-15"
-      end_of_life: "2023-08-15"
-      breaking_changes: false
-      
-    - version: "2.0.0"
-      status: "active"
-      start_date: "2023-06-01"
-      breaking_changes: true
-      migration_guide: "docs/migrations/v2.0.0.md"
+description:
+  purpose: "Manage user preferences and settings"
+  usage: "Personalization and user experience optimization"
+  limitations: "Personal data subject to GDPR"
+  dataGranularityDescription: "One record per user"
+  lifecycle:
+    currentPhase: "active"
+    phases:
+      - name: "draft"
+        startDate: "2023-09-01"
+        endDate: "2023-10-01"
+        activities: ["initial design", "stakeholder review"]
+      - name: "beta"
+        startDate: "2023-10-01"
+        endDate: "2023-12-01"
+        activities: ["limited production testing", "performance optimization"]
+      - name: "active"
+        startDate: "2024-01-01"
+        activities: ["full production use", "monitoring"]
+    deprecationPlan:
+      scheduledDate: "2025-01-01"
+      migrationPath: "v4.0.0"
+      notificationPeriod: "6 months"
 
-  dependencies:
-    - contract: "user_preferences"
-      version: "^1.0.0"
-    - contract: "payment_history"
-      version: "^2.1.0"
+schema:
+  - name: UserPreference
+    physicalName: user_preferences
+    physicalType: table
+    description: "User preference settings"
+    tags: ["user", "preferences", "settings"]
+    properties:
+      - name: user_id
+        logicalType: string
+        physicalType: text
+        description: "Unique user identifier"
+        isNullable: false
+        isUnique: true
+        criticalDataElement: true
+        examples: ["USER-001"]
+      - name: theme
+        logicalType: string
+        physicalType: text
+        description: "UI theme preference"
+        isNullable: false
+        allowedValues: ["light", "dark", "system"]
+        addedInVersion: "2.0.0"
+        examples: ["dark"]
+      - name: notifications
+        logicalType: object
+        physicalType: json
+        description: "Notification preferences"
+        isNullable: false
+        addedInVersion: "3.0.0"
+        schema:
+          type: object
+          properties:
+            email:
+              type: boolean
+              description: "Email notifications enabled"
+            push:
+              type: boolean
+              description: "Push notifications enabled"
+            frequency:
+              type: string
+              enum: ["real-time", "daily", "weekly"]
+        examples: [{"email": true, "push": false, "frequency": "daily"}]
 
-  retention:
-    duration: "7 years"
-    compliance: ["GDPR", "CCPA"]
-    archive_policy:
-      type: "cold_storage"
-      location: "s3://archive/"
+quality:
+  - rule: validTheme
+    description: "Theme must be one of the allowed values"
+    dimension: validity
+    severity: error
+    businessImpact: operational
+  - rule: validNotifications
+    description: "Notification preferences must be valid JSON"
+    dimension: validity
+    severity: error
+    businessImpact: operational
+
+team:
+  - username: agarcia
+    role: Data Product Owner
+    dateIn: "2023-09-01"
+  - username: lzhang
+    role: Data Steward
+    dateIn: "2023-09-01"
+
+support:
+  - channel: "#user-preferences"
+    tool: slack
+    url: https://company.slack.com/user-preferences
+  - channel: user-prefs@company.com
+    tool: email
+    url: mailto:user-prefs@company.com
+
+servers:
+  - server: prod
+    type: postgresql
+    format: sql
+    url: postgresql://user-prefs.prod.company.com:5432/preferences
+    description: "Production preferences database"
+
+slaProperties:
+  - property: latency
+    value: 1
+    unit: s
+  - property: retention
+    value: 5
+    unit: y
+  - property: frequency
+    value: 1
+    unit: s
+
+tags:
+  - user
+  - preferences
+  - settings
+  - personalization
+
+customProperties:
+  - property: dataDomain
+    value: user
+  - property: criticality
+    value: high
+  - property: personalData
+    value: true
+  - property: gdprRelevant
+    value: true
 ```
 
 ## Managing Transitions

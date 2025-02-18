@@ -58,131 +58,126 @@ La stratégie de versioning d'un data contract doit être pensée dès sa concep
 Voici un exemple de contrat qui illustre cette approche :
 
 ```yaml
-dataContractSpecification: 1.1.0
-id: urn:datacontract:orders:events
-info:
-  title: "Order Events"
-  version: "1.0.0"
-  description: "Order events stream contract"
-  owner: "order-team"
-  contact:
-    name: "Order Team"
-    email: "order-team@company.com"
+apiVersion: v3.0.0
+kind: DataContract
+id: urn:datacontract:sales:transactions
+domain: sales-domain
+tenant: SalesOps
+name: Transactions de Vente
+version: 2.0.0
+status: active
+
+description:
+  purpose: "Suivre et gérer les données de transactions de vente"
+  usage: "Analyse des ventes et reporting"
+  limitations: "Contient des données financières sensibles"
+  dataGranularityDescription: "Un enregistrement par transaction de vente"
+  changelog:
+    - version: "2.0.0"
+      date: "2024-03-15"
+      changes:
+        - type: breaking
+          description: "Ajout du champ payment_method obligatoire"
+    - version: "1.1.0"
+      date: "2024-02-01"
+      changes:
+        - type: feature
+          description: "Ajout du champ discount_code optionnel"
+    - version: "1.0.0"
+      date: "2024-01-01"
+      changes:
+        - type: initial
+          description: "Version initiale"
+
+schema:
+  - name: SalesTransaction
+    physicalName: sales_transactions
+    physicalType: table
+    description: "Enregistrements des transactions de vente"
+    tags: ["ventes", "transactions", "financier"]
+    properties:
+      - name: transaction_id
+        logicalType: string
+        physicalType: text
+        description: "Identifiant unique de transaction"
+        isNullable: false
+        isUnique: true
+        criticalDataElement: true
+        examples: ["VENTE-001", "VENTE-002"]
+      - name: payment_method
+        logicalType: string
+        physicalType: text
+        description: "Méthode de paiement utilisée"
+        isNullable: false
+        addedInVersion: "2.0.0"
+        allowedValues: ["CREDIT", "DEBIT", "ESPECES"]
+        examples: ["CREDIT"]
+      - name: discount_code
+        logicalType: string
+        physicalType: text
+        description: "Code de réduction appliqué"
+        isNullable: true
+        addedInVersion: "1.1.0"
+        examples: ["ETE2024"]
+
+quality:
+  - rule: uniqueTransactionId
+    description: "Les IDs de transaction doivent être uniques"
+    dimension: uniqueness
+    severity: error
+    businessImpact: critical
+  - rule: validPaymentMethod
+    description: "La méthode de paiement doit être une des valeurs autorisées"
+    dimension: validity
+    severity: error
+    businessImpact: operational
+
+team:
+  - username: klee
+    role: Data Product Owner
+    dateIn: "2024-01-01"
+  - username: pjones
+    role: Data Steward
+    dateIn: "2024-01-01"
+
+support:
+  - channel: "#sales-data-help"
+    tool: slack
+    url: https://company.slack.com/sales-data-help
+  - channel: sales-data@company.com
+    tool: email
+    url: mailto:sales-data@company.com
 
 servers:
-  local:
-    type: "local"
-    path: "./data/order_events.parquet"
-    format: "parquet"
-    description: "Local order events data"
+  - server: prod
+    type: postgresql
+    format: sql
+    url: postgresql://sales-db.prod.company.com:5432/sales
+    description: "Base de données des ventes en production"
 
-models:
-  OrderEvent:
-    type: "table"
-    description: "Order event records"
-    fields:
-      order_id:
-        type: "text"
-        description: "Unique order identifier"
-        required: true
-      amount:
-        type: "decimal"
-        description: "Order amount"
-        required: true
+slaProperties:
+  - property: latency
+    value: 5
+    unit: m
+  - property: retention
+    value: 10
+    unit: y
+  - property: frequency
+    value: 1
+    unit: m
 
-terms:
-  usage: "Order event processing and analytics"
-  limitations: "Migration to v2.0.0 required by 2023-10-01"
-  noticePeriod: "P3M"
+tags:
+  - ventes
+  - transactions
+  - financier
 
-servicelevels:
-  availability:
-    description: "Event data availability"
-    percentage: "99.9%"
-    measurement: "daily"
-  
-  support:
-    description: "Support during migration period"
-    time: "9am to 5pm EST on business days"
-    responseTime: "P1D"
-  
-  deprecation:
-    description: "Version 1.0.0 deprecation schedule"
-    announcement: "2023-06-01"
-    endOfLife: "2023-10-01"
-    migrationGuide: "docs/migrations/v1_to_v2.md"
-
----
-dataContractSpecification: 1.1.0
-id: urn:datacontract:orders:events
-info:
-  title: "Order Events"
-  version: "2.0.0"
-  description: "Enhanced order events stream contract with additional fields"
-  owner: "order-team"
-  contact:
-    name: "Order Team"
-    email: "order-team@company.com"
-
-servers:
-  local:
-    type: "local"
-    path: "./data/order_events.parquet"
-    format: "parquet"
-    description: "Local order events data"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/orders/events/"
-    format: "parquet"
-    description: "Production order events data"
-
-models:
-  OrderEvent:
-    type: "table"
-    description: "Order event records with enhanced fields"
-    fields:
-      order_id:
-        type: "text"
-        description: "Unique order identifier"
-        required: true
-      amount:
-        type: "decimal"
-        description: "Order amount"
-        required: true
-      customer_id:
-        type: "text"
-        description: "Customer identifier"
-        required: true
-      status:
-        type: "text"
-        description: "Order status"
-        enum: ["created", "confirmed", "shipped", "delivered", "cancelled"]
-        required: true
-      timestamp:
-        type: "timestamp"
-        description: "Event timestamp"
-        required: true
-
-terms:
-  usage: "Order event processing and analytics"
-  limitations: "Production use only"
-  noticePeriod: "P6M"
-
-servicelevels:
-  availability:
-    description: "Stream availability"
-    percentage: "99.9%"
-    measurement: "monthly"
-  
-  latency:
-    description: "Event delivery latency"
-    threshold: "PT5S"
-    percentage: "95%"
-  
-  support:
-    description: "24/7 support for critical issues"
-    time: "24/7"
-    responseTime: "PT1H"
+customProperties:
+  - property: dataDomain
+    value: sales
+  - property: criticality
+    value: high
+  - property: financialData
+    value: true
 ```
 
 ## La migration comme processus

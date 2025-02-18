@@ -1,0 +1,178 @@
+apiVersion: v3.0.0
+kind: DataContract
+id: urn:datacontract:customer:profile
+domain: customer-domain
+tenant: CustomerDataInc
+name: Customer Profile
+version: 1.0.0
+status: active
+
+description:
+  purpose: "Manage and provide access to core customer profile information"
+  usage: "Customer data management and analytics"
+  limitations: "PII data subject to GDPR and CCPA compliance"
+  authoritativeDefinitions:
+    - type: privacy-statement
+      url: https://company.com/privacy/gdpr.pdf
+
+schema:
+- name: CustomerProfile
+  physicalName: customer_profiles
+  physicalType: table
+  description: "Customer profile information"
+  dataGranularityDescription: "One row per customer"
+  tags: ["customer", "profile", "pii"]
+  properties:
+  - name: customer_id
+    logicalType: string
+    physicalType: text
+    description: "Unique customer identifier"
+    isNullable: false
+    isUnique: true
+    criticalDataElement: true
+    examples:
+      - "CUST123456"
+      - "CUST789012"
+  - name: email
+    logicalType: string
+    physicalType: text
+    description: "Customer email address"
+    isNullable: false
+    criticalDataElement: true
+    classification: restricted
+    customProperties:
+    - property: pii
+      value: true
+    examples:
+      - "john.doe@email.com"
+  - name: first_name
+    logicalType: string
+    physicalType: text
+    description: "Customer first name"
+    isNullable: false
+    classification: restricted
+    customProperties:
+    - property: pii
+      value: true
+    examples:
+      - "John"
+  - name: last_name
+    logicalType: string
+    physicalType: text
+    description: "Customer last name"
+    isNullable: false
+    classification: restricted
+    customProperties:
+    - property: pii
+      value: true
+    examples:
+      - "Doe"
+  - name: birth_date
+    logicalType: date
+    physicalType: date
+    description: "Customer birth date"
+    isNullable: false
+    classification: restricted
+    customProperties:
+    - property: pii
+      value: true
+    examples:
+      - "1980-01-01"
+  - name: address
+    logicalType: object
+    physicalType: object
+    description: "Customer address"
+    classification: restricted
+    customProperties:
+    - property: pii
+      value: true
+
+quality:
+  - rule: nullCheck
+    description: "Critical fields should not be null"
+    dimension: completeness
+    severity: error
+    businessImpact: operational
+  - rule: uniqueCheck
+    description: "Customer ID must be unique"
+    dimension: uniqueness
+    severity: error
+    businessImpact: critical
+
+slaProperties:
+  - property: latency
+    value: 1
+    unit: d
+  - property: generalAvailability
+    value: "2023-01-01T00:00:00Z"
+  - property: retention
+    value: 5
+    unit: y
+  - property: frequency
+    value: 1
+    unit: d
+  - property: timeOfAvailability
+    value: "09:00-08:00"
+    driver: regulatory
+
+team:
+  - username: jsmith
+    role: Data Product Owner
+    dateIn: "2023-01-01"
+  - username: mwilson
+    role: Data Steward
+    dateIn: "2023-01-01"
+
+roles:
+  - role: customer_data_reader
+    access: read
+    firstLevelApprovers: Data Steward
+  - role: customer_data_admin
+    access: write
+    firstLevelApprovers: Data Product Owner
+    secondLevelApprovers: Privacy Officer
+
+support:
+  - channel: "#customer-data-help"
+    tool: slack
+    url: https://company.slack.com/customer-data-help
+  - channel: customer-data-support
+    tool: email
+    url: mailto:customer-data@company.com
+
+servers:
+  - server: local
+    type: local
+    format: parquet
+    path: ./data/customer_profiles.parquet
+  - server: prod
+    type: s3
+    format: parquet
+    path: s3://data-lake-prod/customer/profiles/
+    description: "Production customer profiles data"
+
+servicelevels:
+  availability:
+    description: "Profile data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  privacy:
+    description: "Privacy compliance"
+    requirements:
+      - "GDPR Article 17 - Right to erasure"
+      - "CCPA Section 1798.105 - Right to deletion"
+    responseTime: "30 days"
+
+tags:
+  - customer
+  - profile
+  - pii
+  - gdpr
+
+customProperties:
+  - property: dataDomain
+    value: customer
+  - property: dataClassification
+    value: restricted
+  - property: retentionPolicy
+    value: gdpr_compliance
