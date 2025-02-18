@@ -1,21 +1,21 @@
 # Lifecycle: Beyond Simple YAML
 
-It's midnight, and an alert sounds: a critical data contract has been modified without following the established process. This situation, unfortunately common, illustrates the crucial importance of properly understanding and managing the lifecycle of data contracts. A data contract isn't a static document - it's a living organism that evolves with your organization and requires rigorous management throughout its existence.
+It's midnight, and an alert sounds: a critical data contract has just been modified without following the established process. This situation, unfortunately common, illustrates the crucial importance of understanding and properly managing the lifecycle of data contracts. A data contract isn't a static document - it's a living organism that evolves with your organization and requires rigorous management throughout its existence.
 
-## Lifecycle Phases
+## The Phases of the Lifecycle
 
-The lifecycle of a data contract follows a well-defined path, from conception to end of life. This natural progression begins with a design phase where needs are identified and the contract is developed. This initial stage is crucial as it lays the foundation for everything that follows. The contract then goes through a rigorous validation phase before entering production.
+The lifecycle of a data contract follows a well-defined path, from its conception to its end of life. This natural progression begins with a design phase where needs are identified and the contract is elaborated. This initial step is crucial as it lays the foundation for everything that follows. The contract then goes through a rigorous validation phase before entering production.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Conception
-    Conception --> Validation
+    [*] --> Design
+    Design --> Validation
     Validation --> Production
     Production --> Evolution
     Evolution --> Deprecation
     Deprecation --> [*]
 
-    state Conception {
+    state Design {
         [*] --> Draft
         Draft --> Review
         Review --> [*]
@@ -36,102 +36,55 @@ stateDiagram-v2
 
 Once in production, the contract enters a phase of continuous evolution, where it adapts to the organization's changing needs. This evolution must be carefully orchestrated to maintain data consistency and quality. Finally, when the contract is no longer relevant, it enters a deprecation phase that leads to its end of life.
 
-## Structure of an Evolving Contract
+## The Structure of an Evolving Contract
 
 To support this lifecycle, the contract itself must be structured to capture its evolution. Here's how such a contract might be structured:
 
 ```yaml
-dataContractSpecification: 1.1.0
-id: urn:datacontract:customer:profile
-info:
-  title: "Customer Profile"
-  version: "2.0.0"
-  description: "Customer profile data with lifecycle management"
-  owner: "customer-data-team"
-  contact:
-    name: "Customer Data Team"
-    email: "customer-data@company.com"
-  status: "active"
-  created: "2023-01-01"
-  updated: "2023-06-01"
-  review:
-    cycle: "P3M"
-    nextReview: "2023-09-01"
+odcs_version: "1.0.0"
+id: "customer_profile"
+version: "2.0.0"
+status: "active"
 
-servers:
-  local:
-    type: "local"
-    path: "./data/customer_profiles.parquet"
-    format: "parquet"
-    description: "Local customer profiles data"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/customer/profiles/"
-    format: "parquet"
-    description: "Production customer profiles data"
-
-models:
-  CustomerProfile:
-    type: "table"
-    description: "Customer profile information"
-    fields:
-      customer_id:
-        type: "text"
-        description: "Unique customer identifier"
-        required: true
-      email:
-        type: "text"
-        description: "Customer email address"
-        required: true
-        pii: true
-      preferences:
-        type: "object"
-        description: "Customer preferences"
-        fields:
-          language:
-            type: "text"
-            description: "Preferred language"
-            required: true
-          marketing_consent:
-            type: "boolean"
-            description: "Marketing communication consent"
-            required: true
-
-terms:
-  usage: "Customer profile management and personalization"
-  limitations: "Subject to GDPR and CCPA compliance"
-  retention:
-    duration: "P5Y"
-    basis: "Legal requirement"
-  dependencies:
-    upstream:
-      - "customer_registration_events"
-      - "preference_updates"
-    downstream:
-      - "marketing_campaigns"
-      - "personalization_service"
-
-servicelevels:
-  availability:
-    description: "Profile data availability"
-    percentage: "99.9%"
-    measurement: "daily"
-  
-  privacy:
-    description: "Privacy compliance"
-    requirements:
-      - "GDPR Article 17 - Right to erasure"
-      - "CCPA Section 1798.105 - Right to deletion"
-    responseTime: "P30D"
-  
+lifecycle:
+  created_at: "2023-01-15"
+  last_updated: "2023-06-01"
+  review_cycle: "quarterly"
+  phases:
+    - phase: "draft"
+      start_date: "2023-01-15"
+      end_date: "2023-02-01"
+    - phase: "review"
+      start_date: "2023-02-01"
+      end_date: "2023-02-15"
+    - phase: "active"
+      start_date: "2023-02-15"
+      
   versions:
-    active:
-      version: "2.0.0"
-      since: "2023-06-01"
-    deprecated:
-      version: "1.0.0"
-      until: "2023-12-31"
-      migrationGuide: "docs/migrations/customer_profile_v1_to_v2.md"
+    - version: "1.0.0"
+      status: "deprecated"
+      start_date: "2023-02-15"
+      end_of_life: "2023-08-15"
+      breaking_changes: false
+      
+    - version: "2.0.0"
+      status: "active"
+      start_date: "2023-06-01"
+      breaking_changes: true
+      migration_guide: "docs/migrations/v2.0.0.md"
+
+  dependencies:
+    - contract: "user_preferences"
+      version: "^1.0.0"
+    - contract: "payment_history"
+      version: "^2.1.0"
+
+  retention:
+    duration: "7 years"
+    compliance: ["GDPR", "CCPA"]
+    archive_policy:
+      type: "cold_storage"
+      location: "s3://archive/"
 ```
 
 ## Managing Transitions
@@ -147,15 +100,15 @@ sequenceDiagram
 
     rect rgb(200, 220, 250)
         Note over Owner,Consumers: Phase 1: Preparation
-        Owner->>Registry: Publish v2
+        Owner->>Registry: Publication v2
         Registry->>Consumers: Change notification
     end
 
     rect rgb(200, 250, 220)
-        Note over Owner,Consumers: Phase 2: Dual Write
-        Owner->>Registry: Activate v1 + v2
-        Registry->>Prod: Dual write
-        Note over Prod: 14-day validation
+        Note over Owner,Consumers: Phase 2: Dual Writing
+        Owner->>Registry: Activation v1 + v2
+        Registry->>Prod: Dual writing
+        Note over Prod: 14 days validation
     end
 
     rect rgb(250, 220, 200)
@@ -169,8 +122,8 @@ sequenceDiagram
 
     rect rgb(220, 220, 250)
         Note over Owner,Consumers: Phase 4: Cleanup
-        Owner->>Registry: Deactivate v1
-        Registry->>Consumers: V1 end notification
+        Owner->>Registry: Deactivation v1
+        Registry->>Consumers: v1 end notification
     end
 ```
 
@@ -181,7 +134,7 @@ This phase is crucial as it lays the groundwork for a successful transition:
 - Teams can begin studying the changes and planning their migration
 - Migration documentation is validated and published
 
-### Phase 2: Dual Write
+### Phase 2: Dual Writing
 This security phase allows validating the new version under real conditions:
 - Data is written simultaneously to v1 and v2 versions
 - Teams can compare results between both versions
@@ -205,12 +158,12 @@ This final phase is often neglected but essential:
 This methodical approach to transition allows:
 - Minimizing operational risks
 - Giving visibility to all stakeholders
-- Ensuring controlled and reversible migration
+- Ensuring a controlled and reversible migration
 - Maintaining service quality during transition
 
 ## Contract End of Life
 
-A contract's end of life must be managed with as much care as its creation. This phase begins with a deprecation period where consumers are gradually migrated to alternatives. Once all consumers are migrated, the contract can be archived, but its metadata and history must be preserved to maintain traceability and regulatory compliance.
+The end of life of a contract must be managed with as much care as its creation. This phase begins with a deprecation period where consumers are progressively migrated to alternatives. Once all consumers are migrated, the contract can be archived, but its metadata and history must be preserved to maintain traceability and regulatory compliance.
 
 ## Conclusion
 

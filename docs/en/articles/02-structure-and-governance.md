@@ -1,115 +1,80 @@
 # Structure and Governance: The Architecture That Makes the Difference
 
-The data science team just finished a tense presentation to the executive committee. Their Black Friday sales forecasts were largely overestimated, causing costly overstocking. Analysis reveals that changes to average basket calculation rules, although documented in a Jira ticket, were never communicated to the analysis teams. This situation, unfortunately common in retail, illustrates why data contract governance cannot be reduced to purely technical aspects.
+The data science team just finished a tense presentation to the executive committee. Their Black Friday sales forecasts were largely overestimated, causing costly overstocking. Analysis reveals that changes in average basket calculation rules, though documented in a Jira ticket, were never communicated to the analysis teams. This situation, unfortunately common in retail, illustrates why data contract governance cannot be reduced to purely technical aspects.
 
 ## Why Start with Governance?
 
 Before diving into the technical details of data contracts, it's crucial to understand how they integrate into the organization. Experience shows that failures in data contract adoption are rarely due to technical problems, but rather to gaps in governance and organization.
 
-Take the example of a major retail chain that had invested heavily in a sophisticated technical solution for data contracts. Six months after launch, less than 20% of teams were effectively using the contracts. The post-mortem analysis revealed that the project had neglected organizational aspects: who is responsible for what? How are decisions made? How are changes communicated?
+Take the example of a large retail chain that had invested heavily in a sophisticated technical solution for data contracts. Six months after launch, less than 20% of teams were effectively using the contracts. The post-mortem analysis revealed that the project had neglected organizational aspects: who is responsible for what? How are decisions made? How are changes communicated?
 
 ## The Architecture of a Data Contract
 
-A well-structured data contract resembles a constitution more than a simple technical specification. It establishes not only technical rules but also responsibilities and decision-making processes.
+A well-structured data contract resembles a constitution more than a simple technical specification. It establishes not only technical rules but also responsibilities and decision processes.
 
 Here's a concrete example from an e-commerce company:
 
 ```yaml
 dataContractSpecification: 1.1.0
-id: urn:datacontract:governance:framework
+id: urn:datacontract:retail:transactions
 info:
-  title: "Data Contract Governance Framework"
-  version: "1.0.0"
-  description: "Governance framework for data contracts"
-  owner: "data-governance-office"
+  title: "Retail Transactions"
+  version: "2.1.0"
+  description: "Retail transactions data contract"
+  owner: "retail-data"
   contact:
-    name: "Data Governance Office"
-    email: "dgo@company.com"
+    name: "Retail Data Team"
+    email: "retail-data@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/retail_transactions.parquet"
+    format: "parquet"
+    description: "Local retail transactions data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/retail/transactions/"
+    format: "parquet"
+    description: "Production retail transactions data"
 
 models:
-  GovernanceModel:
-    type: "object"
-    description: "Data contract governance model"
+  RetailTransaction:
+    type: "table"
+    description: "Retail transaction records"
     fields:
-      roles:
-        type: "object"
-        description: "Governance roles and responsibilities"
-        fields:
-          data_steward:
-            type: "object"
-            description: "Data steward role"
-            fields:
-              responsibilities:
-                type: "array"
-                items:
-                  type: "text"
-                description: "Data steward responsibilities"
-                example: ["quality_validation", "compliance_check"]
-              qualifications:
-                type: "array"
-                items:
-                  type: "text"
-                description: "Required qualifications"
-          domain_owner:
-            type: "object"
-            description: "Domain owner role"
-            fields:
-              responsibilities:
-                type: "array"
-                items:
-                  type: "text"
-                description: "Domain owner responsibilities"
-      processes:
-        type: "object"
-        description: "Governance processes"
-        fields:
-          contract_approval:
-            type: "object"
-            description: "Contract approval process"
-            fields:
-              steps:
-                type: "array"
-                items:
-                  type: "object"
-                  fields:
-                    name:
-                      type: "text"
-                    approver:
-                      type: "text"
-                    sla:
-                      type: "text"
-                      format: "duration"
+      transaction_id:
+        type: "text"
+        description: "Unique transaction identifier"
+        required: true
+        pattern: "TX-[0-9]{10}"
 
 terms:
-  review_cycle:
-    frequency: "P3M"
-    participants: ["data_steward", "domain_owner", "compliance_officer"]
-  
-  escalation:
-    levels:
-      - level: 1
-        handler: "domain_owner"
-        responseTime: "P1D"
-      - level: 2
-        handler: "governance_board"
-        responseTime: "P3D"
+  usage: "Internal use for retail analytics and reporting"
+  limitations: "Data steward approval required for changes"
+  noticePeriod: "P2D"
 
 servicelevels:
   approval:
-    description: "Contract approval process"
-    responseTime: "P5D"
-    escalationThreshold: "P7D"
+    description: "Change approval process"
+    minor:
+      responseTime: "P2D"
+      approvers: ["data_steward"]
+    major:
+      responseTime: "P5D"
+      approvers: ["data_steward", "domain_expert", "owner"]
+      requiresMeeting: true
 ```
 
 This contract doesn't just define a schema - it clearly establishes who is responsible for what and how decisions are made.
 
 ## Organization and Processes
 
-The organizational dimension of data contracts materializes through well-defined roles and processes. Let's look at an example of a company that succeeded in its data contract adoption:
+The organizational dimension of data contracts materializes through well-defined roles and processes. Let's take the example of a company that succeeded in its data contract adoption:
 
-- The **Data Product Owner** carries the strategic vision. They understand business needs and ensure the contract meets them.
-- The **Data Steward** is the quality guardian. They verify that quality rules are relevant and applied.
-- The **Domain Expert** brings business expertise. They validate that definitions and rules correspond to field reality.
+- The **Data Product Owner** carries the strategic vision. She understands business needs and ensures the contract meets them.
+- The **Data Steward** is the quality guardian. He verifies that quality rules are relevant and applied.
+- The **Domain Expert** brings business expertise. She validates that definitions and rules correspond to field reality.
 
 The modification process perfectly illustrates this collaboration:
 

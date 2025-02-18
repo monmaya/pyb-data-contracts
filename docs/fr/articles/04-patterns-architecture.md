@@ -73,74 +73,17 @@ Le Fallback Mode est un composant crucial de ce pattern. Lorsqu'une défaillance
 Prenons un exemple concret dans le retail : le système de recommandation produits utilise normalement des données temps réel de navigation client. Si ces données deviennent indisponibles, le Circuit Breaker active le Fallback Mode qui utilise un modèle de recommandation plus simple basé uniquement sur l'historique des ventes. Les performances sont réduites, mais le service continue de fonctionner.
 
 ```yaml
-dataContractSpecification: 1.1.0
-id: urn:datacontract:recommendation:config
-info:
-  title: "Recommendation Service Configuration"
-  version: "1.0.0"
-  description: "Configuration contract for the recommendation service fallback modes"
-  owner: "recommendation-team"
-  contact:
-    name: "Recommendation Team"
-    email: "reco-team@company.com"
-
-servers:
-  local:
-    type: "local"
-    path: "./data/recommendation_config.json"
-    format: "json"
-    description: "Local configuration file"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/recommendation/config/"
-    format: "json"
-    description: "Production configuration"
-
-models:
-  FallbackConfig:
-    type: "object"
-    description: "Fallback configuration for recommendation service"
-    fields:
-      mode:
-        type: "text"
-        description: "Fallback mode"
-        enum: ["default", "degraded", "emergency"]
-        required: true
-      thresholds:
-        type: "object"
-        description: "Performance thresholds for mode activation"
-        fields:
-          latency:
-            type: "integer"
-            description: "Response time threshold in ms"
-            required: true
-          error_rate:
-            type: "decimal"
-            description: "Error rate threshold"
-            required: true
-      sources:
-        type: "array"
-        description: "Data sources to use in this mode"
-        items:
-          type: "text"
-        required: true
-
-terms:
-  usage: "Configuration for recommendation service fallback modes"
-  limitations: "Changes require approval from service owner"
-  noticePeriod: "P1D"
-
-servicelevels:
-  availability:
-    description: "Configuration availability"
-    percentage: "99.99%"
-    measurement: "daily"
-  
-  changes:
-    description: "Configuration change process"
-    approvalRequired: true
-    approvers: ["service-owner", "sre-team"]
-    implementationTime: "PT1H"
+fallback_modes:
+  recommendation_service:
+    - level: "primary"
+      source: "real_time_navigation"
+      schema: "full_customer_behavior"
+    - level: "fallback"
+      source: "sales_history"
+      schema: "minimal_product_data"
+      activation_conditions:
+        - "real_time_data_latency > 30s"
+        - "schema_validation_errors > 5%"
 ```
 
 ## Le pattern de monitoring proactif
@@ -165,95 +108,6 @@ graph TD
 ```
 
 L'approche proactive du monitoring repose sur trois piliers fondamentaux. Le premier est la collecte continue de métriques pertinentes, allant de la conformité des données aux performances des systèmes. Le deuxième est l'analyse en temps réel de ces métriques pour détecter les tendances et anomalies. Le troisième est la capacité à déclencher des actions correctives automatiques lorsque certains seuils sont atteints.
-
-Voici un exemple de configuration de monitoring proactif :
-
-```yaml
-dataContractSpecification: 1.1.0
-id: urn:datacontract:sales:monitoring
-info:
-  title: "Sales Data Monitoring"
-  version: "1.0.0"
-  description: "Monitoring configuration for sales data quality and system health"
-  owner: "data-quality-team"
-  contact:
-    name: "Data Quality Team"
-    email: "dq-team@company.com"
-
-servers:
-  local:
-    type: "local"
-    path: "./data/monitoring_config.json"
-    format: "json"
-    description: "Local monitoring configuration"
-  prod:
-    type: "s3"
-    path: "s3://data-lake-prod/monitoring/config/"
-    format: "json"
-    description: "Production monitoring configuration"
-
-models:
-  MonitoringConfig:
-    type: "object"
-    description: "Monitoring metrics configuration"
-    fields:
-      system_health:
-        type: "object"
-        description: "System health metrics"
-        fields:
-          contract_validation_latency:
-            type: "object"
-            description: "Contract validation performance"
-            fields:
-              threshold_ms:
-                type: "integer"
-                description: "Maximum acceptable latency in milliseconds"
-                required: true
-              alert_level:
-                type: "text"
-                enum: ["warning", "critical"]
-                required: true
-          registry_availability:
-            type: "object"
-            description: "Contract registry availability"
-            fields:
-              min_percentage:
-                type: "decimal"
-                description: "Minimum acceptable availability percentage"
-                required: true
-      data_quality:
-        type: "object"
-        description: "Data quality metrics"
-        fields:
-          missing_product_codes:
-            type: "object"
-            description: "Missing product code monitoring"
-            fields:
-              max_percentage:
-                type: "decimal"
-                description: "Maximum acceptable percentage of missing codes"
-                required: true
-              measurement_window:
-                type: "text"
-                description: "Time window for measurement"
-                required: true
-
-terms:
-  usage: "Monitoring configuration for data quality assurance"
-  limitations: "Alert thresholds require SRE team approval"
-  noticePeriod: "P2D"
-
-servicelevels:
-  alerts:
-    description: "Alert response time"
-    responseTime: "PT15M"
-    priority: "P1"
-  
-  reporting:
-    description: "Monitoring reports generation"
-    frequency: "PT1H"
-    retention: "P90D"
-```
 
 ## L'orchestration des patterns
 
