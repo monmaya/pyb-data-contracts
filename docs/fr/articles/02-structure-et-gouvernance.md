@@ -15,45 +15,55 @@ Un data contract bien structuré ressemble plus à une constitution qu'à une si
 Voici un exemple concret tiré d'une entreprise e-commerce :
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:retail:transactions
 info:
-  title: "retail_transactions"
+  title: "Retail Transactions"
   version: "2.1.0"
-  domain: "retail"
-  owner:
-    team: "retail-data"
-    contact: "retail-data@company.com"
-  stakeholders:
-    - role: "data_steward"
-      team: "data_office"
-      responsibilities: ["quality", "compliance"]
-    - role: "domain_expert"
-      team: "retail_ops"
-      responsibilities: ["business_rules", "definitions"]
-  
-  approval_process:
-    changes:
-      minor:
-        approvers: ["data_steward"]
-        sla: "2 business days"
-      major:
-        approvers: ["data_steward", "domain_expert", "owner"]
-        sla: "5 business days"
-        requires_review_meeting: true
+  description: "Retail transactions data contract"
+  owner: "retail-data"
+  contact:
+    name: "Retail Data Team"
+    email: "retail-data@company.com"
 
-contracts:
-  RetailTransaction:
-    type: "batch"
+servers:
+  local:
+    type: "local"
+    path: "./data/retail_transactions.parquet"
     format: "parquet"
-    schema:
-      fields:
-        - name: "transaction_id"
-          type: "string"
-          description: "Identifiant unique de la transaction"
-          business_rules:
-            - rule: "format"
-              pattern: "TX-[0-9]{10}"
-              severity: "error"
+    description: "Local retail transactions data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/retail/transactions/"
+    format: "parquet"
+    description: "Production retail transactions data"
+
+models:
+  RetailTransaction:
+    type: "table"
+    description: "Retail transaction records"
+    fields:
+      transaction_id:
+        type: "text"
+        description: "Unique transaction identifier"
+        required: true
+        pattern: "TX-[0-9]{10}"
+
+terms:
+  usage: "Internal use for retail analytics and reporting"
+  limitations: "Data steward approval required for changes"
+  noticePeriod: "P2D"
+
+servicelevels:
+  approval:
+    description: "Change approval process"
+    minor:
+      responseTime: "P2D"
+      approvers: ["data_steward"]
+    major:
+      responseTime: "P5D"
+      approvers: ["data_steward", "domain_expert", "owner"]
+      requiresMeeting: true
 ```
 
 Ce contrat ne se contente pas de définir un schéma - il établit clairement qui est responsable de quoi et comment les décisions sont prises.

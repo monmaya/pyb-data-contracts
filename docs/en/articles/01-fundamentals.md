@@ -1,6 +1,6 @@
 # Revolutionizing Data Management with Data Contracts
 
-It's 3 AM. The support team receives a critical alert: the data pipeline feeding the real-time sales dashboard is down. Preliminary analysis reveals that the e-commerce team modified the order data format without notice. A required field has been renamed, and now the entire processing chain is paralyzed. This situation, unfortunately too common, illustrates an often-neglected reality: data is not just an asset, it's a product that requires rigorous lifecycle management.
+It's 3 AM. The support team receives a critical alert: the data pipeline feeding the real-time sales dashboard is down. Preliminary analysis reveals that the e-commerce team modified the order data format without notice. A required field was renamed, and now the entire processing chain is paralyzed. This situation, unfortunately too common, illustrates an often-neglected reality: data is not just an asset, it's a product that requires rigorous lifecycle management.
 
 ## Daily Life Without Data Contracts
 
@@ -70,188 +70,116 @@ This architecture illustrates the essential components of a Data Contracts syste
 Facing these challenges, a standard has emerged: the Open Data Contract Standard (ODCS). This isn't just another technical specification - it's a common language that allows teams to clearly communicate their expectations and commitments regarding data. Here's a concrete example of an ODCS contract for a customer data stream:
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:customer:profile
 info:
-  title: "customer_profile"
+  title: "Customer Profile"
   version: "1.0.0"
-  domain: "customer"
-  owner: 
-    team: "customer-data"
-    contact: "customer-data@company.com"
+  description: "Customer profile data contract"
+  owner: "customer-data-team"
+  contact:
+    name: "Customer Data Team"
+    email: "customer-data@company.com"
 
-contracts:
-  CustomerProfile:
-    type: "batch"
+servers:
+  local:
+    type: "local"
+    path: "./data/customer_profiles.parquet"
     format: "parquet"
-    schema:
-      type: "struct"
-      fields:
-        - name: "customer_id"
-          type: "string"
-          description: "Unique customer identifier"
-          constraints:
-            - type: "not_null"
-        - name: "email"
-          type: "string"
-          constraints:
-            - type: "email_format"
+    description: "Local customer profiles data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/customer/profiles/"
+    format: "parquet"
+    description: "Production customer profiles data"
 
-quality:
-  rules:
-    - name: "email_validity"
-      severity: "critical"
-    - name: "recent_data"
-      severity: "warning"
+models:
+  CustomerProfile:
+    type: "table"
+    description: "Customer profile information"
+    fields:
+      customer_id:
+        type: "text"
+        description: "Unique customer identifier"
+        required: true
+        unique: true
+      email:
+        type: "text"
+        description: "Customer email address"
+        required: true
+        pii: true
+      first_name:
+        type: "text"
+        description: "Customer first name"
+        required: true
+        pii: true
+      last_name:
+        type: "text"
+        description: "Customer last name"
+        required: true
+        pii: true
+      birth_date:
+        type: "date"
+        description: "Customer birth date"
+        required: true
+        pii: true
+      address:
+        type: "object"
+        description: "Customer address"
+        fields:
+          street:
+            type: "text"
+            description: "Street address"
+            required: true
+          city:
+            type: "text"
+            description: "City"
+            required: true
+          country:
+            type: "text"
+            description: "Country"
+            required: true
 
-sla:
-  freshness: "24h"
-  availability: "99.9%"
+terms:
+  usage: "Customer data management and analytics"
+  limitations: "PII data subject to GDPR and CCPA compliance"
+  retention:
+    duration: "P5Y"
+    basis: "Legal requirement"
+
+servicelevels:
+  availability:
+    description: "Profile data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  privacy:
+    description: "Privacy compliance"
+    requirements:
+      - "GDPR Article 17 - Right to erasure"
+      - "CCPA Section 1798.105 - Right to deletion"
+    responseTime: "P30D"
 ```
 
 Let's analyze each section of this contract in detail:
 
-1. The contract header establishes its identity and governance. The `domain` field isn't just simple categorization - it explicitly ties this data to a responsible business unit. Contact information isn't administrative formality; it's a commitment of responsibility.
+1. The contract header establishes its identity and governance. The `id` field uniquely identifies the contract, while the `info` section provides essential metadata, including contact information for the responsible team.
 
-2. The `interface` section goes beyond simple technical description. The choice of Parquet format isn't arbitrary - it reflects a compromise between read performance and schema flexibility. Each schema field is documented and constrained, creating a clear framework for data quality.
+2. The `servers` section defines where and how the data is stored. In this example, we have a local configuration for development and a production configuration in S3.
 
-3. Quality rules establish a clear hierarchy of potential problems. An invalid email address is considered critical as it can directly impact customer communication, while data freshness is a warning that deserves attention without necessarily triggering an alarm.
+3. The `models` section describes the data structure with a precise definition of each field. Fields containing personal data (PII) are clearly identified, and validation constraints are explicit.
 
-4. Operational SLAs aren't just goals - they represent a concrete service contract between the producer and its consumers. 24h freshness and 99.9% availability are measurable commitments that will guide architecture and operational choices.
+4. The `terms` establish usage conditions, including regulatory compliance aspects and data retention duration expressed in ISO 8601 format.
+
+5. The `servicelevels` define measurable commitments on data availability and privacy compliance, with precise response times for requests related to personal rights.
 
 ## Implementation: From Concepts to Reality
 
-Implementing data contracts in a datalake context is particularly relevant, especially in a medallion architecture (bronze, silver, gold). Let's take the example of the sales domain, where raw transaction data is progressively refined to feed critical analyses and dashboards.
-
-The first contract established concerns the silver table of sales transactions. This table is a critical point: it cleans and standardizes raw data from the bronze layer and serves as a source of truth for creating gold layer aggregates.
-
-```yaml
-openDataContract: "1.0.0"
-info:
-  title: "sales_transactions_silver"
-  version: "1.0.0"
-  domain: "sales_analytics"
-  owner: 
-    team: "data-engineering"
-    contact: "data-engineering@retail.com"
-
-contracts:
-  SalesTransaction:
-    type: "batch"
-    format: "delta"
-    schema:
-      fields:
-        - name: "transaction_id"
-          type: "string"
-          description: "Unique transaction identifier"
-          constraints:
-            - type: "not_null"
-            - type: "unique"
-            
-        - name: "transaction_date"
-          type: "date"
-          description: "Transaction date"
-          constraints:
-            - type: "not_null"
-            - type: "not_future"
-            
-        - name: "store_id"
-          type: "string"
-          description: "Unique store identifier"
-          constraints:
-            - type: "not_null"
-            - type: "reference"
-              table: "dim_stores"
-              field: "store_id"
-            
-        - name: "product_id"
-          type: "string"
-          description: "Unique product identifier"
-          constraints:
-            - type: "not_null"
-            - type: "reference"
-              table: "dim_products"
-              field: "product_id"
-              
-        - name: "quantity"
-          type: "integer"
-          description: "Quantity sold"
-          constraints:
-            - type: "positive"
-            
-        - name: "unit_price"
-          type: "decimal"
-          description: "Unit price at time of sale"
-          constraints:
-            - type: "positive"
-            
-        - name: "total_amount"
-          type: "decimal"
-          description: "Total line amount"
-          constraints:
-            - type: "positive"
-
-quality:
-  rules:
-    - name: "amount_consistency"
-      description: "Total amount verification"
-      severity: "critical"
-      check: >
-        ABS(total_amount - (quantity * unit_price)) <= 0.01
-        
-    - name: "referential_integrity"
-      description: "Reference verification"
-      severity: "critical"
-      check: >
-        EXISTS(SELECT 1 FROM dim_stores s WHERE s.store_id = store_id) AND
-        EXISTS(SELECT 1 FROM dim_products p WHERE p.product_id = product_id)
-        
-    - name: "deduplication"
-      description: "Duplicate detection"
-      severity: "warning"
-      check: >
-        COUNT(*) = COUNT(DISTINCT transaction_id)
-
-processing:
-  scheduling:
-    frequency: "hourly"
-    dependencies:
-      - "sales_transactions_bronze"
-      - "dim_stores"
-      - "dim_products"
-  expectations:
-    volume:
-      min_rows: 1000
-      max_rows: 1000000
-    latency: "30m"
-
-sla:
-  freshness: "1h"
-  availability: "99.9%"
-  monitoring:
-    metrics:
-      - name: "quality_score"
-        description: "Percentage of rows meeting all rules"
-        threshold: 0.99
-      - name: "processing_time"
-        threshold: "15m"
-      - name: "incremental_volume"
-        description: "Number of new rows per run"
-        alert:
-          min: 100
-          max: 100000
-```
-
-This contract introduces several fundamental concepts adapted to the datalake medallion context:
-
-1. **Multi-level Quality Control**: Quality rules cover both data integrity (transaction uniqueness, amount consistency) and referential integrity with dimensions. This double validation ensures the reliability of downstream analyses.
-
-2. **Batch-Adapted SLAs**: Freshness and availability metrics are calibrated for hourly batch processing, with clear expectations on data volumes expected at each run.
-
-3. **Data Engineering-Oriented Monitoring**: Tracking integrates data processing-specific metrics, such as quality rate and volume variations, essential for detecting anomalies in the processing chain.
+The implementation of data contracts in a data lake context is particularly relevant, especially in a medallion architecture (bronze, silver, gold). Let's take the example of the sales domain, where raw transaction data is progressively refined to feed critical analyses and dashboards.
 
 ## Where to Start?
 
-In a Data Mesh context, the adoption of data contracts must align with the maturity of domains as data producers. I've observed that organizations succeed better when they:
+In a Data Mesh context, data contract adoption must align with domains' maturity as data producers. I've observed that organizations succeed better when they:
 
 1. Identify a mature and motivated business domain to pilot the initiative. In retail, the sales domain often plays this role, creating a concrete example for other domains.
 2. Start with a critical data product having multiple consumers. The silver transactions table is perfect: critical data for reporting, multiple analytical consumers, clear quality needs.
@@ -259,13 +187,13 @@ In a Data Mesh context, the adoption of data contracts must align with the matur
 4. Progressively automate validations and monitoring, transforming the contract into a living tool rather than static documentation.
 5. Document and share successes to create a snowball effect. When other domains see the reduction in incidents and improvement in analysis reliability, they naturally adopt the approach.
 
-The goal isn't immediate perfection, but to establish a new standard for collaboration around data. If you want the adoption of data contracts to be successful, everyone needs to be involved and respect the format, otherwise your production deployment will fail.
+The goal isn't immediate perfection, but to establish a new standard of collaboration around data. If you want data contract adoption to succeed, everyone must be involved and respect the format, without which your production deployment will fail.
 
 ## Conclusion
 
-Data contracts in a datalake aren't just documentation - they become the guardrail that ensures data quality and reliability at each transformation step. By formalizing expectations and responsibilities, they create a trust framework that allows building reliable analyses on quality data.
+Data contracts in a data lake aren't just documentation - they become the guardrail ensuring data quality and reliability at each transformation step. By formalizing expectations and responsibilities, they create a trust framework that allows building reliable analyses on quality data.
 
-In the next article, we'll explore how these contracts integrate into a global data governance strategy, emphasizing the evolution and maintenance of contracts over time.
+In the next article, we'll explore how these contracts integrate into a global data governance strategy, emphasizing contract evolution and maintenance over time.
 
 ## Reference Implementation
 
@@ -275,4 +203,4 @@ The concepts presented in this article are implemented in the following files:
 - [Advanced Data Contract](../../../contracts/customer-domain/customer_profile_events.yaml) - Contract with quality rules
 - [Validation Tests](../../../validation/contract_tests.py) - Validation implementation
 
-To get started with these examples, consult the [quick start guide](../../../README.md#-quick-start).
+To get started with these examples, consult the [quick start guide](../../../README.md#quick-start).

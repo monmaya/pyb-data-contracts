@@ -70,41 +70,90 @@ Vient ensuite une phase de déploiement graduel, où le trafic est progressiveme
 L'observabilité n'est pas une fonctionnalité additionnelle mais une composante fondamentale du système. Sans elle, il est impossible de savoir si les data contracts remplissent leur rôle. Dans notre contexte retail, prenons l'exemple d'un contrat pour les données de ventes :
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:sales:monitoring
 info:
-  title: "sales_data_monitoring"
+  title: "Sales Data Monitoring"
   version: "1.0.0"
-  description: "Configuration du monitoring pour les données de ventes"
+  description: "Monitoring configuration for sales data quality and system health"
+  owner: "data-quality-team"
+  contact:
+    name: "Data Quality Team"
+    email: "dq-team@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/monitoring_config.json"
+    format: "json"
+    description: "Local monitoring configuration"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/monitoring/config/"
+    format: "json"
+    description: "Production monitoring configuration"
+
+models:
   MonitoringConfig:
-    type: "monitoring"
-    technical:
-      # Métriques de santé du système
-      - metric: "contract_validation_latency"
-        threshold: "< 500ms"
-        alert: "high"
-      - metric: "registry_availability"
-        threshold: "> 99.9%"
-        alert: "critical"
+    type: "object"
+    description: "Monitoring metrics configuration"
+    fields:
+      system_health:
+        type: "object"
+        description: "System health metrics"
+        fields:
+          contract_validation_latency:
+            type: "object"
+            description: "Contract validation performance"
+            fields:
+              threshold_ms:
+                type: "integer"
+                description: "Maximum acceptable latency in milliseconds"
+                required: true
+              alert_level:
+                type: "text"
+                enum: ["warning", "critical"]
+                required: true
+          registry_availability:
+            type: "object"
+            description: "Contract registry availability"
+            fields:
+              min_percentage:
+                type: "decimal"
+                description: "Minimum acceptable availability percentage"
+                required: true
+      data_quality:
+        type: "object"
+        description: "Data quality metrics"
+        fields:
+          missing_product_codes:
+            type: "object"
+            description: "Missing product code monitoring"
+            fields:
+              max_percentage:
+                type: "decimal"
+                description: "Maximum acceptable percentage of missing codes"
+                required: true
+              measurement_window:
+                type: "text"
+                description: "Time window for measurement"
+                required: true
 
-    business:
-      # Métriques de qualité des données
-      - metric: "missing_product_codes"
-        threshold: "< 0.1%"
-        alert: "high"
-      - metric: "invalid_sale_amounts"
-        threshold: "< 0.01%"
-        alert: "critical"
+terms:
+  usage: "Monitoring configuration for data quality assurance"
+  limitations: "Alert thresholds require SRE team approval"
+  noticePeriod: "P2D"
 
-    usage:
-      # Métriques d'utilisation
-      - metric: "active_consumers"
-        threshold: "> 0"
-        alert: "info"
-      - metric: "schema_violations"
-        threshold: "< 10 per hour"
-        alert: "warning"
+servicelevels:
+  alerts:
+    description: "Alert response time"
+    responseTime: "PT15M"
+    priority: "P1"
+  
+  reporting:
+    description: "Monitoring reports generation"
+    frequency: "PT1H"
+    retention: "P90D"
 ```
 
 Ces métriques permettent de répondre à des questions concrètes :

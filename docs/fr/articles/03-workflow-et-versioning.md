@@ -58,72 +58,131 @@ La stratégie de versioning d'un data contract doit être pensée dès sa concep
 Voici un exemple de contrat qui illustre cette approche :
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
 info:
-  title: "order_events"
+  title: "Order Events"
   version: "1.0.0"
-  description: "Version initiale du contrat"
-  changelog:
-    - version: "1.0.0"
-      date: "2023-01-01"
-      changes:
-        - type: "initial"
-          description: "Version initiale du contrat"
-lifecycle:
-  deprecation:
-    successor_version: "2.0.0"
-    schedule:
-      announcement_date: "2023-06-01"
-      transition_period:
-        start: "2023-06-01"
-        end: "2023-09-01"
-      support_end: "2023-10-01"
-    migration:
-      guide: "docs/migrations/v1_to_v2.md"
-      tools:
-        - name: "data-converter"
-          path: "tools/convert_v1_to_v2.py"
-    monitoring:
-      usage_metric: "active_consumers_v1"
-      alert_threshold: 5
+  description: "Order events stream contract"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+
+models:
   OrderEvent:
-    type: "stream"
-    schema:
-      fields:
-        - name: "order_id"
-          type: "string"
-        - name: "amount"
-          type: "decimal"
+    type: "table"
+    description: "Order event records"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Migration to v2.0.0 required by 2023-10-01"
+  noticePeriod: "P3M"
+
+servicelevels:
+  availability:
+    description: "Event data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  support:
+    description: "Support during migration period"
+    time: "9am to 5pm EST on business days"
+    responseTime: "P1D"
+  
+  deprecation:
+    description: "Version 1.0.0 deprecation schedule"
+    announcement: "2023-06-01"
+    endOfLife: "2023-10-01"
+    migrationGuide: "docs/migrations/v1_to_v2.md"
 
 ---
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
 info:
-  title: "order_events"
+  title: "Order Events"
   version: "2.0.0"
-  changelog:
-    - version: "2.0.0"
-      date: "2023-06-01"
-      changes:
-        - type: "breaking"
-          description: "Restructuration du montant en devise"
-          migration_guide: "docs/migrations/v2.0.0.md"
+  description: "Enhanced order events stream contract with additional fields"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/orders/events/"
+    format: "parquet"
+    description: "Production order events data"
+
+models:
   OrderEvent:
-    type: "stream"
-    schema:
-      fields:
-        - name: "order_id"
-          type: "string"
-        - name: "amount"
-          type: "struct"
-          fields:
-            - name: "value"
-              type: "decimal"
-            - name: "currency"
-              type: "string"
+    type: "table"
+    description: "Order event records with enhanced fields"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+      customer_id:
+        type: "text"
+        description: "Customer identifier"
+        required: true
+      status:
+        type: "text"
+        description: "Order status"
+        enum: ["created", "confirmed", "shipped", "delivered", "cancelled"]
+        required: true
+      timestamp:
+        type: "timestamp"
+        description: "Event timestamp"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Production use only"
+  noticePeriod: "P6M"
+
+servicelevels:
+  availability:
+    description: "Stream availability"
+    percentage: "99.9%"
+    measurement: "monthly"
+  
+  latency:
+    description: "Event delivery latency"
+    threshold: "PT5S"
+    percentage: "95%"
+  
+  support:
+    description: "24/7 support for critical issues"
+    time: "24/7"
+    responseTime: "PT1H"
 ```
 
 ## La migration comme processus

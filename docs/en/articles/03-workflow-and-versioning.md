@@ -6,14 +6,17 @@
 
 Change in data structures is a constant in our systems. Needs evolve, models are refined, requirements transform. However, each modification to a data contract can have cascading repercussions throughout the information system. Version management thus becomes a balancing act between the necessity of evolution and maintaining stability.
 
-The approach to data contract versioning revolves around three fundamental principles. The first is predictability: all changes must be anticipated and communicated. The second is compatibility: modifications must, whenever possible, preserve the functioning of existing systems. The third is traceability: each evolution must be documented and justified.
+The approach to data contract versioning revolves around three fundamental principles:
+1. Predictability: all changes must be anticipated and communicated
+2. Compatibility: modifications must, whenever possible, preserve the functioning of existing systems
+3. Traceability: each evolution must be documented and justified
 
 ## The Dimensions of Change
 
 The typology of changes in a data contract can be analyzed along several dimensions:
-- The technical dimension concerns the very nature of modifications: additions, deletions, or modifications of fields.
-- The functional dimension focuses on the business impact of changes.
-- The temporal dimension defines the rhythm and progressiveness of evolution.
+- The technical dimension concerns the very nature of modifications: additions, deletions, or modifications of fields
+- The functional dimension focuses on the business impact of changes
+- The temporal dimension defines the rhythm and progressiveness of evolution
 
 ```mermaid
 sequenceDiagram
@@ -53,84 +56,167 @@ sequenceDiagram
 
 ## Versioning Strategies
 
-The versioning strategy of a data contract must be considered from its inception. It relies on a semantic versioning system adapted to the specificities of data contracts. Minor changes, such as adding optional fields, only increment the revision number. Major modifications, which can impact consumers, require a new major version and a migration plan.
-
-Here's an example contract that illustrates this approach:
+The versioning strategy of a data contract must be considered from its inception. Here's an example contract that illustrates this approach:
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
 info:
-  title: "order_events"
+  title: "Order Events"
   version: "1.0.0"
-  description: "Initial contract version"
-  changelog:
-    - version: "1.0.0"
-      date: "2023-01-01"
-      changes:
-        - type: "initial"
-          description: "Initial contract version"
-lifecycle:
-  deprecation:
-    successor_version: "2.0.0"
-    schedule:
-      announcement_date: "2023-06-01"
-      transition_period:
-        start: "2023-06-01"
-        end: "2023-09-01"
-      support_end: "2023-10-01"
-    migration:
-      guide: "docs/migrations/v1_to_v2.md"
-      tools:
-        - name: "data-converter"
-          path: "tools/convert_v1_to_v2.py"
-    monitoring:
-      usage_metric: "active_consumers_v1"
-      alert_threshold: 5
+  description: "Order events stream contract"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+
+models:
   OrderEvent:
-    type: "stream"
-    schema:
-      fields:
-        - name: "order_id"
-          type: "string"
-        - name: "amount"
-          type: "decimal"
+    type: "table"
+    description: "Order event records"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Migration to v2.0.0 required by 2023-10-01"
+  noticePeriod: "P3M"
+
+servicelevels:
+  availability:
+    description: "Event data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  support:
+    description: "Support during migration period"
+    time: "9am to 5pm EST on business days"
+    responseTime: "P1D"
+  
+  deprecation:
+    description: "Version 1.0.0 deprecation schedule"
+    announcement: "2023-06-01"
+    endOfLife: "2023-10-01"
+    migrationGuide: "docs/migrations/v1_to_v2.md"
 
 ---
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
 info:
-  title: "order_events"
+  title: "Order Events"
   version: "2.0.0"
-  changelog:
-    - version: "2.0.0"
-      date: "2023-06-01"
-      changes:
-        - type: "breaking"
-          description: "Amount restructured with currency"
-          migration_guide: "docs/migrations/v2.0.0.md"
+  description: "Enhanced order events stream contract with additional fields"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/orders/events/"
+    format: "parquet"
+    description: "Production order events data"
+
+models:
   OrderEvent:
-    type: "stream"
-    schema:
-      fields:
-        - name: "order_id"
-          type: "string"
-        - name: "amount"
-          type: "struct"
-          fields:
-            - name: "value"
-              type: "decimal"
-            - name: "currency"
-              type: "string"
+    type: "table"
+    description: "Order event records with enhanced fields"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+      customer_id:
+        type: "text"
+        description: "Customer identifier"
+        required: true
+      status:
+        type: "text"
+        description: "Order status"
+        enum: ["created", "confirmed", "shipped", "delivered", "cancelled"]
+        required: true
+      timestamp:
+        type: "timestamp"
+        description: "Event timestamp"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Production use only"
+  noticePeriod: "P6M"
+
+servicelevels:
+  availability:
+    description: "Stream availability"
+    percentage: "99.9%"
+    measurement: "monthly"
+  
+  latency:
+    description: "Event delivery latency"
+    threshold: "PT5S"
+    percentage: "95%"
+  
+  support:
+    description: "24/7 support for critical issues"
+    time: "24/7"
+    responseTime: "PT1H"
 ```
 
-## Migration as a Process
+## Managing Transitions
 
-Migration to a new contract version isn't a one-time event but a process that extends over time. This process begins with a preparation phase where the new version is designed and validated. This is followed by a coexistence period where old and new versions operate in parallel. This phase allows consumers to migrate at their own pace while ensuring service continuity.
+The transition phase between contract versions is particularly delicate. It requires careful orchestration to avoid any disruption to production systems. This orchestration begins with a dual-write period, where data is written simultaneously to both the old and new versions of the contract. This approach allows validating the new version while maintaining existing system stability.
 
-Timing management is crucial in this process. A change that's too rapid can destabilize the ecosystem, while a transition that's too slow can complicate maintenance. The ideal pace depends on multiple factors: the nature of the change, the number of consumers, system criticality.
+### Phase 1: Preparation
+This phase is crucial as it lays the groundwork for a successful transition:
+- The Contract Owner publishes the new version (v2) in the Registry
+- Consumers are automatically notified via the subscription system
+- Teams can begin studying the changes and planning their migration
+- Migration documentation is validated and published
+
+### Phase 2: Dual Write
+This security phase allows validating the new version under real conditions:
+- Data is written simultaneously to v1 and v2 versions
+- Teams can compare results between both versions
+- A 14-day period covers all business cases (month-end, weekends, etc.)
+- Anomalies can be detected without production impact
+
+### Phase 3: Progressive Migration
+The switch is done in stages to minimize risks:
+- 10% of traffic is directed to v2, allowing quick problem detection
+- A 24h validation confirms proper functioning at this first stage
+- Traffic is increased to 50% if no problems are detected
+- After 48 additional hours of validation, the complete switch is made
+
+### Phase 4: Cleanup
+This final phase is often neglected but essential:
+- V1 is officially deprecated in the Registry
+- A final notification is sent to consumers
+- V1 resources are cleaned up (storage, monitoring, etc.)
+- Documentation is updated to reflect v1's end of life
 
 ## Managing End of Life
 
@@ -170,7 +256,5 @@ This structured approach to end of life allows:
 ## Conclusion
 
 Data contract versioning is an art that requires both rigor and pragmatism. It's not just about managing version numbers, but orchestrating the evolution of a complex ecosystem. Success relies on a methodical approach that combines clear processes, proactive communication, and appropriate tools.
-
-A crucial aspect we haven't yet addressed is the management of contract subscriptions. How do we ensure all consumers are properly notified of version changes and end-of-life events? We'll explore this subscription mechanism in our article on architecture patterns, where we'll see how the "Contract Registry" pattern effectively manages this communication.
 
 In the next article, we'll explore the architecture patterns that enable implementing these versioning principles effectively and scalably.

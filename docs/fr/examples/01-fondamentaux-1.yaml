@@ -1,0 +1,84 @@
+dataContractSpecification: 1.1.0
+id: urn:datacontract:customer:profile
+info:
+  title: "Customer Profile"
+  version: "1.0.0"
+  description: "Customer profile data contract"
+  owner: "customer-data-team"
+  contact:
+    name: "Customer Data Team"
+    email: "customer-data@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/customer_profiles.parquet"
+    format: "parquet"
+    description: "Local customer profiles data"
+
+models:
+  CustomerProfile:
+    type: "table"
+    description: "Customer profile information"
+    fields:
+      customer_id:
+        type: "text"
+        description: "Unique customer identifier"
+        required: true
+        unique: true
+      email:
+        type: "text"
+        description: "Customer email address"
+        required: true
+        pii: true
+      first_name:
+        type: "text"
+        description: "Customer first name"
+        required: true
+        pii: true
+      last_name:
+        type: "text"
+        description: "Customer last name"
+        required: true
+        pii: true
+      birth_date:
+        type: "date"
+        description: "Customer birth date"
+        required: true
+        pii: true
+      address:
+        type: "object"
+        description: "Customer address"
+        fields:
+          street:
+            type: "text"
+            description: "Street address"
+            required: true
+          city:
+            type: "text"
+            description: "City"
+            required: true
+          country:
+            type: "text"
+            description: "Country"
+            required: true
+
+terms:
+  usage: "Customer data management and analytics"
+  limitations: "PII data subject to GDPR and CCPA compliance"
+  retention:
+    duration: "5 years"
+    basis: "Legal requirement"
+
+servicelevels:
+  availability:
+    description: "Profile data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  privacy:
+    description: "Privacy compliance"
+    requirements:
+      - "GDPR Article 17 - Right to erasure"
+      - "CCPA Section 1798.105 - Right to deletion"
+    responseTime: "30 days"

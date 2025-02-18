@@ -1,0 +1,68 @@
+dataContractSpecification: 1.1.0
+id: urn:datacontract:recommendation:config
+info:
+  title: "Recommendation Service Configuration"
+  version: "1.0.0"
+  description: "Configuration contract for the recommendation service fallback modes"
+  owner: "recommendation-team"
+  contact:
+    name: "Recommendation Team"
+    email: "reco-team@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/recommendation_config.json"
+    format: "json"
+    description: "Local configuration file"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/recommendation/config/"
+    format: "json"
+    description: "Production configuration"
+
+models:
+  FallbackConfig:
+    type: "object"
+    description: "Fallback configuration for recommendation service"
+    fields:
+      mode:
+        type: "text"
+        description: "Fallback mode"
+        enum: ["default", "degraded", "emergency"]
+        required: true
+      thresholds:
+        type: "object"
+        description: "Performance thresholds for mode activation"
+        fields:
+          latency:
+            type: "integer"
+            description: "Response time threshold in ms"
+            required: true
+          error_rate:
+            type: "decimal"
+            description: "Error rate threshold"
+            required: true
+      sources:
+        type: "array"
+        description: "Data sources to use in this mode"
+        items:
+          type: "text"
+        required: true
+
+terms:
+  usage: "Configuration for recommendation service fallback modes"
+  limitations: "Changes require approval from service owner"
+  noticePeriod: "P1D"
+
+servicelevels:
+  availability:
+    description: "Configuration availability"
+    percentage: "99.99%"
+    measurement: "daily"
+  
+  changes:
+    description: "Configuration change process"
+    approvalRequired: true
+    approvers: ["service-owner", "sre-team"]
+    implementationTime: "PT1H"

@@ -1,0 +1,70 @@
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
+info:
+  title: "Order Events"
+  version: "2.0.0"
+  description: "Enhanced order events stream contract with additional fields"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/orders/events/"
+    format: "parquet"
+    description: "Production order events data"
+
+models:
+  OrderEvent:
+    type: "table"
+    description: "Order event records with enhanced fields"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+      customer_id:
+        type: "text"
+        description: "Customer identifier"
+        required: true
+      status:
+        type: "text"
+        description: "Order status"
+        enum: ["created", "confirmed", "shipped", "delivered", "cancelled"]
+        required: true
+      timestamp:
+        type: "timestamp"
+        description: "Event timestamp"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Production use only"
+  noticePeriod: "P6M"
+
+servicelevels:
+  availability:
+    description: "Stream availability"
+    percentage: "99.9%"
+    measurement: "monthly"
+  
+  latency:
+    description: "Event delivery latency"
+    threshold: "5 seconds"
+    percentage: "95%"
+  
+  support:
+    description: "24/7 support for critical issues"
+    time: "24/7"
+    responseTime: "1 hour"

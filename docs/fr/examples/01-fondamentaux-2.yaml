@@ -1,0 +1,100 @@
+dataContractSpecification: 1.1.0
+id: urn:datacontract:sales:transactions
+info:
+  title: "Sales Transactions"
+  version: "1.0.0"
+  description: "Sales transaction data contract"
+  owner: "sales-data-team"
+  contact:
+    name: "Sales Data Team"
+    email: "sales-data@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/sales_transactions.parquet"
+    format: "parquet"
+    description: "Local sales transactions data"
+  dev:
+    type: "s3"
+    path: "s3://data-lake-dev/sales/transactions/"
+    format: "parquet"
+    description: "Development environment data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/sales/transactions/"
+    format: "parquet"
+    description: "Production environment data"
+
+models:
+  SalesTransaction:
+    type: "table"
+    description: "Sales transaction records"
+    fields:
+      transaction_id:
+        type: "text"
+        description: "Unique transaction identifier"
+        required: true
+        unique: true
+      transaction_date:
+        type: "date"
+        description: "Date of the transaction"
+        required: true
+      store_id:
+        type: "text"
+        description: "Unique store identifier"
+        required: true
+      product_id:
+        type: "text"
+        description: "Unique product identifier"
+        required: true
+      quantity:
+        type: "integer"
+        description: "Quantity sold"
+        minimum: 0
+        required: true
+      unit_price:
+        type: "decimal"
+        description: "Unit price at time of sale"
+        minimum: 0
+        required: true
+      total_amount:
+        type: "decimal"
+        description: "Total line amount"
+        minimum: 0
+        required: true
+
+terms:
+  usage: "Sales analytics and reporting"
+  limitations: "Not suitable for real-time operations"
+  quality:
+    rules:
+      - name: "null_check"
+        description: "Check for null transaction IDs"
+        severity: "error"
+        sql: |
+          SELECT COUNT(*) 
+          FROM sales_transaction 
+          WHERE transaction_id IS NULL
+        threshold: 0
+      
+      - name: "negative_check"
+        description: "Check for negative quantities"
+        severity: "error"
+        sql: |
+          SELECT COUNT(*) 
+          FROM sales_transaction 
+          WHERE quantity < 0
+        threshold: 0
+
+servicelevels:
+  availability:
+    description: "Service availability target"
+    percentage: "99.9%"
+    measurement: "monthly"
+  
+  delivery:
+    description: "Data delivery schedule"
+    type: "batch"
+    frequency: "hourly"
+    latency: "30 minutes"

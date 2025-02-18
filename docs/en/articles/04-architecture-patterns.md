@@ -73,26 +73,76 @@ The Fallback Mode is a crucial component of this pattern. When a failure is dete
 Let's take a concrete retail example: the product recommendation system normally uses real-time customer navigation data. If this data becomes unavailable, the Circuit Breaker activates the Fallback Mode which uses a simpler recommendation model based only on sales history. Performance is reduced, but the service continues to function.
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:recommendation:config
 info:
-  title: "recommendation_service_config"
+  title: "Recommendation Service Configuration"
   version: "1.0.0"
   description: "Configuration of fallback modes for the recommendation service"
+  owner: "recommendation-team"
+  contact:
+    name: "Recommendation Team"
+    email: "recommendation@company.com"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/recommendation_config.json"
+    format: "json"
+    description: "Local configuration file"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/recommendation/config/"
+    format: "json"
+    description: "Production configuration"
+
+models:
   FallbackConfig:
-    type: "config"
-    modes:
-      recommendation_service:
-        - level: "primary"
-          source: "real_time_navigation"
-          schema: "full_customer_behavior"
-        - level: "fallback"
-          source: "sales_history"
-          schema: "minimal_product_data"
-          activation_conditions:
-            - "real_time_data_latency > 30s"
-            - "schema_validation_errors > 5%"
+    type: "object"
+    description: "Fallback configuration for recommendation service"
+    fields:
+      modes:
+        type: "object"
+        description: "Service modes configuration"
+        fields:
+          recommendation_service:
+            type: "array"
+            description: "Recommendation service modes"
+            items:
+              type: "object"
+              fields:
+                level:
+                  type: "text"
+                  description: "Mode level"
+                  enum: ["primary", "fallback"]
+                  required: true
+                source:
+                  type: "text"
+                  description: "Data source"
+                  required: true
+                schema:
+                  type: "text"
+                  description: "Schema to use"
+                  required: true
+                activation_conditions:
+                  type: "array"
+                  description: "Conditions for mode activation"
+                  items:
+                    type: "text"
+
+terms:
+  usage: "Configuration for recommendation service fallback modes"
+  limitations: "Fallback mode limited to 24h continuous operation"
+  noticePeriod: "P1D"
+
+servicelevels:
+  availability:
+    description: "Configuration availability"
+    percentage: "99.99%"
+  
+  change_approval:
+    description: "Change approval process"
+    responseTime: "P1D"
 ```
 
 ## The Proactive Monitoring Pattern

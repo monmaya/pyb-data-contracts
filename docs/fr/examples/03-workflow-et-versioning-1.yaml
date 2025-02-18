@@ -1,0 +1,53 @@
+dataContractSpecification: 1.1.0
+id: urn:datacontract:orders:events
+info:
+  title: "Order Events"
+  version: "1.0.0"
+  description: "Order events stream contract"
+  owner: "order-team"
+  contact:
+    name: "Order Team"
+    email: "order-team@company.com"
+
+servers:
+  local:
+    type: "local"
+    path: "./data/order_events.parquet"
+    format: "parquet"
+    description: "Local order events data"
+
+models:
+  OrderEvent:
+    type: "table"
+    description: "Order event records"
+    fields:
+      order_id:
+        type: "text"
+        description: "Unique order identifier"
+        required: true
+      amount:
+        type: "decimal"
+        description: "Order amount"
+        required: true
+
+terms:
+  usage: "Order event processing and analytics"
+  limitations: "Migration to v2.0.0 required by 2023-10-01"
+  noticePeriod: "P3M"
+
+servicelevels:
+  availability:
+    description: "Event data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  support:
+    description: "Support during migration period"
+    time: "9am to 5pm EST on business days"
+    responseTime: "1 business day"
+  
+  deprecation:
+    description: "Version 1.0.0 deprecation schedule"
+    announcement: "2023-06-01"
+    endOfLife: "2023-10-01"
+    migrationGuide: "docs/migrations/v1_to_v2.md"

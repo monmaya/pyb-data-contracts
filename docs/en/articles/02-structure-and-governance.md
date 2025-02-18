@@ -15,45 +15,90 @@ A well-structured data contract resembles a constitution more than a simple tech
 Here's a concrete example from an e-commerce company:
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:governance:framework
 info:
-  title: "retail_transactions"
-  version: "2.1.0"
-  domain: "retail"
-  owner:
-    team: "retail-data"
-    contact: "retail-data@company.com"
-  stakeholders:
-    - role: "data_steward"
-      team: "data_office"
-      responsibilities: ["quality", "compliance"]
-    - role: "domain_expert"
-      team: "retail_ops"
-      responsibilities: ["business_rules", "definitions"]
-  
-  approval_process:
-    changes:
-      minor:
-        approvers: ["data_steward"]
-        sla: "2 business days"
-      major:
-        approvers: ["data_steward", "domain_expert", "owner"]
-        sla: "5 business days"
-        requires_review_meeting: true
+  title: "Data Contract Governance Framework"
+  version: "1.0.0"
+  description: "Governance framework for data contracts"
+  owner: "data-governance-office"
+  contact:
+    name: "Data Governance Office"
+    email: "dgo@company.com"
 
-contracts:
-  RetailTransaction:
-    type: "batch"
-    format: "parquet"
-    schema:
-      fields:
-        - name: "transaction_id"
-          type: "string"
-          description: "Unique transaction identifier"
-          business_rules:
-            - rule: "format"
-              pattern: "TX-[0-9]{10}"
-              severity: "error"
+models:
+  GovernanceModel:
+    type: "object"
+    description: "Data contract governance model"
+    fields:
+      roles:
+        type: "object"
+        description: "Governance roles and responsibilities"
+        fields:
+          data_steward:
+            type: "object"
+            description: "Data steward role"
+            fields:
+              responsibilities:
+                type: "array"
+                items:
+                  type: "text"
+                description: "Data steward responsibilities"
+                example: ["quality_validation", "compliance_check"]
+              qualifications:
+                type: "array"
+                items:
+                  type: "text"
+                description: "Required qualifications"
+          domain_owner:
+            type: "object"
+            description: "Domain owner role"
+            fields:
+              responsibilities:
+                type: "array"
+                items:
+                  type: "text"
+                description: "Domain owner responsibilities"
+      processes:
+        type: "object"
+        description: "Governance processes"
+        fields:
+          contract_approval:
+            type: "object"
+            description: "Contract approval process"
+            fields:
+              steps:
+                type: "array"
+                items:
+                  type: "object"
+                  fields:
+                    name:
+                      type: "text"
+                    approver:
+                      type: "text"
+                    sla:
+                      type: "text"
+                      format: "duration"
+
+terms:
+  review_cycle:
+    frequency: "P3M"
+    participants: ["data_steward", "domain_owner", "compliance_officer"]
+  
+  escalation:
+    levels:
+      - level: 1
+        handler: "domain_owner"
+        responseTime: "P1D"
+      - level: 2
+        handler: "governance_board"
+        responseTime: "P3D"
+
+servicelevels:
+  approval:
+    description: "Contract approval process"
+    responseTime: "P5D"
+    escalationThreshold: "P7D"
 ```
 
 This contract doesn't just define a schema - it clearly establishes who is responsible for what and how decisions are made.

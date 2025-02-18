@@ -41,88 +41,97 @@ Once in production, the contract enters a phase of continuous evolution, where i
 To support this lifecycle, the contract itself must be structured to capture its evolution. Here's how such a contract might be structured:
 
 ```yaml
-openDataContract: "1.0.0"
+dataContractSpecification: 1.1.0
+id: urn:datacontract:customer:profile
 info:
-  title: "customer_profile"
+  title: "Customer Profile"
   version: "2.0.0"
+  description: "Customer profile data with lifecycle management"
+  owner: "customer-data-team"
+  contact:
+    name: "Customer Data Team"
+    email: "customer-data@company.com"
   status: "active"
-  created_at: "2023-01-15"
-  last_updated: "2023-06-01"
-  review_cycle: "quarterly"
+  created: "2023-01-01"
+  updated: "2023-06-01"
+  review:
+    cycle: "P3M"
+    nextReview: "2023-09-01"
 
-contracts:
+servers:
+  local:
+    type: "local"
+    path: "./data/customer_profiles.parquet"
+    format: "parquet"
+    description: "Local customer profiles data"
+  prod:
+    type: "s3"
+    path: "s3://data-lake-prod/customer/profiles/"
+    format: "parquet"
+    description: "Production customer profiles data"
+
+models:
   CustomerProfile:
-    type: "data"
-    lifecycle:
-      phases:
-        - phase: "draft"
-          start_date: "2023-01-15"
-          end_date: "2023-02-01"
-        - phase: "review"
-          start_date: "2023-02-01"
-          end_date: "2023-02-15"
-        - phase: "active"
-          start_date: "2023-02-15"
-      
-      versions:
-        - version: "1.0.0"
-          status: "deprecated"
-          start_date: "2023-02-15"
-          end_of_life: "2023-08-15"
-          breaking_changes: false
-          
-        - version: "2.0.0"
-          status: "active"
-          start_date: "2023-06-01"
-          breaking_changes: true
-          migration_guide: "docs/migrations/v2.0.0.md"
+    type: "table"
+    description: "Customer profile information"
+    fields:
+      customer_id:
+        type: "text"
+        description: "Unique customer identifier"
+        required: true
+      email:
+        type: "text"
+        description: "Customer email address"
+        required: true
+        pii: true
+      preferences:
+        type: "object"
+        description: "Customer preferences"
+        fields:
+          language:
+            type: "text"
+            description: "Preferred language"
+            required: true
+          marketing_consent:
+            type: "boolean"
+            description: "Marketing communication consent"
+            required: true
 
-      dependencies:
-        - contract: "user_preferences"
-          version: "^1.0.0"
-        - contract: "payment_history"
-          version: "^2.1.0"
-
-      retention:
-        duration: "7 years"
-        compliance: ["GDPR", "CCPA"]
-        archive_policy:
-          type: "cold_storage"
-  phases:
-    - phase: "draft"
-      start_date: "2023-01-15"
-      end_date: "2023-02-01"
-    - phase: "review"
-      start_date: "2023-02-01"
-      end_date: "2023-02-15"
-    - phase: "active"
-      start_date: "2023-02-15"
-      
-  versions:
-    - version: "1.0.0"
-      status: "deprecated"
-      start_date: "2023-02-15"
-      end_of_life: "2023-08-15"
-      breaking_changes: false
-      
-    - version: "2.0.0"
-      status: "active"
-      start_date: "2023-06-01"
-      breaking_changes: true
-      migration_guide: "docs/migrations/v2.0.0.md"
-
-  dependencies:
-    - contract: "user_preferences"
-      version: "^1.0.0"
-    - contract: "payment_history"
-      version: "^2.1.0"
-
+terms:
+  usage: "Customer profile management and personalization"
+  limitations: "Subject to GDPR and CCPA compliance"
   retention:
-    duration: "7 years"
-    compliance: ["GDPR", "CCPA"]
-    archive_policy:
-      type: "cold_storage"
-      location: "s3://archive/"
+    duration: "P5Y"
+    basis: "Legal requirement"
+  dependencies:
+    upstream:
+      - "customer_registration_events"
+      - "preference_updates"
+    downstream:
+      - "marketing_campaigns"
+      - "personalization_service"
+
+servicelevels:
+  availability:
+    description: "Profile data availability"
+    percentage: "99.9%"
+    measurement: "daily"
+  
+  privacy:
+    description: "Privacy compliance"
+    requirements:
+      - "GDPR Article 17 - Right to erasure"
+      - "CCPA Section 1798.105 - Right to deletion"
+    responseTime: "P30D"
+  
+  versions:
+    active:
+      version: "2.0.0"
+      since: "2023-06-01"
+    deprecated:
+      version: "1.0.0"
+      until: "2023-12-31"
+      migrationGuide: "docs/migrations/customer_profile_v1_to_v2.md"
 ```
 
 ## Managing Transitions
