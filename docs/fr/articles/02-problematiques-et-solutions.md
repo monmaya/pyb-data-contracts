@@ -125,7 +125,7 @@ graph TD
 
 ### L'écosystème des parties prenantes
 
-La mise en place des data contracts nécessite une orchestration précise entre de multiples acteurs de l'organisation. Au cœur de cet écosystème, le Business Sponsor porte la vision et débloque les ressources nécessaires, tandis que les Data Managers assurent la supervision quotidienne des opérations. Les Data Owners, garants de la qualité et de l'intégrité des données, travaillent main dans la main avec le Core Data Product Coordinator qui orchestre l'ensemble des interactions.
+La mise en place des data contracts nécessite une orchestration précise entre de multiples acteurs de l'organisation. Au cœur de cet écosystème, le sponsor Business porte la vision et débloque les ressources nécessaires, tandis que les Data Managers assurent la supervision quotidienne des opérations. Les Data Owners, garants de la qualité et de l'intégrité des données, travaillent main dans la main avec le Core Data Product qui orchestre l'ensemble des interactions.
 
 L'équipe produit joue un rôle central dans cette transformation. Le Data Product Owner définit la vision produit en collaboration étroite avec les Source Product Managers qui gèrent les données sources. L'équipe de développement, soutenue par les Data Quality Managers, implémente les contrats en suivant une approche "3 amigos" qui garantit l'alignement entre les besoins métier, la qualité des données et la faisabilité technique.
 
