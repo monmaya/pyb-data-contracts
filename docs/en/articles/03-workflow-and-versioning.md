@@ -8,6 +8,42 @@ Change in data structures is a constant in our systems. Needs evolve, models ref
 
 The approach to data contract versioning revolves around three fundamental principles. The first is predictability: all changes must be anticipated and communicated. The second is compatibility: modifications must, as much as possible, preserve existing systems' functioning. The third is traceability: each evolution must be documented and justified.
 
+## Contract Version vs. Data Model Version
+
+A crucial distinction, often overlooked, is between the contract version and the underlying data model version. These two concepts evolve at different rhythms and for distinct reasons.
+
+**The contract version** concerns the entire contractual document, including metadata, documentation, SLAs, contacts, and other contextual information. This version can evolve frequently without necessarily impacting data consumers.
+
+**The data model version** focuses specifically on the data structure itself: schemas, fields, types, constraints. It's this version that has a direct impact on consumer applications.
+
+Here are some examples of changes that affect only the contract version, without modifying the data model:
+- Updating field descriptions
+- Changing contacts or owners
+- Modifying SLAs
+- Adding examples or additional documentation
+- Updating links to external resources
+- Data classification
+
+In contrast, these changes impact the data model version:
+- Adding, removing, or renaming fields
+- Modifying data types
+- Changing constraints (nullability, uniqueness)
+- Restructuring relationships between entities
+
+This distinction is essential for effective version management. It allows:
+1. Reducing the "fear of change" by clarifying the real impact of modifications
+2. Simplifying approval processes according to the type of change
+3. Communicating more precisely with consumers
+4. Optimizing migration strategies
+
+In practice, a data contract should therefore maintain two distinct version numbers:
+```yaml
+version: 2.3.0          # Global contract version
+schemaVersion: 1.0.0    # Data model version
+```
+
+This clear distinction between the two types of versions allows organizations to streamline governance processes while accelerating non-critical evolution cycles, thus creating an optimal balance between agility and stability.
+
 ## The Dimensions of Change
 
 The typology of changes in a data contract can be analyzed along several dimensions.

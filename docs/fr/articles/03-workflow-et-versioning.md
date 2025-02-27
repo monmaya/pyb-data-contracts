@@ -8,6 +8,42 @@ Le changement dans les structures de données est une constante dans nos systèm
 
 L'approche du versioning des data contracts s'articule autour de trois principes fondamentaux. Le premier est la prévisibilité : tout changement doit être anticipé et communiqué. Le second est la compatibilité : les modifications doivent, dans la mesure du possible, préserver le fonctionnement des systèmes existants. Le troisième est la traçabilité : chaque évolution doit être documentée et justifiée.
 
+## Version du contrat vs. version du modèle de données
+
+Une distinction cruciale, souvent négligée, est celle entre la version du contrat et la version du modèle de données sous-jacent. Ces deux concepts évoluent à des rythmes différents et pour des raisons distinctes.
+
+**La version du contrat** concerne l'ensemble du document contractuel, incluant les métadonnées, la documentation, les SLAs, les contacts, et autres informations contextuelles. Cette version peut évoluer fréquemment sans nécessairement impacter les consommateurs de données.
+
+**La version du modèle de données** se concentre spécifiquement sur la structure des données elle-même : schémas, champs, types, contraintes. C'est cette version qui a un impact direct sur les applications consommatrices.
+
+Voici quelques exemples de changements qui affectent uniquement la version du contrat, sans modifier le modèle de données :
+- Mise à jour des descriptions de champs
+- Changement des contacts ou responsables
+- Modification des SLAs
+- Ajout d'exemples ou de documentation supplémentaire
+- Mise à jour des liens vers des ressources externes
+- La classification des données
+
+En revanche, ces changements impactent la version du modèle de données :
+- Ajout, suppression ou renommage de champs
+- Modification des types de données
+- Changement des contraintes (nullabilité, unicité)
+- Restructuration des relations entre entités
+
+Cette distinction est essentielle pour une gestion efficace du versioning. Elle permet de :
+1. Réduire la "peur du changement" en clarifiant l'impact réel des modifications
+2. Simplifier les processus d'approbation selon le type de changement
+3. Communiquer plus précisément avec les consommateurs
+4. Optimiser les stratégies de migration
+
+Dans la pratique, un data contract devrait donc maintenir deux numéros de version distincts :
+```yaml
+version: 2.3.0          # Version du contrat global
+schemaVersion: 1.0.0    # Version du modèle de données
+```
+
+Cette distinction claire entre les deux types de versions permet de rationaliser les processus de gouvernance tout en accélérant les cycles d'évolution non critiques, créant ainsi un équilibre optimal entre agilité et stabilité.
+
 ## Les dimensions du changement
 
 La typologie des changements dans un data contract peut être analysée selon plusieurs dimensions. 
