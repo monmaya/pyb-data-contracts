@@ -89,31 +89,6 @@ The typical process includes the following steps:
 
 One of the key advantages of this method is that it allows early identification of incompatibilities and implementation challenges, thereby reducing later correction costs.
 
-## The Practice of Contract-as-Code
-
-The Contract-as-Code approach treats data contracts as source code, with all associated software engineering practices.
-
-```mermaid
-graph TD
-    subgraph "Contract-as-Code Method"
-        A[Contract Source] -->|Version Control| B[Git Repository]
-        B -->|CI Pipeline| C[Validation]
-        C -->|Build| D[Contract Artifact]
-        D -->|Publish| E[Contract Registry]
-        F[Contract Tests] -->|Verify| C
-        G[Schema Tools] -->|Generate| H[Code/Schema Artifacts]
-        A -->|Generate| H
-    end
-```
-
-The key principles of this approach are:
-
-1. **Versioning**: Use of version control systems to track evolution
-2. **Code Review**: Application of the same review practices as for code
-3. **CI/CD**: Continuous integration and deployment of contracts
-4. **Automated Tests**: Automatic validation of contracts before deployment
-5. **Artifact Generation**: Automatic production of schemas, documentation, and client code
-
 ## Practical Guide: Creating a Data Contract from A to Z
 
 Enough theory! Let's see concretely how to create a data contract, step by step, from its design to its deployment. I will guide you through the complete process with an example that you can adapt to your context.
