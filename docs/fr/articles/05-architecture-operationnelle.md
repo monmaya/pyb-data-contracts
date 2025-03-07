@@ -1,8 +1,10 @@
-# Patterns d'architecture : les patterns qui marchent vraiment
+# Patterns d'architecture opérationnelle : les patterns qui marchent vraiment en production
 
 "En théorie, il n'y a pas de différence entre la théorie et la pratique. En pratique, il y en a." 
 
-Cette maxime prend tout son sens quand on parle de patterns d'architecture pour les data contracts. Les patterns architecturaux que nous allons explorer ne sont pas de simples abstractions théoriques, mais des modèles conceptuels qui structurent la façon dont les data contracts s'intègrent dans l'écosystème data d'une organisation.
+Cette maxime prend tout son sens quand on parle de patterns d'architecture opérationnelle pour les data contracts. Les patterns que nous allons explorer dans cet article se concentrent sur la façon dont les data contracts fonctionnent et sont gérés une fois qu'ils sont créés et déployés en production.
+
+Contrairement à l'architecture de construction des data contracts (que nous aborderons dans un article dédié), l'architecture opérationnelle s'intéresse à la façon dont les contrats s'intègrent dans l'écosystème data d'une organisation et comment ils sont maintenus, distribués et surveillés au quotidien.
 
 ## Le pattern contract registry
 
