@@ -608,9 +608,9 @@ Sans registre, vous vous retrouverez rapidement avec des contrats éparpillés, 
    - **Avantages**: Workflow optimisé, moins de friction, meilleure adoption
    - **Fonctionnalités clés**: Recherche avancée, dépendances entre contrats, alertes d'impact, métriques d'utilisation
 
-### Types de registres
+### Types de registres : choisir la solution adaptée à votre maturité
 
-Plusieurs options s'offrent à vous selon votre maturité :
+Le choix d'un registre de contrats n'est pas anodin et doit correspondre à la maturité de votre organisation en matière de data contracts. Une solution trop complexe risque d'être sous-utilisée, tandis qu'une approche trop basique pourrait rapidement montrer ses limites face à un nombre croissant de contrats. Évaluez honnêtement votre niveau de maturité actuel et anticipez vos besoins à moyen terme avant de choisir parmi ces options :
 
 1. **Solution basique** : Un dépôt Git dédié avec une structure documentée
    - **Avantages** : Facile à mettre en place, versionnement intégré
@@ -626,7 +626,7 @@ Plusieurs options s'offrent à vous selon votre maturité :
 
 ### Fonctionnalités essentielles d'un bon registre de contrats
 
-Pour être vraiment efficace, votre registre devrait offrir:
+Quelle que soit la solution retenue, certaines fonctionnalités sont déterminantes pour garantir l'efficacité de votre registre à long terme. Ces capacités constituent le socle minimal que vous devriez exiger ou planifier de développer progressivement :
 
 1. **Interface de recherche et de découverte**:
    - Recherche par métadonnées (propriétaire, domaine, version)
@@ -642,6 +642,8 @@ Pour être vraiment efficace, votre registre devrait offrir:
    - API pour l'automatisation et l'intégration
    - Hooks pour les notifications et l'exécution de workflows
    - Génération automatique d'artifacts (documentation, code client)
+
+En définitive, le registre de contrats que vous choisirez devra évoluer avec votre organisation. Commencez peut-être avec une solution simple, mais gardez à l'esprit que l'investissement dans un registre robuste rapportera des dividendes considérables en termes de productivité des équipes et de qualité des données échangées. Le temps économisé en recherche de contrats, en résolution de malentendus et en réconciliation de versions divergentes justifiera amplement l'effort initial.
 
 ## Conclusion
 

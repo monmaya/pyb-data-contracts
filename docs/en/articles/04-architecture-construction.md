@@ -606,9 +606,9 @@ Without a registry, you will quickly find yourself with scattered contracts, con
    - **Advantages**: Optimized workflow, less friction, better adoption
    - **Key Features**: Advanced search, contract dependencies, impact alerts, usage metrics
 
-### Types of Registries
+### Types of Registries: Choosing the solution adapted to your maturity
 
-Several options are available depending on your maturity:
+Choosing a contract registry is not a trivial decision and must correspond to your organization's maturity regarding data contracts. A solution that's too complex risks being underutilized, while an approach that's too basic could quickly show its limitations when facing a growing number of contracts. Honestly evaluate your current maturity level and anticipate your medium-term needs before choosing among these options:
 
 1. **Basic Solution**: A dedicated Git repository with a documented structure
    - **Advantages**: Easy to set up, integrated versioning
@@ -640,6 +640,8 @@ To be truly effective, your registry should offer:
    - API for automation and integration
    - Hooks for notifications and workflow execution
    - Automatic artifact generation (documentation, client code)
+
+Ultimately, the contract registry you choose should evolve with your organization. Perhaps start with a simple solution, but keep in mind that investing in a robust registry will pay considerable dividends in terms of team productivity and quality of exchanged data. The time saved in searching for contracts, resolving misunderstandings, and reconciling divergent versions will amply justify the initial effort.
 
 ## Conclusion
 
