@@ -37,16 +37,18 @@ Le mécanisme d'abonnement est central dans ce pattern :
 - Toute modification d'un contrat (nouvelle version, dépréciation) déclenche une notification aux abonnés concernés
 - Les producteurs peuvent consulter la liste des consommateurs de leurs contrats
 
-## Le pattern circuit breaker
+## Le pattern de résilience des data contracts
 
-Le pattern Circuit Breaker représente une approche sophistiquée de la gestion de la résilience dans un écosystème de data contracts. Son principe fondamental est d'éviter la propagation des défaillances en détectant et en isolant rapidement les problèmes.
+Le pattern de résilience des data contracts s'inspire du célèbre pattern Circuit Breaker utilisé en développement logiciel, mais l'adapte spécifiquement au contexte des contrats de données. Son principe fondamental est d'éviter la propagation des défaillances liées aux violations de contrat en détectant et en isolant rapidement les problèmes.
 
 ```mermaid
 graph TD
-    subgraph "Circuit Breaker Pattern"
-        P[Producteur] -->|Publie| D[Données]
-        D -->|Consomme| C[Consommateur]
-        E[Service Check] -->|Vérifie| F[Health Monitor]
+    subgraph "Pattern de Résilience des Data Contracts"
+        P[Producteur] -->|Publie selon| DC[Data Contract]
+        DC -->|Valide| D[Données]
+        D -->|Consomme selon| DC
+        D -->|Utilisées par| C[Consommateur]
+        E[Contract Validator] -->|Vérifie| F[Health Monitor]
         F -->|Déclenche| G[Circuit State]
         G -->|Protège| C
         G -->|Active| H[Fallback Mode]
@@ -54,37 +56,68 @@ graph TD
 
     classDef producer fill:#e6ffe6;
     classDef consumer fill:#e6f3ff;
+    classDef contract fill:#ffe6e6;
     class P producer;
     class C consumer;
+    class DC contract;
 ```
 
-Ce pattern opère à trois niveaux distincts :
+Ce pattern opère à trois niveaux distincts, tous centrés sur le data contract :
 
-1. **Détection** : Surveillance continue de la santé des flux de données et des contrats associés
-2. **Protection** : Isolation rapide des composants défaillants pour éviter les effets en cascade
-3. **Récupération** : Gestion de la reprise progressive du service
+1. **Détection des violations de contrat** : Surveillance continue de la conformité des données par rapport aux contrats établis (schéma, qualité, SLAs)
+2. **Protection des consommateurs** : Isolation rapide des flux de données non conformes pour éviter la propagation des erreurs
+3. **Adaptation contrôlée** : Mise en place de stratégies de dégradation gracieuse définies dans le contrat lui-même
 
-Le Fallback Mode est un composant crucial de ce pattern. Lorsqu'une défaillance est détectée, au lieu d'échouer complètement, le système bascule vers un mode dégradé mais fonctionnel. Par exemple :
+### Le Circuit Breaker appliqué aux data contracts
 
-- Si les données temps réel ne sont pas disponibles, utiliser les dernières données valides en cache
-- Si le schéma complet ne peut pas être validé, accepter un sous-ensemble minimal de champs critiques
-- Si le producteur principal est indisponible, basculer vers une source de données secondaire
+Le Circuit Breaker dans ce contexte fonctionne comme suit :
+- **État fermé** : Les données circulent normalement, conformément au contrat
+- **État ouvert** : Lorsque trop de violations de contrat sont détectées, le circuit s'ouvre pour protéger les consommateurs
+- **État semi-ouvert** : Après un délai, le système teste si les problèmes sont résolus avant de refermer complètement le circuit
 
-Prenons un exemple concret dans le retail : le système de recommandation produits utilise normalement des données temps réel de navigation client. Si ces données deviennent indisponibles, le Circuit Breaker active le Fallback Mode qui utilise un modèle de recommandation plus simple basé uniquement sur l'historique des ventes. Les performances sont réduites, mais le service continue de fonctionner.
+Ce qui distingue ce pattern, c'est que les règles d'ouverture et de fermeture du circuit sont directement spécifiées dans le data contract, rendant le système auto-adaptatif.
+
+### Le Fallback Mode comme stratégie de résilience
+
+Le Fallback Mode est une stratégie complémentaire au Circuit Breaker. Lorsque le circuit est ouvert (indiquant des violations de contrat), au lieu d'échouer complètement, le système peut basculer vers un mode dégradé mais fonctionnel, également défini dans le contrat. Par exemple :
+
+- Si les données temps réel ne respectent pas le contrat de fraîcheur, utiliser les dernières données valides en cache
+- Si le schéma complet ne peut pas être validé, accepter un sous-ensemble minimal de champs critiques définis dans le contrat
+- Si le producteur principal est indisponible, basculer vers une source de données secondaire spécifiée dans le contrat
+
+Prenons un exemple concret dans le retail : le système de recommandation produits utilise normalement des données temps réel de navigation client, avec un contrat spécifiant la structure et la fraîcheur des données. Le contrat inclut également des règles de résilience :
 
 ```yaml
-fallback_modes:
-  recommendation_service:
-    - level: "primary"
-      source: "real_time_navigation"
-      schema: "full_customer_behavior"
-    - level: "fallback"
-      source: "sales_history"
-      schema: "minimal_product_data"
-      activation_conditions:
-        - "real_time_data_latency > 30s"
+data_contract:
+  name: "customer_behavior_data"
+  schema: "full_customer_behavior.avsc"
+  sla:
+    freshness: "< 5min"
+    completeness: "> 95%"
+  
+  # Règles de résilience intégrées au contrat
+  resilience:
+    circuit_breaker:
+      open_when:
         - "schema_validation_errors > 5%"
+        - "data_freshness > 30min"
+      recovery:
+        retry_after: "5min"
+        max_retries: 3
+    
+    fallback_modes:
+      - level: "primary"
+        source: "real_time_navigation"
+        schema: "full_customer_behavior"
+      - level: "fallback"
+        source: "sales_history"
+        schema: "minimal_product_data"
+        activation_conditions:
+          - "real_time_data_latency > 30s"
+          - "schema_validation_errors > 5%"
 ```
+
+Cette approche intègre directement les stratégies de résilience dans le data contract lui-même, créant ainsi un système auto-adaptatif capable de maintenir un service, même dégradé, face aux défaillances.
 
 ## Le pattern de monitoring proactif
 
@@ -111,11 +144,11 @@ L'approche proactive du monitoring repose sur trois piliers fondamentaux. Le pre
 
 ## L'orchestration des patterns
 
-La véritable puissance de ces patterns émerge de leur orchestration harmonieuse. Le Registry alimente le Circuit Breaker en informations sur l'état des contrats, tandis que le monitoring fournit une vue d'ensemble de la santé du système. Cette synergie crée un système auto-régulé capable de maintenir sa stabilité face aux perturbations.
+La véritable puissance de ces patterns émerge de leur orchestration harmonieuse. Le Registry alimente le pattern de résilience en informations sur l'état des contrats, tandis que le monitoring fournit une vue d'ensemble de la santé du système. Cette synergie crée un système auto-régulé capable de maintenir sa stabilité face aux perturbations.
 
 ```mermaid
 graph TD
-    A[Contract Registry] -->|Alimente| B[Circuit Breaker]
+    A[Contract Registry] -->|Alimente| B[Pattern de Résilience]
     B -->|Informe| C[Monitoring]
     C -->|Ajuste| A
 ```

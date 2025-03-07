@@ -1,4 +1,4 @@
-# Versioning : gérer l'évolution sans la révolution
+# Data contracts et versioning : fondation incontournable pour une évolution réussie
 
 "Comment modifier ce champ sans casser les applications existantes ?" Cette question, posée lors d'un comité d'architecture, illustre parfaitement le défi du versioning des data contracts. L'évolution est inévitable, mais elle ne doit pas se transformer en révolution. Le versioning des data contracts représente un défi crucial dans la gestion des données modernes, où le changement est constant mais doit être maîtrisé pour éviter les perturbations.
 

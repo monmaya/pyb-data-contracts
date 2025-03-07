@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: datacontract_manager/docker/backend.Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./datacontract_manager/backend:/app
+      - ./contracts:/app/contracts
+    environment:
+      - PYTHONPATH=/app
+      - CONTRACTS_DIR=/app/contracts
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: .
+      dockerfile: datacontract_manager/docker/frontend.Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./datacontract_manager/frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend 

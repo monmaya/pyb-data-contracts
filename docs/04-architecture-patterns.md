@@ -1,42 +1,3 @@
-# Architecture Patterns: The Patterns That Really Work
-
-"In theory, there is no difference between theory and practice. In practice, there is."
-
-This maxim takes on its full meaning when discussing architecture patterns for data contracts. The architectural patterns we'll explore aren't just theoretical abstractions, but conceptual models that structure how data contracts integrate into an organization's data ecosystem.
-
-## The Contract Registry Pattern
-
-At the heart of any data contract architecture lies the Contract Registry pattern. This pattern addresses a fundamental problem: how to effectively centralize and distribute data contracts across the organization? The Registry acts as a single source of truth, offering a centralized access point while managing contract distribution and updates.
-
-```mermaid
-graph TD
-    subgraph "Contract Registry Pattern"
-        P[Producers] -->|Publish| A[Registry API]
-        A -->|Stores| B[Contract Store]
-        A -->|Caches| C[Cache Layer]
-        A -->|Notifies| D[Event Bus]
-        D -->|Notifications| S[Subscribers]
-        S -->|Subscribe| A
-        subgraph "Subscription Management"
-            A -->|Records| AB[Subscriptions]
-            AB -->|Verifies| D
-        end
-    end
-
-    classDef producer fill:#e6ffe6;
-    classDef consumer fill:#e6f3ff;
-    class P producer;
-    class S consumer;
-```
-
-The essence of this pattern lies in its ability to manage the complete lifecycle of contracts. The Registry doesn't just passively store contracts; it actively orchestrates their distribution, validation, and evolution. The cache layer optimizes performance by reducing access latency to frequently used contracts, while the event bus enables efficient asynchronous communication between different system components.
-
-The subscription mechanism is central to this pattern:
-- Consumers subscribe to contracts they're interested in
-- The Registry maintains a subscription registry
-- Any contract modification (new version, deprecation) triggers a notification to affected subscribers
-- Producers can consult the list of consumers for their contracts
-
 ## The Data Contract Resilience Pattern
 
 The Data Contract Resilience Pattern draws inspiration from the well-known Circuit Breaker pattern used in software development, but adapts it specifically to the context of data contracts. Its fundamental principle is to prevent the propagation of failures related to contract violations by quickly detecting and isolating problems.
@@ -143,28 +104,7 @@ servicelevels:
 
 This approach directly integrates resilience strategies into the data contract itself, creating a self-adaptive system capable of maintaining service, even in a degraded state, in the face of failures.
 
-## The Proactive Monitoring Pattern
-
-Proactive monitoring goes beyond simple passive surveillance. This pattern deeply integrates observability into the data contracts architecture, allowing not just to detect problems, but to anticipate them.
-
-```mermaid
-graph TD
-    subgraph "Monitoring Pattern"
-        P[Producers] -->|Metrics| I[Metrics Collector]
-        C[Consumers] -->|Feedback| I
-        I -->|Analyzes| K[Dashboards]
-        I -->|Detects| L[Alerts]
-        L -->|Alerts| P
-        L -->|Alerts| C
-    end
-
-    classDef producer fill:#e6ffe6;
-    classDef consumer fill:#e6f3ff;
-    class P producer;
-    class C consumer;
-```
-
-The proactive approach to monitoring rests on three fundamental pillars. The first is continuous collection of relevant metrics, ranging from data compliance to system performance. The second is real-time analysis of these metrics to detect trends and anomalies. The third is the ability to trigger automatic corrective actions when certain thresholds are reached.
+## The Proactive Monitoring Pattern 
 
 ## Pattern Orchestration
 
@@ -177,10 +117,4 @@ graph TD
     C -->|Adjusts| A
 ```
 
-This orchestration enables dynamic management of data contracts, where each pattern plays a specific role in maintaining the quality and reliability of the overall system.
-
-## Conclusion
-
-The architectural patterns of data contracts aren't just theoretical models, but practical guides for building robust and scalable systems. Their successful implementation relies on a deep understanding of their interactions and complementarity.
-
-However, experience shows that production deployment of data contracts is often the stumbling block for many projects. How to manage performance at scale? How to ensure high availability of the Registry? How to orchestrate the deployment of different components? These crucial questions, often neglected in the design phase, will be the subject of our next article on industrializing data contracts.
+This orchestration enables dynamic management of data contracts, where each pattern plays a specific role in maintaining the quality and reliability of the overall system. 
