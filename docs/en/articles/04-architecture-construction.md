@@ -537,25 +537,30 @@ datacontract publish customer_profile.datacontract.yaml \
   --token $REGISTRY_TOKEN
 ```
 
-### Step 7: Support Adoption
+### Step 7: Drive Adoption
 
-To maximize the adoption of data contracts, set up a comprehensive support system:
+To maximize data contract adoption, focus on these key actions:
 
-1. **Create a quick start guide** for consumers:
+1. **Practical documentation** - Create a clear usage guide with concrete examples:
+   ```markdown
+   # Customer Profile Contract Usage Guide
+   
+   ## API Access
+   Request credentials from the CRM team via the self-service portal.
+   
+   ## Example Request
+   curl -X GET "https://api.example.com/customers/CUS123456" -H "Authorization: Bearer TOKEN"
+   ```
 
-```markdown
-# User Guide for the Customer Profile Contract
+2. **Developer resources** - Provide code samples in languages used by your teams
 
-## Getting Started
+3. **Support channels** - Set up a dedicated Slack channel and regular office hours
 
-### API Access
-Request your credentials from the CRM team via the self-service portal.
+4. **Feedback loop** - Implement simple metrics to track usage and gather improvement ideas
 
-### Example Request
-```bash
-curl -X GET "https://api.example.com/customers/CUS123456" \
-  -H "Authorization: Bearer TOKEN"
-```
+5. **Knowledge sharing** - Run focused workshops and create demo videos
+
+By keeping support practical and targeted, you'll turn your data contract from documentation into an integral part of your data operations.
 
 ## The Contract Registry: An Essential Element
 
