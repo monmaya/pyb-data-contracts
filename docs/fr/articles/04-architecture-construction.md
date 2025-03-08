@@ -102,7 +102,7 @@ Commençons par créer un contrat simple. Voici comment procéder :
 On pourrait dire écrire: 1. Création de la première version du contract par le domain producteur de la donnée. 
 Pour des raisons de lisibilité, nous formaliserons le contrat en yaml.
 
-3. **Initialisez un fichier de data contract** à la racine, par exemple `customer_profile.datacontract.yaml` :
+2. **Initialisez un fichier de data contract** à la racine, par exemple `customer_profile.datacontract.yaml` :
 
 ```yaml
 # customer_profile.datacontract.yaml
