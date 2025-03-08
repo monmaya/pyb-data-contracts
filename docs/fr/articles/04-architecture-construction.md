@@ -82,7 +82,7 @@ Le processus typique comprend les étapes suivantes :
 
 1. **Workshop initial** : Session collaborative où producteurs et consommateurs définissent leurs besoins
 2. **Création du draft** : Élaboration d'une première version du contrat
-3. **Review technique** : Vérification de la faisabilité technique et de la cohérence
+3. **Discovery Technico-Fonctionnelle** : Validation des requirements business définis + Faisabilité technique
 4. **Review métier** : Validation par les experts domaine
 5. **Review de gouvernance** : Vérification de la conformité aux standards et politiques
 6. **Finalisation** : Consolidation des feedbacks et validation finale
