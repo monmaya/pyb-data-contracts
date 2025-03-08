@@ -98,7 +98,7 @@ Assez de théorie ! Voyons concrètement comment créer un data contract, pas à
 
 Commençons par créer un contrat simple. Voici comment procéder :
 
-1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.)
+1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.) _**--> Est ce que cette approche n'est pas contradictoire avec le point 5 --> Approche Domain Driven ? Un contrat souvent est initié par le producteur avec un profil plutôt produit que technique**_
 
 2. **Initialisez un fichier de data contract** à la racine, par exemple `customer_profile.datacontract.yaml` :
 
