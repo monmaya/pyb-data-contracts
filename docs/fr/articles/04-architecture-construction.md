@@ -35,7 +35,7 @@ Cette approche repose sur cinq principes fondamentaux :
    Il ne s'agit pas simplement de réunir les équipes techniques. Un data contract efficace nécessite la participation active de plusieurs profils complémentaires :
    - Les **producteurs de données** apportent leur connaissance des systèmes sources, des contraintes techniques et des possibilités d'extraction
    - Les **consommateurs** expriment leurs besoins, cas d'usage et exigences de qualité
-   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine
+   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine _---> Les experts métiers c le data producer non ?_
    - La **gouvernance data** assure l'alignement avec les politiques de l'entreprise, la sécurité et la conformité réglementaire
    
    J'ai observé que l'absence d'un seul de ces profils peut conduire à des contrats déséquilibrés, soit trop techniques et déconnectés des besoins réels, soit irréalistes en termes d'implémentation.
