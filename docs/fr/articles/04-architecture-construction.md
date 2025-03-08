@@ -83,9 +83,10 @@ Le processus typique comprend les étapes suivantes :
 1. **Workshop initial** : Session collaborative où producteurs et consommateurs définissent leurs besoins
 2. **Création du draft** : Élaboration d'une première version du contrat
 3. **Discovery Technico-Fonctionnelle** : Validation des requirements business définis + Faisabilité technique
-4. **Review métier** : Validation par les experts domaine
+4. **Review métier** : Validation par les experts domaine ---> _Pareil - à mon sens c'est porté par le data producer normalement. Derriere le mot métier tu mets quoi ?_
 5. **Review de gouvernance** : Vérification de la conformité aux standards et politiques
-6. **Finalisation** : Consolidation des feedbacks et validation finale
+6. **Review de la sécurité** : Vérification de l'architecture technique sur le prisme orienté sécurité
+7. **Finalisation** : Consolidation des feedbacks et validation finale
 
 L'un des avantages clés de cette méthode est qu'elle permet d'identifier très tôt les incompatibilités et les challenges d'implémentation, réduisant ainsi les coûts de correction ultérieurs.
 
