@@ -1,6 +1,6 @@
 # Building a Data Contract: From Design to Deployment
 
-When we talk about data contracts, we often focus on their role in production: how they regulate data exchanges, integrate into the information system, and ensure pipeline reliability. Their impact also plays out upstream, from their initial design. However, I've observed that this decisive phase often remains in the shadows. It's a bit like admiring a building for its architecture without ever discussing the construction site that gave birth to it. Yet it's during construction that decisions are made that ensure the solidity and longevity of the whole.
+When discussing data contracts, we often focus on their role in production: how they regulate data exchanges, integrate into the information system, and ensure pipeline reliability. Their impact also plays out upstream, from their initial design. However, I've observed that this decisive phase often remains in the shadows. It's a bit like admiring a building for its architecture without ever discussing the construction site that gave birth to it. Yet it's during construction that decisions are made that ensure the solidity and longevity of the whole.
 
 In this article, I invite you to explore the backstage of data contract creation within a multidisciplinary team. Discover the architecture, product, and engineering methods that transform a simple idea into a robust contract, from conception to first deployment.
 
@@ -112,8 +112,6 @@ Now that the framework is established, let's see concretely how to create a data
 Let's start by creating a simple contract. Here's how to proceed:
 
 1. **Create a dedicated repository** in your version control system (GitHub, GitLab, etc.)
-Creation of the first version of the contract by the data domain producer.
-For readability reasons, we'll formalize the contract in YAML.
 
 2. **Initialize a data contract file** at the root, for example `customer_profile.datacontract.yaml`:
 
