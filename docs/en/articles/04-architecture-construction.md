@@ -1,24 +1,30 @@
-# Construction Architecture of Data Contracts: From Design to Deployment
+# Building a Data Contract: From Design to Deployment
 
-When we talk about data contracts, we often focus on their operation in production - how they regulate data exchanges, how they integrate into the information system. But there is a story that unfolds long before: that of their creation. Over the course of my consultations, I've noticed that this crucial construction phase remains in the shadows, even though it shapes the future of the entire data infrastructure.
+When we talk about data contracts, we often focus on their role in production: how they regulate data exchanges, integrate into the information system, and ensure pipeline reliability. Their impact also plays out upstream, from their initial design. However, I've observed that this decisive phase often remains in the shadows. It's a bit like admiring a building for its architecture without ever discussing the construction site that gave birth to it. Yet it's during construction that decisions are made that ensure the solidity and longevity of the whole.
 
-It's a bit like admiring a building for its architecture without ever talking about the construction site that saw it come to life. Yet, it is during construction that decisions are made that will ensure the solidity and longevity of the whole. In this article, I invite you to explore the backstage of data contract creation, to discover the methods that transform a simple idea into a robust contract, from its design to its first deployment.
+In this article, I invite you to explore the backstage of data contract creation within a multidisciplinary team. Discover the architecture, product, and engineering methods that transform a simple idea into a robust contract, from conception to first deployment.
 
-## The Collaborative Contract Design Approach
+## The Collaborative Product Approach to Contracts
 
-At the heart of data contract construction is the Collaborative Contract Design approach. This method addresses a fundamental issue: how to design contracts that meet the needs of all stakeholders?
+At the heart of data contract construction lies a product approach.
+
+- Who are the users of my product and what are their needs (user-centered)?
+- What needs do I want to address (vision) for what benefits (impact)?
+- How can I test and collect improvement perspectives (feedback)?
+- How do they ensure effective collaboration between different stakeholders (interoperability)?
+- Are they designed to evolve and adapt to future needs (scalability)?
 
 ```mermaid
 graph TD
-    subgraph "Collaborative Contract Design Approach"
+    subgraph "Product Approach to Contract Design"
         P[Producers] -->|Propose| A[Contract Workshop]
         C[Consumers] -->|Require| A
         A -->|Produces| D[Contract Draft]
         D -->|Review| R[Review Process]
         R -->|Feedback| D
-        R -->|Approve| F[Final Contract]
+        R -->|Approves| F[Final Contract]
         G[Domain Experts] -->|Validate| R
-        H[Data Governance] -->|Supervise| R
+        H[Data Governance] -->|Supervises| R
     end
 
     classDef producer fill:#e6ffe6;
@@ -29,30 +35,36 @@ graph TD
     class H governance;
 ```
 
-This approach is based on five fundamental principles:
+In the context of contracts, this approach relies particularly on five principles:
 
 1. **Multidisciplinary Participation**  
-   It's not just about bringing together technical teams. An effective data contract requires the active participation of several complementary profiles:
+   An effective data contract requires the active participation of several complementary profiles:
    - **Data producers** bring their knowledge of source systems, technical constraints, and extraction possibilities
-   - **Consumers** express their needs, use cases, and quality requirements
-   - **Business experts** ensure that the contract accurately reflects business reality and domain semantics
+   - **End users** express their needs, use cases, and quality requirements
+   - **Business experts** ensure the contract accurately reflects business reality and domain semantics
    - **Data governance** ensures alignment with company policies, security, and regulatory compliance
-   
-   I've observed that the absence of even one of these profiles can lead to unbalanced contracts, either too technical and disconnected from real needs, or unrealistic in terms of implementation.
+
+The contract addresses everyone, meaning all these profiles as **data consumers** in their daily work. The sum of contracts becomes a scalable way to enable the discovery of the data assets.
+
+Forgetting any of these profiles leads to unbalanced contracts, either too technical and disconnected from real needs, or unrealistic in terms of implementation.
 
 2. **Rapid Iteration**  
-   Unlike the "big design upfront" approach, collaborative design favors short, iterative cycles:
+   Unlike the "big design upfront" approach, the product approach favors short, iterative cycles. For contracts, this translates in two ways.
+   The first, traditionally:
    - Start with a minimalist version of the contract that meets essential needs
    - Gather feedback quickly before committing to costly developments
    - Adjust and enrich the contract progressively
-   - Validate each iteration with all stakeholders
+   - Validate each iteration with stakeholders
+  The second, cross-cutting and strategic:
+   - Identify the data maturity of actors who will be your early adopters, choosing only those for whom implementation doesn't represent a high cost
+   - Determine if you want to test the impact across the entire value chain (for example, if your data quality issues are a major concern) or in a particular area (for example, if you have significant functional and technical debt, and need to highlight the quality of one data product compared to others)
    
-   This approach significantly reduces the risk of spending weeks designing a contract that ultimately proves unsuitable. In my practice, I recommend iterations of 1 to 2 weeks maximum, with frequent synchronization points.
+   This approach significantly reduces the risk of spending weeks designing a contract that ultimately proves unsuitable. Provided users are available for feedback, iterations of 1 to 2 weeks maximum are preferable, with frequent synchronization points.
 
 3. **Contextual Documentation**  
    Beyond the data structure, the contract must capture the "why" behind each decision:
-   - Document the alternatives considered and the reasons for the choices made
-   - Explicitly state the accepted trade-offs (e.g., between performance and exhaustiveness)
+   - Document the alternatives considered and the reasons for choices made
+   - Explain accepted trade-offs (for example between performance and completeness)
    - Record key discussions that led to decisions
    - Reference business or technical constraints that influenced the design
    
@@ -61,43 +73,47 @@ This approach is based on five fundamental principles:
 4. **Test-Driven Validation**  
    The contract is not just a description - it's a promise that must be verifiable:
    - Define tests that validate compliance with the contract even before its implementation
+   - Make sure to formulate these tests functionally to allow all users to understand what is being tested
    - Create example datasets that illustrate typical and extreme use cases
-   - Automate compliance verification to enable continuous integration
+   - Automate verification to enable continuous integration
    - Include negative tests that clearly demonstrate what is not acceptable
    
-   This approach, inspired by TDD (Test-Driven Development), clarifies expectations and avoids misinterpretations. Tests become the executable definition of the contract, complementing its formal description.
+   This approach, inspired by TDD (Test-Driven Development), helps clarify expectations and avoid misinterpretations. Tests become the executable definition of the contract, complementary to its formal description.
 
 5. **Domain-Driven Approach**  
-   The contract must speak the language of the business, not that of the underlying systems:
-   - Use business domain terminology, not technical jargon (this is all too often the case, and we end up with contracts that are not readable by non-technical people)
-   - Structure data according to the business vision, even if it requires transformation from source systems (and this is a real issue, as sources often refuse to adapt to the business vision)
+   The contract must speak the language of the business, not that of underlying systems:
+   - Use business domain terminology, not technical jargon (this is all too often the case, resulting in contracts that are not readable by non-technical people)
+   - Structure data according to the business vision, even if it requires transformation from source systems (and this is a real issue, as sources will often refuse to adapt to the business vision)
    - Include business rules and constraints that give meaning to the data
-   - Avoid exposing the specifics of underlying technical systems
+   - Only reveal the specifics of underlying technical systems if it adds value to the user (for example, if it helps clarify operational complexity)
    
-   This approach, inspired by Domain-Driven Design, ensures that the contract remains relevant even if the underlying technologies evolve. It creates a common language between technical and business teams, significantly reducing misunderstandings.
+   This approach, inspired by Domain-Driven Design, ensures that the contract remains relevant even if underlying technologies evolve. It creates a common language between technical and business teams, significantly reducing misunderstandings.
 
-### The Collaborative Contract Design Process
+### The Process Supporting the Product Approach to Contracts
 
 The typical process includes the following steps:
 
-1. **Initial Workshop**: Collaborative session where producers and consumers define their needs
-2. **Draft Creation**: Development of a first version of the contract
-3. **Technical Review**: Verification of technical feasibility and consistency
-4. **Business Review**: Validation by domain experts
-5. **Governance Review**: Verification of compliance with standards and policies
-6. **Finalization**: Consolidation of feedback and final validation
+1. **Needs Discovery**: Collaborative session where producers and consumers define their needs
+2. **Strategy Development**: Assessment of maturity, choice of actors and approach
+3. **Draft Creation**: Development of a first version of the contract
+4. **Refinement**: Verification of technical feasibility and consistency, validation by domain experts, verification of compliance with standards and policies
+5. **Finalization**: Consolidation of feedback and final validation
+6. **Success Indicators**: Design of indicators to evaluate the success of this iteration
+7. **Feedback Loop**: Collection of user feedback
 
 One of the key advantages of this method is that it allows early identification of incompatibilities and implementation challenges, thereby reducing later correction costs.
 
 ## Practical Guide: Creating a Data Contract from A to Z
 
-Enough theory! Let's see concretely how to create a data contract, step by step, from its design to its deployment. I will guide you through the complete process with an example that you can adapt to your context.
+Now that the framework is established, let's see concretely how to create a data contract, step by step, from its conception to its deployment. I'll guide you through the complete process with an example that you can adapt to your context.
 
 ### Step 1: Initialize Your First Data Contract
 
 Let's start by creating a simple contract. Here's how to proceed:
 
 1. **Create a dedicated repository** in your version control system (GitHub, GitLab, etc.)
+Creation of the first version of the contract by the data domain producer.
+For readability reasons, we'll formalize the contract in YAML.
 
 2. **Initialize a data contract file** at the root, for example `customer_profile.datacontract.yaml`:
 
@@ -397,7 +413,7 @@ This crucial step ensures that your contract is both technically correct and usa
 
 #### 6.1 The datacontract-cli Tool
 
-To work efficiently with data contracts, the reference tool is `datacontract-cli`. It's an open-source command-line tool that offers numerous features to validate, test, generate, and publish your data contracts.
+To work efficiently with data contracts, the reference tool is `datacontract-cli`. It's an open-source command-line tool that offers numerous features to validate, test, generate, and publish your data contracts. You now even have an API at https://cli.datacontract.com/API.
 
 Let's start by installing it:
 
@@ -537,30 +553,33 @@ datacontract publish customer_profile.datacontract.yaml \
   --token $REGISTRY_TOKEN
 ```
 
+
 ### Step 7: Drive Adoption
 
 To maximize data contract adoption, focus on these key actions:
 
-1. **Practical documentation** - Create a clear usage guide with concrete examples:
+1. **Indicators**, indicators, indicators: a product team ensures the collection of quantitative and qualitative feedback
+2. **Practical documentation** - Create a clear usage guide with concrete examples:
    ```markdown
    # Customer Profile Contract Usage Guide
    
    ## API Access
-   Request credentials from the CRM team via the self-service portal.
+   Request your credentials from the CRM team via the self-service portal.
    
    ## Example Request
    curl -X GET "https://api.example.com/customers/CUS123456" -H "Authorization: Bearer TOKEN"
    ```
 
-2. **Developer resources** - Provide code samples in languages used by your teams
+3. **Developer resources** - Provide code samples in languages used by your teams
 
-3. **Support channels** - Set up a dedicated Slack channel and regular office hours
+4. **Support channels** - Set up a dedicated Slack channel and regular office hours
 
-4. **Feedback loop** - Implement simple metrics to track usage and gather improvement ideas
+5. **Feedback loop** - Implement simple metrics to track usage and gather improvement ideas
 
-5. **Knowledge sharing** - Run focused workshops and create demo videos
+6. **Knowledge sharing** - Run focused workshops and create demo videos
 
-By keeping support practical and targeted, you'll turn your data contract from documentation into an integral part of your data operations.
+By keeping support practical and targeted, you'll transform your data contract from simple documentation into an integral part of your data operations.
+
 
 ## The Contract Registry: An Essential Element
 
@@ -624,7 +643,7 @@ Choosing a contract registry is not a trivial decision and must correspond to yo
 
 ### Essential Features of a Good Contract Registry
 
-To be truly effective, your registry should offer:
+Regardless of the solution chosen, certain features are crucial to ensure the long-term effectiveness of your registry. These capabilities constitute the minimal foundation that you should require or plan to develop progressively:
 
 1. **Search and Discovery Interface**:
    - Search by metadata (owner, domain, version)
