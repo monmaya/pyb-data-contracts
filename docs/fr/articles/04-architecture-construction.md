@@ -1,16 +1,22 @@
-# Architecture de construction des data contracts : de la conception au déploiement
+# Construire un data contract : de la conception au déploiement
 
-Quand on parle de data contracts, on s'attarde souvent sur leur fonctionnement en production - comment ils régulent les échanges de données, comment ils s'intègrent dans le système d'information. Mais il y a une histoire qui se joue bien avant : celle de leur création. J'ai constaté au fil de mes accompagnements que cette phase cruciale de construction reste dans l'ombre, alors qu'elle façonne l'avenir de toute l'infrastructure data.
+Quand on parle de data contracts, on se focalise souvent sur leur rôle en production : comment ils encadrent les échanges de données, s’intègrent au système d’information et assurent la fiabilité des pipelines. Leur impact se joue aussi en amont, dès leur conception. Or, j’ai constaté que cette phase décisive reste souvent dans l’ombre. C'est un peu comme si on admirait un bâtiment pour son architecture sans jamais parler du chantier qui l'a vu naître. Pourtant, c'est pendant la construction que se prennent les décisions qui feront la solidité et la pérennité de l'ensemble. 
 
-C'est un peu comme si on admirait un bâtiment pour son architecture sans jamais parler du chantier qui l'a vu naître. Pourtant, c'est pendant la construction que se prennent les décisions qui feront la solidité et la pérennité de l'ensemble. Dans cet article, je vous invite à explorer les coulisses de la création des data contracts, à découvrir les méthodes qui transforment une simple idée en un contrat robuste, depuis sa conception jusqu'à son premier déploiement.
+Dans cet article, je vous invite à explorer les coulisses de la création des data contracts au sein d'une équipe pluridisciplinaire. A découvrir les méthodes d'architecture, de produit et d'ingénierie, qui transforment une simple idée en un contrat robuste, depuis sa conception jusqu'à son premier déploiement. 
 
-## L'approche de Conception Collaborative des Contrats
+## L'Approche Produit Collaborative des Contrats
 
-Au cœur de la construction des data contracts se trouve l'approche de Conception Collaborative des Contrats. Cette méthode répond à une problématique fondamentale : comment concevoir des contrats qui répondent aux besoins de toutes les parties prenantes ? 
+Au cœur de la construction des data contracts se trouve une approche produit.
+
+- Qui sont les utilisateurs de mon produit et quels sont leurs besoins (centré sur l'utilisateur) ?
+- Quels sont besoins que je souhaite adresser (vision) pour quels bénéfices (impact) ?
+- Comment puis-je tester et collecter des perpestives d'amélioration (feedbacks) ?
+- Comment assurent-ils une collaboration efficace entre différents acteurs (interopérabilité) ?
+- Sont-ils conçus pour évoluer et s’adapter aux besoins futurs (scalabilité) ?
 
 ```mermaid
 graph TD
-    subgraph "Approche de Conception Collaborative des Contrats"
+    subgraph "Approche Produit de Conception des Contrats"
         P[Producteurs] -->|Proposent| A[Contract Workshop]
         C[Consommateurs] -->|Requièrent| A
         A -->|Produit| D[Contract Draft]
@@ -29,27 +35,33 @@ graph TD
     class H governance;
 ```
 
-Cette approche repose sur cinq principes fondamentaux :
+Dans le cadre des contrats, cette approche repose particulièrement sur cinq principes :
 
 1. **Participation multi-disciplinaire**  
-   Il ne s'agit pas simplement de réunir les équipes techniques. Un data contract efficace nécessite la participation active de plusieurs profils complémentaires :
+   Un data contract efficace nécessite la participation active de plusieurs profils complémentaires :
    - Les **producteurs de données** apportent leur connaissance des systèmes sources, des contraintes techniques et des possibilités d'extraction
-   - Les **consommateurs** expriment leurs besoins, cas d'usage et exigences de qualité
-   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine _---> Les experts métiers c le data producer non ?_
+   - Les **utilisateurs finaux** expriment leurs besoins, cas d'usage et exigences de qualité
+   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine
    - La **gouvernance data** assure l'alignement avec les politiques de l'entreprise, la sécurité et la conformité réglementaire
-   
-   J'ai observé que l'absence d'un seul de ces profils peut conduire à des contrats déséquilibrés, soit trop techniques et déconnectés des besoins réels, soit irréalistes en termes d'implémentation.
 
-2. **Itération rapide**  
-   Contrairement à l'approche "big design upfront", la conception collaborative privilégie des cycles courts et itératifs :
+Le contrat s'adresse à tous, c'est à dire à tous ses profils en tant que **consommateurs de la donnée** au quotidien. La somme des contrats devient une façon scalable, de permettre la découverte du patrimoine de données. 
+
+Oublier un de ses profils, conduit à des contrats déséquilibrés, soit trop techniques, déconnectés des besoins réels, soit irréalistes en termes d'implémentation.
+
+2. **Itération rapide** 
+   Contrairement à l'approche "big design upfront", l'approche produit privilégie des cycles courts et itératifs. Dans le cadre du contrat cela se traduit de deux manières.
+   La première, traditionnellement:
    - Commencer avec une version minimaliste du contrat qui répond aux besoins essentiels
    - Recueillir les retours rapidement, avant de s'engager dans des développements coûteux
    - Ajuster et enrichir le contrat progressivement
-   - Valider chaque itération avec toutes les parties prenantes
+   - Valider chaque itération avec les parties prenantes
+  La seconde, transversale et stratégique:
+   - Identifier la maturité data des acteurs qui seront vos early adopters, pour ne choisir que ceux pour qui l'implémentation ne représente pas un grand coût
+   - Identifier si vous souhaitez tester l'impact sur l'ensemble de la chaîne de valeur (par exemple, si vos problèmes de qualité de données sont un fort enjeux) ou sur une zone en particulier (par exemple, si vous avez une forte dette fonctionnelle et technique, et besoin de mettre en valeur la qualité d'un data product par rapport à d'autres)
    
-   Cette approche réduit considérablement le risque de passer des semaines à concevoir un contrat qui s'avère finalement inadapté. Dans ma pratique, je recommande des itérations de 1 à 2 semaines maximum, avec des points de synchronisation fréquents.
+   Cette approche réduit considérablement le risque de passer des semaines à concevoir un contrat qui s'avère finalement inadapté. A condition que les utilisateurs soient disponibles pour faire des retours, des itérations de 1 à 2 semaines maximum sont à privilégier, avec des points de synchronisation fréquents.
 
-3. **Documentation contextuelle**  
+4. **Documentation contextuelle**  
    Au-delà de la structure des données, le contrat doit capturer le "pourquoi" derrière chaque décision :
    - Documenter les alternatives envisagées et les raisons des choix effectués
    - Expliciter les compromis acceptés (par exemple entre performance et exhaustivité)
@@ -58,41 +70,42 @@ Cette approche repose sur cinq principes fondamentaux :
    
    Cette documentation contextuelle se révèle inestimable lorsque de nouveaux membres rejoignent l'équipe ou quand il faut revisiter le contrat des mois plus tard. Elle transforme le contrat d'un simple document technique en un référentiel de connaissances partagées.
 
-4. **Validation pilotée par les tests**  
+5. **Validation pilotée par les tests**  
    Le contrat n'est pas qu'une description - c'est une promesse qui doit être vérifiable :
    - Définir des tests qui valident la conformité au contrat avant même son implémentation
+   - Veillez à formuler ces tests de façon fonctionnelle pour permettre à tous les utilisateurs de comprendre ce qui est testé
    - Créer des jeux de données d'exemple qui illustrent les cas d'usage typiques et extrêmes
-   - Automatiser la vérification de conformité pour permettre l'intégration continue
+   - Automatiser la vérification pour permettre l'intégration continue
    - Inclure des tests négatifs qui démontrent clairement ce qui n'est pas acceptable
    
    Cette approche, inspirée du TDD (Test-Driven Development), permet de clarifier les attentes et d'éviter les mauvaises interprétations. Les tests deviennent la définition exécutable du contrat, complémentaire à sa description formelle.
 
-5. **Approche Domain-Driven**  
+6. **Approche Domain-Driven**  
    Le contrat doit parler le langage du métier, pas celui des systèmes sous-jacents :
    - Utiliser la terminologie du domaine métier, pas le jargon technique (c'est beaucoup trop souvent le cas et on se retrouve avec des contrats qui ne sont pas lisibles par les non-techniques)
    - Structurer les données selon la vision métier, même si cela nécessite une transformation depuis les systèmes sources (et c'est un vrai sujet, car les sources vont souvent refuser de s'adapter à la vision métier)
    - Inclure les règles métier et contraintes qui donnent sens aux données
-   - Éviter de laisser transparaître les spécificités des systèmes techniques sous-jacents
+   - Ne laisser transparaître les spécificités des systèmes techniques sous-jacents que si cela apporte de la valeur à l'utilisateur (par exemple, si cela permet de clarifier la compléxité opérationnelle)
    
    Cette approche, inspirée du Domain-Driven Design, garantit que le contrat reste pertinent même si les technologies sous-jacentes évoluent. Elle crée un langage commun entre les équipes techniques et métier, réduisant considérablement les malentendus.
 
-### Le processus de Conception Collaborative des Contrats
+### Le processus qui soutient l'approche Produit des Contrats
 
 Le processus typique comprend les étapes suivantes :
 
-1. **Workshop initial** : Session collaborative où producteurs et consommateurs définissent leurs besoins
-2. **Création du draft** : Élaboration d'une première version du contrat
-3. **Discovery Technico-Fonctionnelle** : Validation des requirements business définis + Faisabilité technique
-4. **Review métier** : Validation par les experts domaine ---> _Pareil - à mon sens c'est porté par le data producer normalement. Derriere le mot métier tu mets quoi ?_
-5. **Review de gouvernance** : Vérification de la conformité aux standards et politiques
-6. **Review de la sécurité** : Vérification de l'architecture technique sur le prisme orienté sécurité
-7. **Finalisation** : Consolidation des feedbacks et validation finale
+1. **Découverte des besoins** : Session collaborative où producteurs et consommateurs définissent leurs besoins
+2. **Elaboration d'une stratégie** : Evaluation de la maturité, choix des acteurs et de la démarche
+3. **Création du draft** : Élaboration d'une première version du contrat
+4. **Refinement** : Vérification de la faisabilité technique et de la cohérence, validation par les experts domaine, vérification de la conformité aux standards et politiques
+5. **Finalisation** : Consolidation des feedbacks et validation finale
+6. **Indicateurs de succès** : Conception des indicateurs d'évaluation du succès de cette itération
+7. **Feedback loop**: Récupération de retours utilisateurs
 
 L'un des avantages clés de cette méthode est qu'elle permet d'identifier très tôt les incompatibilités et les challenges d'implémentation, réduisant ainsi les coûts de correction ultérieurs.
 
 ## Guide pratique : Créer un data contract de A à Z
 
-Assez de théorie ! Voyons concrètement comment créer un data contract, pas à pas, depuis sa conception jusqu'à son déploiement. Je vais vous guider à travers le processus complet avec un exemple que vous pourrez adapter à votre contexte.
+Maintenant que le cadrage est terminé, voyons concrètement comment créer un data contract, pas à pas, depuis sa conception jusqu'à son déploiement. Je vais vous guider à travers le processus complet avec un exemple que vous pourrez adapter à votre contexte.
 
 ### Étape 1 : Initialiser votre premier data contract
 
@@ -545,7 +558,8 @@ datacontract publish customer_profile.datacontract.yaml \
 
 Pour maximiser l'adoption des data contracts, concentrez-vous sur ces actions clés :
 
-1. **Documentation pratique** - Créez un guide d'utilisation clair avec des exemples concrets :
+1. **Indicateurs**, indicateurs, indicateurs : une équipe produit s'assure de collecter des feedbacks quantitatifs et qualitatifs
+2. **Documentation pratique** - Créez un guide d'utilisation clair avec des exemples concrets :
    ```markdown
    # Guide d'utilisation du contrat Profil Client
    
@@ -556,13 +570,13 @@ Pour maximiser l'adoption des data contracts, concentrez-vous sur ces actions cl
    curl -X GET "https://api.exemple.com/customers/CUS123456" -H "Authorization: Bearer TOKEN"
    ```
 
-2. **Ressources développeurs** - Fournissez des exemples de code dans les langages utilisés par vos équipes
+3. **Ressources développeurs** - Fournissez des exemples de code dans les langages utilisés par vos équipes
 
-3. **Canaux de support** - Mettez en place un canal Slack dédié et des permanences régulières
+4. **Canaux de support** - Mettez en place un canal Slack dédié et des permanences régulières
 
-4. **Boucle de feedback** - Implémentez des métriques simples pour suivre l'utilisation et recueillir des idées d'amélioration
+5. **Boucle de feedback** - Implémentez des métriques simples pour suivre l'utilisation et recueillir des idées d'amélioration
 
-5. **Partage de connaissances** - Organisez des ateliers ciblés et créez des vidéos de démonstration
+6. **Partage de connaissances** - Organisez des ateliers ciblés et créez des vidéos de démonstration
 
 En gardant le support pratique et ciblé, vous transformerez votre data contract d'une simple documentation en une partie intégrante de vos opérations de données.
 
