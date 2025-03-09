@@ -89,22 +89,23 @@ Oublier un de ses profils, conduit à des contrats déséquilibrés, soit trop t
    
    Cette approche, inspirée du Domain-Driven Design, garantit que le contrat reste pertinent même si les technologies sous-jacentes évoluent. Elle crée un langage commun entre les équipes techniques et métier, réduisant considérablement les malentendus.
 
-### Le processus de Conception Collaborative des Contrats
+### Le processus qui soutient l'approche Produit des Contrats
 
 Le processus typique comprend les étapes suivantes :
 
-1. **Workshop initial** : Session collaborative où producteurs et consommateurs définissent leurs besoins
-2. **Création du draft** : Élaboration d'une première version du contrat
-3. **Review technique** : Vérification de la faisabilité technique et de la cohérence
-4. **Review métier** : Validation par les experts domaine
-5. **Review de gouvernance** : Vérification de la conformité aux standards et politiques
-6. **Finalisation** : Consolidation des feedbacks et validation finale
+1. **Découverte des besoins** : Session collaborative où producteurs et consommateurs définissent leurs besoins
+2. **Elaboration d'une stratégie** : Evaluation de la maturité, choix des acteurs et de la démarche
+3. **Création du draft** : Élaboration d'une première version du contrat
+4. **Refinement** : Vérification de la faisabilité technique et de la cohérence, validation par les experts domaine, vérification de la conformité aux standards et politiques
+5. **Finalisation** : Consolidation des feedbacks et validation finale
+6. **Indicateurs de succès** : Conception des indicateurs d'évaluation du succès de cette itération
+7. **Feedback loop**: Récupération de retours utilisateurs
 
 L'un des avantages clés de cette méthode est qu'elle permet d'identifier très tôt les incompatibilités et les challenges d'implémentation, réduisant ainsi les coûts de correction ultérieurs.
 
 ## Guide pratique : Créer un data contract de A à Z
 
-Assez de théorie ! Voyons concrètement comment créer un data contract, pas à pas, depuis sa conception jusqu'à son déploiement. Je vais vous guider à travers le processus complet avec un exemple que vous pourrez adapter à votre contexte.
+Maintenant que le cadrage est terminé, voyons concrètement comment créer un data contract, pas à pas, depuis sa conception jusqu'à son déploiement. Je vais vous guider à travers le processus complet avec un exemple que vous pourrez adapter à votre contexte.
 
 ### Étape 1 : Initialiser votre premier data contract
 
@@ -555,7 +556,8 @@ datacontract publish customer_profile.datacontract.yaml \
 
 Pour maximiser l'adoption des data contracts, concentrez-vous sur ces actions clés :
 
-1. **Documentation pratique** - Créez un guide d'utilisation clair avec des exemples concrets :
+1. **Indicateurs**, indicateurs, indicateurs : une équipe produit s'assure de collecter des feedbacks quantitatifs et qualitatifs
+2. **Documentation pratique** - Créez un guide d'utilisation clair avec des exemples concrets :
    ```markdown
    # Guide d'utilisation du contrat Profil Client
    
@@ -566,13 +568,13 @@ Pour maximiser l'adoption des data contracts, concentrez-vous sur ces actions cl
    curl -X GET "https://api.exemple.com/customers/CUS123456" -H "Authorization: Bearer TOKEN"
    ```
 
-2. **Ressources développeurs** - Fournissez des exemples de code dans les langages utilisés par vos équipes
+3. **Ressources développeurs** - Fournissez des exemples de code dans les langages utilisés par vos équipes
 
-3. **Canaux de support** - Mettez en place un canal Slack dédié et des permanences régulières
+4. **Canaux de support** - Mettez en place un canal Slack dédié et des permanences régulières
 
-4. **Boucle de feedback** - Implémentez des métriques simples pour suivre l'utilisation et recueillir des idées d'amélioration
+5. **Boucle de feedback** - Implémentez des métriques simples pour suivre l'utilisation et recueillir des idées d'amélioration
 
-5. **Partage de connaissances** - Organisez des ateliers ciblés et créez des vidéos de démonstration
+6. **Partage de connaissances** - Organisez des ateliers ciblés et créez des vidéos de démonstration
 
 En gardant le support pratique et ciblé, vous transformerez votre data contract d'une simple documentation en une partie intégrante de vos opérations de données.
 
