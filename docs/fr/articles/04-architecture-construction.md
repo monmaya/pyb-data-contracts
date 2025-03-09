@@ -111,9 +111,7 @@ Maintenant que le cadrage est terminé, voyons concrètement comment créer un d
 
 Commençons par créer un contrat simple. Voici comment procéder :
 
-1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.) _**--> Est ce que cette approche n'est pas contradictoire avec le point 5 --> Approche Domain Driven ? Un contrat souvent est initié par le producteur avec un profil plutôt produit que technique**_
-On pourrait dire écrire: 1. Création de la première version du contract par le domain producteur de la donnée. 
-Pour des raisons de lisibilité, nous formaliserons le contrat en yaml.
+1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.) 
 
 2. **Initialisez un fichier de data contract** à la racine, par exemple `customer_profile.datacontract.yaml` :
 
