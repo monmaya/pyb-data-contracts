@@ -35,7 +35,7 @@ Cette approche repose sur cinq principes fondamentaux :
    Il ne s'agit pas simplement de réunir les équipes techniques. Un data contract efficace nécessite la participation active de plusieurs profils complémentaires :
    - Les **producteurs de données** apportent leur connaissance des systèmes sources, des contraintes techniques et des possibilités d'extraction
    - Les **consommateurs** expriment leurs besoins, cas d'usage et exigences de qualité
-   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine
+   - Les **experts métier** garantissent que le contrat reflète fidèlement la réalité business et la sémantique du domaine _---> Les experts métiers c le data producer non ?_
    - La **gouvernance data** assure l'alignement avec les politiques de l'entreprise, la sécurité et la conformité réglementaire
    
    J'ai observé que l'absence d'un seul de ces profils peut conduire à des contrats déséquilibrés, soit trop techniques et déconnectés des besoins réels, soit irréalistes en termes d'implémentation.
@@ -82,10 +82,11 @@ Le processus typique comprend les étapes suivantes :
 
 1. **Workshop initial** : Session collaborative où producteurs et consommateurs définissent leurs besoins
 2. **Création du draft** : Élaboration d'une première version du contrat
-3. **Review technique** : Vérification de la faisabilité technique et de la cohérence
-4. **Review métier** : Validation par les experts domaine
+3. **Discovery Technico-Fonctionnelle** : Validation des requirements business définis + Faisabilité technique
+4. **Review métier** : Validation par les experts domaine ---> _Pareil - à mon sens c'est porté par le data producer normalement. Derriere le mot métier tu mets quoi ?_
 5. **Review de gouvernance** : Vérification de la conformité aux standards et politiques
-6. **Finalisation** : Consolidation des feedbacks et validation finale
+6. **Review de la sécurité** : Vérification de l'architecture technique sur le prisme orienté sécurité
+7. **Finalisation** : Consolidation des feedbacks et validation finale
 
 L'un des avantages clés de cette méthode est qu'elle permet d'identifier très tôt les incompatibilités et les challenges d'implémentation, réduisant ainsi les coûts de correction ultérieurs.
 
@@ -97,7 +98,9 @@ Assez de théorie ! Voyons concrètement comment créer un data contract, pas à
 
 Commençons par créer un contrat simple. Voici comment procéder :
 
-1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.)
+1. **Créez un dépôt dédié** dans votre système de gestion de version (GitHub, GitLab, etc.) _**--> Est ce que cette approche n'est pas contradictoire avec le point 5 --> Approche Domain Driven ? Un contrat souvent est initié par le producteur avec un profil plutôt produit que technique**_
+On pourrait dire écrire: 1. Création de la première version du contract par le domain producteur de la donnée. 
+Pour des raisons de lisibilité, nous formaliserons le contrat en yaml.
 
 2. **Initialisez un fichier de data contract** à la racine, par exemple `customer_profile.datacontract.yaml` :
 
@@ -397,7 +400,7 @@ Cette étape cruciale garantit que votre contrat est à la fois techniquement co
 
 #### 6.1 L'outil datacontract-cli
 
-Pour travailler efficacement avec les data contracts, l'outil de référence est `datacontract-cli`. C'est un outil en ligne de commande open-source qui offre de nombreuses fonctionnalités pour valider, tester, générer et publier vos data contracts.
+Pour travailler efficacement avec les data contracts, l'outil de référence est `datacontract-cli`. C'est un outil en ligne de commande open-source qui offre de nombreuses fonctionnalités pour valider, tester, générer et publier vos data contracts. _**--> tu as même une API maintenant héhé https://cli.datacontract.com/API**_
 
 Commençons par l'installer :
 
