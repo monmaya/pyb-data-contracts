@@ -4,7 +4,7 @@
 
 This saying makes perfect sense when we talk about operational architecture patterns for data contracts. The patterns we will explore in this article focus on how data contracts function and are managed once they are created and deployed in production.
 
-Unlike the construction architecture of data contracts (which we will address in a dedicated article), operational architecture focuses on how contracts integrate into an organization's data ecosystem and how they are maintained, distributed, and monitored daily.
+Unlike the construction architecture of data contracts (which we had already covered in the previous article), operational architecture focuses on how contracts integrate into an organization's data ecosystem and how they are maintained, distributed, and monitored daily.
 
 ## The Contract Registry Pattern
 
