@@ -40,13 +40,35 @@ Côté processus, l’équipe doit intégrer ces contrats directement dans les w
 
 La clarté des rôles est essentielle pour une gouvernance efficace des data contracts. Au-delà des responsabilités formelles, c'est tout un écosystème de collaboration qui doit être mis en place. Examinons les rôles clés et leur articulation.
 
-Dans un contexte de data mesh, où chaque domaine est autonome dans la production et la consommation de données, cette clarté des rôles devient encore plus critique :
+En ce qui concerne la vision autour du produit,
+- Le **Data Product Owner** s'assure de l'alignement entre usages et réalité opérationnelle.
+- Le **Data Architect** garantit la cohérence globale des contrats avec l'architecture data.
+- Le **Product Manager** du producteur de la donnée.
 
-Le Responsable des Data Contracts, rattaché au Chief Data Officer, est le garant de la vision et de la cohérence d'ensemble. Il définit la stratégie des data contracts, résout les conflits, valide les changements majeurs et supervise la qualité globale. Son rôle est particulièrement crucial dans les moments de tension, par exemple lors de désaccords entre producteurs et consommateurs sur l'évolution des schémas. Il doit savoir équilibrer les besoins court terme des équipes avec la vision long terme de l'architecture data.
+En ce qui concerne la vision autour du contrat,
+- Le **Data Engineer** 
+- Le **Data Owner** 
+- Le **Data Quality Analyst** surveille et analyse la conformité aux contrats.
 
-L'Architecte Data joue un rôle pivot entre vision technique et besoins métiers. Rattaché au Directeur Technique, il assure la cohérence technique des contrats entre domaines, anticipe les impacts des changements sur l'architecture globale et guide les équipes dans l'adoption des patterns appropriés. Sa forte expertise technique et sa vision transverse des domaines lui permettent d'établir les standards techniques et de gérer l'évolution architecturale de manière cohérente.
+En ce qui concerne l'implémentation et l'évolution du framework de contrat, 
+- Le **Data Governance Officer** supervise l'application des politiques de gouvernance.
+- Le **Contract Registry Admin** gère l'infrastructure du registry et les accès.
 
-Le Data Product Owner apporte une dimension essentielle souvent négligée : la vision produit. Les data contracts ne sont pas que des artefacts techniques, ce sont des produits qui doivent créer de la valeur pour leurs utilisateurs. Rattaché au Responsable Produits Data, il analyse les besoins des consommateurs de données, priorise les évolutions selon la valeur et assure l'alignement avec la stratégie du domaine de données. Sa compréhension des enjeux métiers et sa capacité à dialoguer avec les équipes techniques en font un acteur clé de la réussite du projet.
+Dans un contexte décentralisé, où chaque domaine est autonome dans la production et la consommation de données, bien définir les rôles et leurs interactions devient encore plus critique :
+
+- Producteur de données : Responsable de la qualité, de la documentation et de la mise à disposition des données. Il doit s’assurer que tout changement impactant est communiqué aux consommateurs via le contrat.
+
+- Consommateur de données : Utilise les données pour des analyses, des modèles ou des décisions opérationnelles. Il doit comprendre les engagements du contrat et signaler tout problème ou besoin d’évolution.
+
+- Governance as a Service : Facilite l’adoption des contrats de données en définissant les standards, en automatisant les processus de contrôle et en assurant le bon respect des engagements (DS, DQA)
+
+- Data Owner : Porte la vision stratégique des données du domaine, s’assure que les contrats répondent aux enjeux business et arbitre en cas de conflits entre producteurs et consommateurs.
+
+- Le Responsable des Data Contracts, rattaché au Chief Data Officer, est le garant de la vision et de la cohérence d'ensemble. Il définit la stratégie des data contracts, résout les conflits, valide les changements majeurs et supervise la qualité globale. Son rôle est particulièrement crucial dans les moments de tension, par exemple lors de désaccords entre producteurs et consommateurs sur l'évolution des schémas. Il doit savoir équilibrer les besoins court terme des équipes avec la vision long terme de l'architecture data.
+
+- L'Architecte Data joue un rôle pivot entre vision technique et besoins métiers. Rattaché au Directeur Technique, il assure la cohérence technique des contrats entre domaines, anticipe les impacts des changements sur l'architecture globale et guide les équipes dans l'adoption des patterns appropriés. Sa forte expertise technique et sa vision transverse des domaines lui permettent d'établir les standards techniques et de gérer l'évolution architecturale de manière cohérente.
+
+- Le Data Product Owner apporte une dimension essentielle souvent négligée : la vision produit. Les data contracts ne sont pas que des artefacts techniques, ce sont des produits qui doivent créer de la valeur pour leurs utilisateurs. Rattaché au Responsable Produits Data, il analyse les besoins des consommateurs de données, priorise les évolutions selon la valeur et assure l'alignement avec la stratégie du domaine de données. Sa compréhension des enjeux métiers et sa capacité à dialoguer avec les équipes techniques en font un acteur clé de la réussite du projet.
 
 En résume, les rôles clés sont :
 - Le **Data Product Owner** s'assure de l'alignement entre usages et réalité opérationnelle.
