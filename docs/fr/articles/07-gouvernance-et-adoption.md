@@ -1,8 +1,14 @@
 # Gouvernance et adoption des data contracts : l'aspect humain
 
-L'équipe data science vient de terminer une présentation tendue devant le comité exécutif. Leurs prévisions de ventes pour le Black Friday étaient largement surestimées, causant un surstock coûteux. L'analyse révèle que le changement des règles de calcul du panier moyen, bien que documenté dans un ticket Jira, n'avait jamais été communiqué aux équipes d'analyse. Cette situation, malheureusement courante dans le retail, illustre pourquoi la gouvernance des data contracts ne peut pas se résumer à des aspects purement techniques.
+L'équipe data science vient de terminer une présentation tendue devant le comité exécutif. Leurs prévisions de ventes pour le Black Friday étaient largement surestimées, causant un surstock coûteux. L'analyse révèle que le changement des règles de calcul du panier moyen, bien que documenté dans un ticket Jira, n'avait jamais été communiqué aux équipes d'analyse. Dans cette situation, un bon contrat aurait permis de :
 
-## Pourquoi commencer par la gouvernance ?
+- Documenter le changement de manière explicite : Au-delà d’un simple ticket Jira, le contrat formeliserait l’évolution du modèle.
+- Notifier les consommateurs : Un processus structuré d’information aurait obligé l’équipe productrice à alerter les consommateurs des données.
+- Gérer l’impact opérationnel : La responsabilité du producteur aurait inclus une évaluation des conséquences et potentiellement un accompagnement pour adapter les usages.
+
+Dans ce contexte, le contrat intègre des mécanismes de gouvernance essentiels, comme le contrôle et la communication. Il les ancre dès la conception, directement au sein des outils utilisés par les équipes. En théorie, cela facilite l’adoption naturelle des bonnes pratiques de gouvernance, en les rendant accessibles et intuitives. En pratique, commencer par la gouvernance peut permettre de structurer les interactions entre producteurs et consommateurs de données, dans certaines conditions.
+
+## Pourquoi et comment commencer par la gouvernance ?
 
 Le succès d'une initiative de data contracts ne repose pas uniquement sur les aspects techniques. L'expérience montre que la plupart des échecs ne sont pas dus à des problèmes techniques, mais à des facteurs humains et organisationnels. Voici les patterns d'échec les plus fréquents :
 
@@ -10,17 +16,17 @@ Le succès d'une initiative de data contracts ne repose pas uniquement sur les a
 
 - **La résistance passive** : Les équipes suivent les processus à minima, remplissant les contracts de manière superficielle sans réelle adhésion aux principes de qualité et de documentation.
 
-- **L'absence d'ownership** : Sans responsabilités clairement définies, les contracts deviennent des documents orphelins que personne ne maintient ni ne fait évoluer.
+- **L'absence d'ownership** : Sans responsabilités fonctionnelles clairement définies, les contracts deviennent des documents orphelins que personne ne maintient ni ne fait évoluer.
 
 - **La bureaucratie excessive** : À l'inverse, une gouvernance trop rigide pousse les équipes à voir les contracts comme un frein plutôt qu'un outil d'amélioration.
 
-Prenons un exemple concret dans le retail : une équipe marketing a besoin urgent d'analyser le comportement client pour une campagne Black Friday. Le processus officiel de modification du contract prendrait deux semaines. Que se passe-t-il souvent ? L'équipe créé une copie locale des données, modifie les schémas sans documentation, et le travail est fait en urgence. Cette "exception" devient rapidement la règle, créant une dette technique invisible mais croissante.
+Prenons un exemple concret dans le retail : une équipe marketing a besoin urgent d'analyser le comportement client pour une campagne Black Friday. Le processus officiel de modification du contrat prendrait deux semaines. Que se passe-t-il souvent ? L'équipe créé une copie locale des données, modifie les schémas sans documentation, et le travail est fait en urgence. Cette "exception" devient rapidement la règle, créant une dette technique invisible mais croissante.
 
-C'est pourquoi la gouvernance doit être pensée dès le début, non pas comme un cadre restrictif, mais comme un facilitateur qui :
+C'est pourquoi le contrat doit être pensé dès sa conception, par un organe facilitateur (governance-as-a-service) qui :
 - Rend le "chemin vertueux" plus facile que les contournements
-- Équilibre agilité et contrôle
-- Responsabilise plutôt que restreint
-- Valorise la collaboration plutôt que la contrainte
+- Répond à un besoin opérationnel
+- Facilite la collaboration entre producteurs et consommateurs
+- Responsabilise
 
 ## Organisation et rôles
 
