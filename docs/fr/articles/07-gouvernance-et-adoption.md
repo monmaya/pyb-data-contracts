@@ -38,61 +38,36 @@ Côté processus, l’équipe doit intégrer ces contrats directement dans les w
 
 ## Organisation et rôles
 
-La clarté des rôles est essentielle pour une gouvernance efficace des data contracts. Au-delà des responsabilités formelles, c'est tout un écosystème de collaboration qui doit être mis en place. Examinons les rôles clés et leur articulation.
+Une gouvernance efficace des data contracts repose avant tout sur une définition claire des rôles. Au-delà des responsabilités formelles, il s’agit de structurer un véritable écosystème collaboratif, où chaque acteur joue un rôle clé dans la fiabilité et l’évolution des contrats. Dans un environnement décentralisé, où chaque domaine gère de manière autonome la production et la consommation de données, une articulation précise des rôles et de leurs interactions devient essentielle.
 
-En ce qui concerne la vision autour du produit,
+En ce qui concerne la vision autour du produit:
 - Le **Data Product Owner** s'assure de l'alignement entre usages et réalité opérationnelle.
-- Le **Data Architect** garantit la cohérence globale des contrats avec l'architecture data.
-- Le **Product Manager** du producteur de la donnée.
+- Le **Data Architect** s’assure que les produits s’intègrent de manière cohérente à l’architecture globale des données.
+- Le **Product Manager** du producteur de la donnée pilote les évolutions des processus métiers.
 
-En ce qui concerne la vision autour du contrat,
-- Le **Data Engineer** 
-- Le **Data Owner** 
-- Le **Data Quality Analyst** surveille et analyse la conformité aux contrats.
-
-En ce qui concerne l'implémentation et l'évolution du framework de contrat, 
-- Le **Data Governance Officer** supervise l'application des politiques de gouvernance.
-- Le **Contract Registry Admin** gère l'infrastructure du registry et les accès.
-
-Dans un contexte décentralisé, où chaque domaine est autonome dans la production et la consommation de données, bien définir les rôles et leurs interactions devient encore plus critique :
-
-- Producteur de données : Responsable de la qualité, de la documentation et de la mise à disposition des données. Il doit s’assurer que tout changement impactant est communiqué aux consommateurs via le contrat.
-
-- Consommateur de données : Utilise les données pour des analyses, des modèles ou des décisions opérationnelles. Il doit comprendre les engagements du contrat et signaler tout problème ou besoin d’évolution.
-
-- Governance as a Service : Facilite l’adoption des contrats de données en définissant les standards, en automatisant les processus de contrôle et en assurant le bon respect des engagements (DS, DQA)
-
-- Data Owner : Porte la vision stratégique des données du domaine, s’assure que les contrats répondent aux enjeux business et arbitre en cas de conflits entre producteurs et consommateurs.
-
-- Le Responsable des Data Contracts, rattaché au Chief Data Officer, est le garant de la vision et de la cohérence d'ensemble. Il définit la stratégie des data contracts, résout les conflits, valide les changements majeurs et supervise la qualité globale. Son rôle est particulièrement crucial dans les moments de tension, par exemple lors de désaccords entre producteurs et consommateurs sur l'évolution des schémas. Il doit savoir équilibrer les besoins court terme des équipes avec la vision long terme de l'architecture data.
-
-- L'Architecte Data joue un rôle pivot entre vision technique et besoins métiers. Rattaché au Directeur Technique, il assure la cohérence technique des contrats entre domaines, anticipe les impacts des changements sur l'architecture globale et guide les équipes dans l'adoption des patterns appropriés. Sa forte expertise technique et sa vision transverse des domaines lui permettent d'établir les standards techniques et de gérer l'évolution architecturale de manière cohérente.
-
-- Le Data Product Owner apporte une dimension essentielle souvent négligée : la vision produit. Les data contracts ne sont pas que des artefacts techniques, ce sont des produits qui doivent créer de la valeur pour leurs utilisateurs. Rattaché au Responsable Produits Data, il analyse les besoins des consommateurs de données, priorise les évolutions selon la valeur et assure l'alignement avec la stratégie du domaine de données. Sa compréhension des enjeux métiers et sa capacité à dialoguer avec les équipes techniques en font un acteur clé de la réussite du projet.
-
-En résume, les rôles clés sont :
-- Le **Data Product Owner** s'assure de l'alignement entre usages et réalité opérationnelle.
+En ce qui concerne la vision autour du contrat:
 - Le **Data Engineer** implémente les contrats et assure leur intégration technique.
-- Le **Data Architect** garantit la cohérence globale des contrats avec l'architecture data.
-- Le **Data Quality Analyst** surveille et analyse la conformité aux contrats.
+- Le **Data Owner** définit la stratégie data du domaine, veille à ce que les contrats répondent aux enjeux business et arbitre en cas de conflits entre producteurs et consommateurs.
+- Le **Data Quality Analyst** surveille la conformité des données aux exigences définies dans les contrats et analyse les écarts.
+
+En ce qui concerne l'implémentation et l'évolution du framework de contrat: 
 - Le **Data Governance Officer** supervise l'application des politiques de gouvernance.
-- Le **Contract Registry Admin** gère l'infrastructure du registry et les accès.
+- Le **Contract Registry Admin** administre l’infrastructure du registre des contrats et gère les accès pour assurer une utilisation sécurisée et efficace.
 
 ## Processus de Gouvernance
 
 Le processus de gouvernance est le cœur battant d'une stratégie de data contracts réussie. Dans un data mesh, où les contrats deviennent l'interface principale entre les domaines, ce processus prend une importance particulière. Il ne s'agit pas d'une simple suite d'étapes administratives, mais d'un parcours collaboratif qui garantit la qualité et la pertinence des contrats.
 
-Prenons l'exemple d'un nouveau contrat pour les données de ventes en retail :
+Prenons l'exemple d'un nouveau contrat pour les données de ventes dans le retail :
 
 ```mermaid
 graph TD
-    A[Identification Besoin] --> B[Rédaction Draft]
-    B --> C[Revue Technique]
-    C --> D[Revue Métier]
-    D --> E[Validation Data Steward]
-    E --> F[Approbation Owner]
-    F --> G[Publication]
-    G --> H[Communication]
+    A[Identification Besoin] --> B[Requirement]
+    B --> C[Refinement]
+    C --> D[Architecture Decision Record]
+    D --> E[User Acceptance]
+    E --> F[Publication]
+    F --> G[Communication]
 ```
 
 Le processus commence par l'**identification du besoin**. L'équipe marketing souhaite analyser les patterns d'achat par région. Cette demande déclenche une phase de découverte où les besoins sont précisément documentés et les impacts évalués.
@@ -103,21 +78,19 @@ La **rédaction du requirement** est un exercice collaboratif qui commence par l
 - Identifier les patterns à appliquer et les contrats similaires
 - Définir les règles de qualité et les SLAs appropriés
 
-Une **phase de refinement** permet aux Data Engineers, Data Stewards, Data Quality Analysts et aux Data Architects de s'assurer de la compréhension du domaine métier et de la faisabilité du requirement.
+Une **phase de refinement** permet aux Data Engineers, Data Stewards, Data Quality Analysts et aux Data Architects de s'assurer de la compréhension du domaine métier et de la faisabilité du requirement. Le Data Steward examine la cohérence avec les autres contrats du domaine, vérifie l'alignement avec les standards de l'entreprise et évalue l'impact sur la gouvernance des données. Le Data Owner confirme que le contrat s'aligne avec les objectifs et contraintes de l'organisation.
 
-Une fois ce cadre posé, les Data Engineers peuvent implémenter le contrat en suivant les directives architecturales. Cette collaboration précoce avec l'architecte évite les problèmes d'intégration ultérieurs et garantit la cohérence avec le reste du système.
+Une fois ce cadre posé, les Data Engineers peuvent implémenter le contrat en suivant les directives architecturales (Architecture Decision Record). Cette collaboration précoce avec l'architecte évite les problèmes d'intégration ultérieurs et garantit la cohérence avec le reste du système.
 
-La **validation par le Data Steward** va au-delà d'une simple vérification. Le Data Steward examine la cohérence avec les autres contrats du domaine, vérifie l'alignement avec les standards de l'entreprise et évalue l'impact sur la gouvernance des données.
-
-Les **approbation** par l'owner n'est pas qu'une formalité. C'est une validation stratégique qui confirme que le contrat s'aligne avec les objectifs de l'organisation et respecte les contraintes budgétaires et réglementaires.
+L' **approbation** par les utilisateurs n'est pas qu'une formalité. C'est une validation stratégique qui confirme l'usage et permet aux consommateurs d'explorer la donnée. On compte Stewards et Owners comme consommateurs de la donnée.
 
 Enfin, la **phase de communication** est souvent sous-estimée mais essentielle. Elle inclut la notification aux parties prenantes, la mise à jour de la documentation et l'organisation de sessions d'information si nécessaire.
 
 ## Stratégies d'adoption
 
-La mise en place d'un Centre d'Excellence (CoE) est cruciale. Ce n'est pas qu'une structure organisationnelle, c'est le moteur de l'adoption et de la diffusion des bonnes pratiques. Le CoE doit fournir des modèles standardisés adaptés aux différents cas d'usage, un programme de formation structuré et un support continu aux équipes.
+La mise en place d'une équipe d'enabling est cruciale. Ce n'est pas qu'une structure organisationnelle, c'est le moteur de l'adoption et de la diffusion des bonnes pratiques. L'enabling team doit fournir des modèles standardisés adaptés aux différents cas d'usage, un programme de formation structuré et un support continu aux équipes.
 
-Dans l'architecture data mesh, le CoE joue un rôle particulier :
+Pour construire une architecture décentralisée, l'enabling team joue un rôle particulier :
 - Il établit les standards interdomaines pour garantir l'interopérabilité
 - Il facilite le partage des bonnes pratiques entre domaines autonomes
 - Il assure la cohérence globale tout en respectant l'autonomie des domaines
