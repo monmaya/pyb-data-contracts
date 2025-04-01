@@ -34,7 +34,7 @@ Sur le plan stratégique, elle doit clarifier les rôles et responsabilités ent
 
 Côté processus, l’équipe doit intégrer ces contrats directement dans les workflows des équipes métiers et tech, via des outils et automatisations qui rendent la gouvernance fluide et non contraignante. En structurant ces mécanismes, la gouvernance devient un levier d’efficacité plutôt qu’une contrainte administrative.
 
-# Entrons maintenant dans le détail:
+# Fondements pratiques de l'approche
 
 ## Organisation et rôles
 
