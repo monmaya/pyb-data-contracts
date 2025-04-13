@@ -4,4 +4,7 @@ docs/en/.DS_Store
 docs/fr/.DS_Store
 docs/en/articles/.DS_Store
 docs/fr/articles/.DS_Store
+# uv
+/uv.lock
+__pycache__/
 

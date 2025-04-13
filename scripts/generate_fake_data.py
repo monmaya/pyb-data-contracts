@@ -1,3 +1,14 @@
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.11,<3.12"
+# dependencies = [
+#     "duckdb",
+#     "faker",
+#     "fastparquet",
+#     "pandas",
+#     "pyarrow",
+# ]
+# ///
 from faker import Faker
 import pandas as pd
 import duckdb

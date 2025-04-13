@@ -1,3 +1,13 @@
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.11,<3.12"
+# dependencies = [
+#     "faker",
+#     "fastparquet",
+#     "pandas",
+#     "pyarrow",
+# ]
+# ///
 import uuid
 import random
 from datetime import datetime, timedelta

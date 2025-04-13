@@ -1,0 +1,32 @@
+[project]
+name = "pyb-data-contracts"
+version = "0.1.0"
+description = "Pierre-Yves Bonnefoy's material about data contracts"
+readme = "README-MonMaya.md"
+requires-python = ">=3.11,<3.12"
+authors = [
+		{name = "Pierre-Yves Bonnefoy", email = "pyb@tbc.com"},
+		{name = "Denis Arnaud", email = "denis.arnaud_dc@m4x.org"}
+]
+urls = {repository = "https://github.com/monmaya/pyb-data-contracts"}
+dependencies = [
+  "cloudpathlib[s3]",
+  "duckdb",
+  "faker",
+  "pandas",
+  "pyarrow",
+  "unitycatalog-client"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+datacontract-sample-generation = "scripts.generate_sample_data:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["scripts"]
+
+
+
